@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+cache/
+results/
+weights/
+bench/*/debug/
+*.DS_Store
+# raw captures are large; tracked via LFS or fetch script (decided week 1)
+benchmark/captures/**/*.mp4
+benchmark/captures/**/*.mov
+benchmark/captures/**/depth/
+benchmark/captures/**/confidence/

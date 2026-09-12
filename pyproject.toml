@@ -1,0 +1,37 @@
+[project]
+name = "floorplan"
+version = "0.0.1"
+description = "iPhone capture (photos / video / LiDAR) to dimensioned floor plans, damage regions and scope, with calibrated intervals."
+requires-python = ">=3.12,<3.13"
+readme = "README.md"
+# Dependency list is provisional; versions get pinned by uv.lock in week 1.
+dependencies = [
+  "numpy",
+  "scipy",
+  "opencv-python-headless",
+  "pillow",
+  "torch",
+  "torchvision",
+  "pyyaml",
+  "jsonschema",
+  "typer",
+  "rich",
+  "matplotlib",
+  "imageio[ffmpeg]",
+  "exifread",
+  "huggingface_hub",
+  "shapely",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff"]
+
+[project.scripts]
+floorplan = "floorplan.cli.main:app"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+line-length = 100
