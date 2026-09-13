@@ -57,7 +57,9 @@ def main(before_dir="fixloop/before", after_dir="fixloop/after", out="fixloop/DI
     L = ["# Fix loop: before and after", "",
          f"`before` = tag `fixloop-before` ({rev('fixloop-before')}), `after` = tag `fixloop-after` "
          f"({rev('fixloop-after')}). Both runs regenerate with `make before` and `make after`.", "",
-         "The declaration, written before the fix existed, is in [DECLARATION.md](DECLARATION.md).", "",
+         "The declaration, written before the fix existed, is in [DECLARATION.md](DECLARATION.md). "
+         "What these numbers mean, including the prediction that was wrong and the row that "
+         "regressed, is in [POSTMORTEM.md](POSTMORTEM.md).", "",
          "## The gate that was declared", "",
          "Repeatability, LiDAR tier: two passes over the same rooms sharing no frames.", "",
          "| Metric | Before | Predicted | After | Gate | Verdict |", "|---|---|---|---|---|---|"]

@@ -1,8 +1,8 @@
 # Fix loop: before and after
 
-`before` = tag `fixloop-before` (9dca162d6), `after` = tag `fixloop-after` (b86e5de73). Both runs regenerate with `make before` and `make after`.
+`before` = tag `fixloop-before` (9dca162d6), `after` = tag `fixloop-after` (6c916b8ef). Both runs regenerate with `make before` and `make after`.
 
-The declaration, written before the fix existed, is in [DECLARATION.md](DECLARATION.md).
+The declaration, written before the fix existed, is in [DECLARATION.md](DECLARATION.md). What these numbers mean, including the prediction that was wrong and the row that regressed, is in [POSTMORTEM.md](POSTMORTEM.md).
 
 ## The gate that was declared
 
@@ -10,8 +10,8 @@ Repeatability, LiDAR tier: two passes over the same rooms sharing no frames.
 
 | Metric | Before | Predicted | After | Gate | Verdict |
 |---|---|---|---|---|---|
-| Rooms found, pass A vs pass B | 3 vs 3 | 3 vs 3 | 4 vs 6 | must agree | FAIL |
-| Median paired-room footprint IoU | 0.60 | >= 0.85 | 0.73 | - | short |
+| Rooms found, pass A vs pass B | 3 vs 2 | 3 vs 3 | 4 vs 6 | must agree | no change |
+| Median paired-room footprint IoU | 0.41 | >= 0.85 | 0.73 | - | short |
 | Worst ceiling difference between passes | 120.6 cm | <= 1 cm | 58.0 cm | <= 1 cm | FAIL |
 | Median wall difference between passes | - | <= 3 cm | 29.7 cm | - | short |
 | Worst wall difference between passes | 62.1 cm | <= 15 cm (gate not expected to pass) | 119.6 cm | <= 1 cm | FAIL, as predicted |
@@ -20,32 +20,35 @@ Repeatability, LiDAR tier: two passes over the same rooms sharing no frames.
 
 | Capture | Rooms before | Rooms after | Footprint before | Footprint after | Openings before | Openings after | Overlap before | Overlap after | Seconds before | Seconds after |
 |---|---|---|---|---|---|---|---|---|---|---|
-| flatA_lidar | 2 | 5 | 57.22 | 56.67 | 2 | 4 | 0.1 % | 0.1 % | 6.3 | 6.7 |
-| flatA_lidar_driftoff | 2 | 6 | 57.00 | 55.29 | 1 | 6 | 0.2 % | 0.4 % | 5.1 | 5.7 |
-| flatA_lidar_repa | 3 | 4 | 55.53 | 53.08 | 3 | 4 | 0.0 % | 0.4 % | 3.2 | 3.3 |
-| flatA_lidar_repb | 3 | 6 | 44.93 | 55.25 | 1 | 5 | 0.0 % | 0.1 % | 3.0 | 3.5 |
+| flatA_lidar | 2 | 5 | 57.22 | 56.67 | 2 | 4 | 0.1 % | 0.1 % | 5.9 | 6.4 |
+| flatA_lidar_driftoff | 3 | 6 | 55.83 | 55.29 | 4 | 6 | 0.2 % | 0.4 % | 5.1 | 6.0 |
+| flatA_lidar_repa | 3 | 4 | 55.53 | 53.08 | 3 | 4 | 0.0 % | 0.4 % | 3.0 | 3.3 |
+| flatA_lidar_repb | 2 | 6 | 31.38 | 55.25 | 0 | 5 | 0.0 % | 0.1 % | 2.6 | 3.5 |
 | flatA_photo | 3 | 3 | 21.34 | 21.34 | 2 | 2 | 0.0 % | 0.0 % | 1.0 | 1.0 |
-| flatA_video | 2 | 2 | 7.04 | 7.04 | 4 | 4 | 0.0 % | 0.0 % | 4.5 | 4.5 |
-| flatB_lidar | 2 | 6 | 41.51 | 43.44 | 2 | 6 | 0.0 % | 1.2 % | 3.2 | 3.6 |
-| roomC_lidar | 2 | 3 | 20.57 | 17.80 | 1 | 1 | 0.7 % | 1.3 % | 1.0 | 1.0 |
+| flatA_video | 2 | 2 | 7.04 | 7.04 | 4 | 4 | 0.0 % | 0.0 % | 4.5 | 4.4 |
+| flatB_lidar | 4 | 6 | 43.18 | 43.51 | 4 | 6 | 0.0 % | 1.2 % | 3.3 | 3.6 |
+| roomC_lidar | 2 | 3 | 20.57 | 17.80 | 1 | 1 | 0.7 % | 1.3 % | 0.9 | 1.0 |
 
 ## Code diff
 
 ```
-floorplan/cli/bench.py       |  60 +++++++--
- floorplan/cli/main.py        |  19 ++-
- floorplan/damage/pipeline.py | 299 ++++++++++++++++++++++++++++++++-----------
- floorplan/geometry/cloud.py  | 152 +++++++++++++++++-----
- floorplan/geometry/drift.py  |  57 ++++++---
- floorplan/tiers/lidar.py     |  10 +-
- 6 files changed, 453 insertions(+), 144 deletions(-)
+floorplan/cli/bench.py         |  60 ++-
+ floorplan/cli/main.py          |  19 +-
+ floorplan/damage/pipeline.py   | 299 ++++++++++----
+ floorplan/geometry/assemble.py |  15 +-
+ floorplan/geometry/cloud.py    | 204 +++++++---
+ floorplan/geometry/drift.py    |  57 ++-
+ floorplan/io/synthetic.py      | 743 ----------------------------------
+ floorplan/io/synthetic_rgb.py  | 877 -----------------------------------------
+ floorplan/tiers/lidar.py       |  10 +-
+ 9 files changed, 504 insertions(+), 1780 deletions(-)
 ```
 
 The whole fix is in the room-seeding half of `floorplan/geometry/cloud.py`. The pre-fix seeding is kept as `_threshold_cascade_seeds` and is still reachable with `floorplan run ... --room-seeds cascade`, so the before-run is reproducible from the after-run's code.
 
 ```diff
 diff --git a/floorplan/geometry/cloud.py b/floorplan/geometry/cloud.py
-index 5a6b477f4..764ec19c5 100644
+index 5a6b477f4..6833e1380 100644
 --- a/floorplan/geometry/cloud.py
 +++ b/floorplan/geometry/cloud.py
 @@ -283,9 +283,105 @@ def wall_mask(g: Grid, min_zspan: float = 0.55, quantile: float = 0.55, min_coun
@@ -156,7 +159,7 @@ index 5a6b477f4..764ec19c5 100644
      out = lab.copy()
      nxt = int(out.max()) + 1
      for r in range(1, int(lab.max()) + 1):
-@@ -293,47 +389,37 @@ def _split_large(lab: np.ndarray, D: np.ndarray, free: np.ndarray, res: float, m
+@@ -293,62 +389,74 @@ def _split_large(lab: np.ndarray, D: np.ndarray, free: np.ndarray, res: float, m
          if m.sum() * res ** 2 <= max_area:
              continue
          Dm = D * m
@@ -185,6 +188,36 @@ index 5a6b477f4..764ec19c5 100644
  
 -def segment_rooms(g: Grid, min_area_m2: float = 1.5, max_area_m2: float = 26.0) -> np.ndarray:
 -    """Watershed the carved free space; doorway necks become the borders between rooms."""
++def _absorb_slivers(lab: np.ndarray, walls: np.ndarray, res: float, min_area_m2: float) -> np.ndarray:
++    """A region too small to be a room joins the neighbour it shares the widest UNWALLED border with.
++
++    The pre-fix code joined it to whichever neighbour shared the longest border of any kind, and two
++    captures picked different neighbours, which changed the room count. Border length depends on the
++    free-space shape and moves between captures; whether a wall stands on that border does not. If
++    every border is walled the sliver is not part of any room and is dropped.
++    """
++    out = lab.copy()
++    wall_near = ndimage.binary_dilation(walls, np.ones((3, 3)))
++    for _ in range(4):
++        sizes = {r: int((out == r).sum()) for r in range(1, int(out.max()) + 1)}
++        small = [r for r, n in sizes.items() if 0 < n * res ** 2 < min_area_m2]
++        if not small:
++            break
++        for r in small:
++            m = out == r
++            grow = ndimage.binary_dilation(m, np.ones((3, 3))) & ~m
++            best, bid = 0.0, 0
++            for q in range(1, int(out.max()) + 1):
++                if q == r:
++                    continue
++                border = grow & (out == q)
++                openness = float((border & ~wall_near).sum()) * res
++                if openness > best:
++                    best, bid = openness, q
++            out[m] = bid if best > 0.1 else 0
++    return out
++
++
 +def segment_rooms(g: Grid, min_area_m2: float = 1.5, max_area_m2: float = 26.0,
 +                  seeds: str = "hmaxima", h_m: float = 0.35) -> np.ndarray:
 +    """Watershed the carved free space; doorway necks become the borders between rooms.
@@ -195,9 +228,11 @@ index 5a6b477f4..764ec19c5 100644
 -    free = g.free & ~walls
 -    free = ndimage.binary_opening(free, np.ones((3, 3)))
 +    free = ndimage.binary_opening(g.free & ~walls, np.ones((3, 3)))
-+    # a patch the sensor never reached, fully enclosed by free space, is still part of the room:
-+    # filling it stops an unobserved hole from pinching the transform and splitting the room in two
-+    free = ndimage.binary_fill_holes(free) & ~walls
++    if seeds != "cascade":
++        # a patch the sensor never reached, fully enclosed by free space, is still part of the room:
++        # filling it stops an unobserved hole pinching the transform and splitting the room in two.
++        # Skipped under "cascade" so that --legacy reproduces the pre-fix behaviour exactly.
++        free = ndimage.binary_fill_holes(free) & ~walls
      if not free.any():
          return np.zeros(g.shape, np.int32)
      D = ndimage.distance_transform_edt(free) * g.res
@@ -219,10 +254,28 @@ index 5a6b477f4..764ec19c5 100644
          cores, _ = ndimage.label(free)
      labels = _priority_flood(cores.astype(np.int32), D, free)
 -    labels = _split_large(labels, D, free, g.res, max_area_m2)
+-    out = labels.copy()
+-    for _ in range(3):
+-        changed = False
+-        for lab in range(1, int(out.max()) + 1):
+-            m = out == lab
+-            if not m.any() or m.sum() * g.res ** 2 >= min_area_m2:
+-                continue
+-            nb = ndimage.binary_dilation(m, np.ones((3, 3))) & ~m & (out > 0)
+-            vals, counts = np.unique(out[nb], return_counts=True)
+-            sel = vals != lab
+-            vals, counts = vals[sel], counts[sel]
+-            out[m] = vals[np.argmax(counts)] if len(vals) else 0
+-            changed = True
+-        if not changed:
+-            break
 +    if seeds == "hmaxima":
 +        labels = merge_unwalled(labels, walls, g.res)
 +    labels = _split_large(labels, D, g.res, max_area_m2)
-     out = labels.copy()
-     for _ in range(3):
-         changed = False
++    # A sliver under `min_area_m2` is not a room. Absorbing it into whichever neighbour happens to
++    # share the longest border was the last unstable step in this function: two captures picked
++    # different neighbours and ended with different room counts. Dropping it instead leaves it as
++    # unassigned free space, which is what it is, and is the same decision every time.
++    out = _absorb_slivers(labels, walls, g.res, min_area_m2)
+     return _compact_labels(out)
 ```
