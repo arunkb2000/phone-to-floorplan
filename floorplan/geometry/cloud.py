@@ -399,6 +399,36 @@ def _split_large(lab: np.ndarray, D: np.ndarray, res: float, max_area: float) ->
     return out
 
 
+def _absorb_slivers(lab: np.ndarray, walls: np.ndarray, res: float, min_area_m2: float) -> np.ndarray:
+    """A region too small to be a room joins the neighbour it shares the widest UNWALLED border with.
+
+    The pre-fix code joined it to whichever neighbour shared the longest border of any kind, and two
+    captures picked different neighbours, which changed the room count. Border length depends on the
+    free-space shape and moves between captures; whether a wall stands on that border does not. If
+    every border is walled the sliver is not part of any room and is dropped.
+    """
+    out = lab.copy()
+    wall_near = ndimage.binary_dilation(walls, np.ones((3, 3)))
+    for _ in range(4):
+        sizes = {r: int((out == r).sum()) for r in range(1, int(out.max()) + 1)}
+        small = [r for r, n in sizes.items() if 0 < n * res ** 2 < min_area_m2]
+        if not small:
+            break
+        for r in small:
+            m = out == r
+            grow = ndimage.binary_dilation(m, np.ones((3, 3))) & ~m
+            best, bid = 0.0, 0
+            for q in range(1, int(out.max()) + 1):
+                if q == r:
+                    continue
+                border = grow & (out == q)
+                openness = float((border & ~wall_near).sum()) * res
+                if openness > best:
+                    best, bid = openness, q
+            out[m] = bid if best > 0.1 else 0
+    return out
+
+
 def segment_rooms(g: Grid, min_area_m2: float = 1.5, max_area_m2: float = 26.0,
                   seeds: str = "hmaxima", h_m: float = 0.35) -> np.ndarray:
     """Watershed the carved free space; doorway necks become the borders between rooms.
@@ -407,9 +437,11 @@ def segment_rooms(g: Grid, min_area_m2: float = 1.5, max_area_m2: float = 26.0,
     """
     walls = wall_mask(g)
     free = ndimage.binary_opening(g.free & ~walls, np.ones((3, 3)))
-    # a patch the sensor never reached, fully enclosed by free space, is still part of the room:
-    # filling it stops an unobserved hole from pinching the transform and splitting the room in two
-    free = ndimage.binary_fill_holes(free) & ~walls
+    if seeds != "cascade":
+        # a patch the sensor never reached, fully enclosed by free space, is still part of the room:
+        # filling it stops an unobserved hole pinching the transform and splitting the room in two.
+        # Skipped under "cascade" so that --legacy reproduces the pre-fix behaviour exactly.
+        free = ndimage.binary_fill_holes(free) & ~walls
     if not free.any():
         return np.zeros(g.shape, np.int32)
     D = ndimage.distance_transform_edt(free) * g.res
@@ -420,21 +452,11 @@ def segment_rooms(g: Grid, min_area_m2: float = 1.5, max_area_m2: float = 26.0,
     if seeds == "hmaxima":
         labels = merge_unwalled(labels, walls, g.res)
     labels = _split_large(labels, D, g.res, max_area_m2)
-    out = labels.copy()
-    for _ in range(3):
-        changed = False
-        for lab in range(1, int(out.max()) + 1):
-            m = out == lab
-            if not m.any() or m.sum() * g.res ** 2 >= min_area_m2:
-                continue
-            nb = ndimage.binary_dilation(m, np.ones((3, 3))) & ~m & (out > 0)
-            vals, counts = np.unique(out[nb], return_counts=True)
-            sel = vals != lab
-            vals, counts = vals[sel], counts[sel]
-            out[m] = vals[np.argmax(counts)] if len(vals) else 0
-            changed = True
-        if not changed:
-            break
+    # A sliver under `min_area_m2` is not a room. Absorbing it into whichever neighbour happens to
+    # share the longest border was the last unstable step in this function: two captures picked
+    # different neighbours and ended with different room counts. Dropping it instead leaves it as
+    # unassigned free space, which is what it is, and is the same decision every time.
+    out = _absorb_slivers(labels, walls, g.res, min_area_m2)
     return _compact_labels(out)
 
 

@@ -24,7 +24,9 @@ def load_factors(tier: str) -> dict:
 def mj(m: Measurement, tier: str, kind: str, factors: dict, floor_rel: float = 0.0) -> dict:
     """Measurement -> JSON with a calibrated 90 % interval."""
     k = float(factors.get(kind, factors.get("_default", 1.0)))
-    sigma = max(float(m.sigma) * k, floor_rel * abs(float(m.value)))
+    sigma = max(float(m.sigma) * k, floor_rel * abs(float(m.value)), SIGMA_FLOOR_M.get(kind, 0.0))
+    if m.source == "prior":
+        sigma = max(sigma, float(m.sigma))
     return {"value": round(float(m.value), 4),
             "ci_low": round(float(m.value - Z * sigma), 4),
             "ci_high": round(float(m.value + Z * sigma), 4),
@@ -32,7 +34,18 @@ def mj(m: Measurement, tier: str, kind: str, factors: dict, floor_rel: float = 0
             "source": m.source, "method": m.method, "n_support": int(m.n_support)}
 
 
+# Relative interval floor per tier: thin input may never claim thick-input precision, whatever the
+# propagated sigma says.
 TIER_FLOOR = {"photo": 0.045, "video": 0.018, "lidar": 0.0}
+
+# Absolute interval floor, in metres, per measurement kind. Averaging a hundred thousand LiDAR
+# returns drives the STATISTICAL spread of a plane fit into the tenths of a millimetre, which is
+# nonsense as an accuracy claim: it says nothing about the sensor's own bias, the floor datum, or the
+# fact that a plastered wall is not a plane. Apple publishes no accuracy figure for the sensor;
+# independent measurements put it around a centimetre at these ranges, and that is the number below
+# which no amount of averaging is meaningful. These are asserted from the sensor's physics, not
+# fitted to our own benchmark, which is why they are here and not in calib/factors.json.
+SIGMA_FLOOR_M = {"wall": 0.008, "ceiling": 0.010, "opening": 0.010, "offset": 0.012, "area": 0.02}
 
 
 def build_plan(rooms: list[RoomOut], edges_adj: list[dict], tier: str, capture: dict, timing: dict,
