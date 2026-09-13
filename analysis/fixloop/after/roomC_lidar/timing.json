@@ -1,5 +1,5 @@
 {
- "total_s": 0.99,
+ "total_s": 0.98,
  "n_frames": 147,
  "load_s": 0.08,
  "drift_s": 0.11,
@@ -11,5 +11,5 @@
  "ceil_z": null,
  "geometry_s": 0.18,
  "n_rooms": 3,
- "render_s": 0.08
+ "render_s": 0.09
 }

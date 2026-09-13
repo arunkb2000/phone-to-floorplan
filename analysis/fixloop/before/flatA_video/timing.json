@@ -2,7 +2,7 @@
  "total_s": 4.45,
  "room_cuts": "palm-cover cuts (1 found)",
  "n_frames": 80,
- "depth_s": 0.17,
+ "depth_s": 0.16,
  "n_depth_inferences": 80,
  "geometry_s": 3.39,
  "n_rooms": 2,

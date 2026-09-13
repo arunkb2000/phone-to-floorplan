@@ -6,7 +6,7 @@ Three input tiers — photos, video, LiDAR — one command, one JSON schema, not
 
 ```bash
 make setup && make weights                          # once, about 5 minutes
-uv run floorplan run data/raw/single_scan_with_ceiling --out results/
+uv run floorplan run data/raw/single_scan_with_ceiling --out analysis/results/demo
 ```
 
 ```
@@ -27,7 +27,7 @@ You get `plan.json` (validates against `floorplan/schema/output.schema.json`), `
 git clone <this repo> && cd phone-to-floorplan
 make setup        # installs uv if absent, pins Python 3.12, syncs the locked dependency set
 make weights      # ~1.8 GB of pinned model weights from Hugging Face, SHA-256 manifest written
-make run CAP=data/raw/single_scan_with_ceiling OUT=results
+make run CAP=data/raw/single_scan_with_ceiling OUT=analysis/results/demo
 ```
 
 Only `make setup` and `make weights` touch the network. After that the pipeline is fully offline,
@@ -64,6 +64,8 @@ The tier is detected from the folder you hand over:
 
 ## What to read, in order
 
+0. [docs/KT.md](docs/KT.md) — the whole build in one pass: what was asked, what we made, the two bugs
+   that decided it, the fix loop, and what we did not meet.
 1. [docs/report/benchmark.md](docs/report/benchmark.md) — what the ground truth is, and which gates
    the supplied data can and cannot settle. Read this before any number.
 2. [analysis/fixloop/DECLARATION.md](analysis/fixloop/DECLARATION.md) and [analysis/fixloop/DIFF.md](analysis/fixloop/DIFF.md) — the

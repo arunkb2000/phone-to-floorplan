@@ -13,7 +13,8 @@
   {
    "id": "01_space",
    "label": "space",
-   "label_confidence": 0.9,
+   "label_confidence": 0.3,
+   "fixtures_seen": {},
    "polygon": [
     [
      -9.148,
@@ -780,7 +781,8 @@
   {
    "id": "02_space",
    "label": "space",
-   "label_confidence": 0.9,
+   "label_confidence": 0.3,
+   "fixtures_seen": {},
    "polygon": [
     [
      -3.8964,
@@ -1042,7 +1044,8 @@
   {
    "id": "03_space",
    "label": "space",
-   "label_confidence": 0.9,
+   "label_confidence": 0.3,
+   "fixtures_seen": {},
    "polygon": [
     [
      -2.9986,
@@ -1377,7 +1380,8 @@
   {
    "id": "04_space",
    "label": "space",
-   "label_confidence": 0.9,
+   "label_confidence": 0.3,
+   "fixtures_seen": {},
    "polygon": [
     [
      1.108,
@@ -1751,7 +1755,8 @@
   {
    "id": "05_space",
    "label": "space",
-   "label_confidence": 0.9,
+   "label_confidence": 0.3,
+   "fixtures_seen": {},
    "polygon": [
     [
      -3.0219,
@@ -2015,19 +2020,19 @@
  "calibration": {
   "nominal_coverage": 0.9,
   "method": "propagated sigma x per-tier split-conformal factor, with a per-tier relative floor",
-  "calibration_set_id": "bench/latest",
+  "calibration_set_id": "analysis/bench/latest",
   "tier_floor_fraction": 0.0,
   "factors": {}
  },
  "timing": {
-  "total_s": 6.39,
+  "total_s": 6.23,
   "device": "arm64 Darwin",
   "stages": {
-   "load": 0.53,
-   "drift": 0.6,
-   "cloud": 2.54,
-   "geometry": 1.83,
-   "render": 0.26
+   "load": 0.52,
+   "drift": 0.61,
+   "cloud": 2.52,
+   "geometry": 1.81,
+   "render": 0.25
   }
  },
  "render": {

@@ -8,7 +8,7 @@
   },
   "repeat_of": null,
   "gt": "single_scan_with_ceiling.yaml",
-  "path": "Dataset/single_scan_with_ceiling",
+  "path": "data/raw/single_scan_with_ceiling",
   "summary": {
    "n_rooms": 2,
    "footprint_m2": 57.224,
@@ -25,8 +25,8 @@
     "measured"
    ],
    "mean_coverage": 0.949,
-   "total_s": 5.88,
-   "wall_s": 5.9
+   "total_s": 5.71,
+   "wall_s": 5.7
   },
   "rows": [
    {
@@ -96,7 +96,7 @@
   },
   "repeat_of": null,
   "gt": "single_scan_with_ceiling.yaml",
-  "path": "Dataset/single_scan_with_ceiling",
+  "path": "data/raw/single_scan_with_ceiling",
   "summary": {
    "n_rooms": 3,
    "footprint_m2": 55.828,
@@ -113,7 +113,7 @@
     "measured"
    ],
    "mean_coverage": 0.868,
-   "total_s": 5.08,
+   "total_s": 5.06,
    "wall_s": 5.1
   },
   "rows": [
@@ -184,7 +184,7 @@
   },
   "repeat_of": null,
   "gt": "single_scan_floor_only.yaml",
-  "path": "Dataset/single_scan_floor_only",
+  "path": "data/raw/single_scan_floor_only",
   "summary": {
    "n_rooms": 4,
    "footprint_m2": 43.176,
@@ -201,7 +201,7 @@
     "prior"
    ],
    "mean_coverage": 0.961,
-   "total_s": 3.33,
+   "total_s": 3.29,
    "wall_s": 3.3
   },
   "rows": [
@@ -230,7 +230,7 @@
   },
   "repeat_of": null,
   "gt": "single_room.yaml",
-  "path": "Dataset/single_room",
+  "path": "data/raw/single_room",
   "summary": {
    "n_rooms": 2,
    "footprint_m2": 20.571,
@@ -261,7 +261,7 @@
   },
   "repeat_of": null,
   "gt": "single_scan_with_ceiling.yaml",
-  "path": "benchmark/captures/flatA_repa",
+  "path": "data/benchmark/captures/flatA_repa",
   "summary": {
    "n_rooms": 3,
    "footprint_m2": 55.534,
@@ -278,8 +278,8 @@
     "measured"
    ],
    "mean_coverage": 0.754,
-   "total_s": 3.03,
-   "wall_s": 3.0
+   "total_s": 3.06,
+   "wall_s": 3.1
   },
   "rows": [
    {
@@ -349,7 +349,7 @@
   },
   "repeat_of": "flatA_lidar_repa",
   "gt": "single_scan_with_ceiling.yaml",
-  "path": "benchmark/captures/flatA_repb",
+  "path": "data/benchmark/captures/flatA_repb",
   "summary": {
    "n_rooms": 2,
    "footprint_m2": 31.378,
@@ -366,8 +366,8 @@
     "measured"
    ],
    "mean_coverage": 0.834,
-   "total_s": 2.61,
-   "wall_s": 2.6
+   "total_s": 2.65,
+   "wall_s": 2.7
   },
   "rows": [
    {
@@ -437,7 +437,7 @@
   },
   "repeat_of": null,
   "gt": "single_scan_with_ceiling.yaml",
-  "path": "benchmark/captures/photo_flatA",
+  "path": "data/benchmark/captures/photo_flatA",
   "summary": {
    "n_rooms": 3,
    "footprint_m2": 21.338,
@@ -525,7 +525,7 @@
   },
   "repeat_of": null,
   "gt": "single_scan_with_ceiling.yaml",
-  "path": "benchmark/captures/video_flatA",
+  "path": "data/benchmark/captures/video_flatA",
   "summary": {
    "n_rooms": 2,
    "footprint_m2": 7.035,
