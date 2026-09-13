@@ -1,0 +1,1214 @@
+{
+  "schema_version": "0.1.0",
+  "capture": {
+    "id": "cap-sample-0001",
+    "source": "ios_camera_photos",
+    "device": "iPhone 15 Pro",
+    "input_sha256": "3b8f1c0d9e7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c2d1e0f9a8b7c6d5e4f3a2b1c",
+    "protocol_compliance": {
+      "entry_shot": true,
+      "corner_shots": true,
+      "exit_shot": false
+    }
+  },
+  "tier": "photo",
+  "units": "m",
+  "coordinate_frame": "gravity-aligned, z up, origin at first room entrance",
+  "rooms": [
+    {
+      "id": "living",
+      "label": "Living room",
+      "label_confidence": 0.91,
+      "polygon": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          4.2,
+          0.0
+        ],
+        [
+          4.2,
+          3.6
+        ],
+        [
+          0.0,
+          3.6
+        ]
+      ],
+      "walls": [
+        {
+          "id": "living_w1",
+          "start": [
+            0.0,
+            0.0
+          ],
+          "end": [
+            4.2,
+            0.0
+          ],
+          "length": {
+            "value": 4.2,
+            "ci_low": 4.054,
+            "ci_high": 4.346,
+            "sigma": 0.0888,
+            "source": "measured",
+            "method": "photo_sfm_scaled",
+            "n_support": 14
+          },
+          "surface_id": "living_s_w1"
+        },
+        {
+          "id": "living_w2",
+          "start": [
+            4.2,
+            0.0
+          ],
+          "end": [
+            4.2,
+            3.6
+          ],
+          "length": {
+            "value": 3.6,
+            "ci_low": 3.472,
+            "ci_high": 3.728,
+            "sigma": 0.0778,
+            "source": "measured",
+            "method": "photo_sfm_scaled",
+            "n_support": 14
+          },
+          "surface_id": "living_s_w2",
+          "shared_with_room_id": "kitchen"
+        },
+        {
+          "id": "living_w3",
+          "start": [
+            4.2,
+            3.6
+          ],
+          "end": [
+            0.0,
+            3.6
+          ],
+          "length": {
+            "value": 4.2,
+            "ci_low": 4.054,
+            "ci_high": 4.346,
+            "sigma": 0.0888,
+            "source": "measured",
+            "method": "photo_sfm_scaled",
+            "n_support": 14
+          },
+          "surface_id": "living_s_w3"
+        },
+        {
+          "id": "living_w4",
+          "start": [
+            0.0,
+            3.6
+          ],
+          "end": [
+            0.0,
+            0.0
+          ],
+          "length": {
+            "value": 3.6,
+            "ci_low": 3.472,
+            "ci_high": 3.728,
+            "sigma": 0.0778,
+            "source": "measured",
+            "method": "photo_sfm_scaled",
+            "n_support": 14
+          },
+          "surface_id": "living_s_w4"
+        }
+      ],
+      "ceiling_height": {
+        "value": 2.71,
+        "ci_low": 2.626,
+        "ci_high": 2.794,
+        "sigma": 0.0512,
+        "source": "measured",
+        "method": "photo_sfm_scaled",
+        "n_support": 14
+      },
+      "ceiling_height_spread_m": 0.02,
+      "floor_area": {
+        "value": 15.12,
+        "ci_low": 14.344,
+        "ci_high": 15.896,
+        "sigma": 0.4717,
+        "source": "measured",
+        "method": "photo_sfm_scaled"
+      },
+      "openings": [
+        {
+          "id": "op_d1",
+          "wall_id": "living_w2",
+          "type": "door",
+          "offset_along_wall": {
+            "value": 2.2,
+            "ci_low": 2.126,
+            "ci_high": 2.274,
+            "sigma": 0.045,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "width": {
+            "value": 0.82,
+            "ci_low": 0.784,
+            "ci_high": 0.856,
+            "sigma": 0.0221,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "detection_confidence": 0.9,
+          "height": {
+            "value": 2.04,
+            "ci_low": 1.969,
+            "ci_high": 2.111,
+            "sigma": 0.043,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "connects_to_room_id": "kitchen"
+        },
+        {
+          "id": "op_win1",
+          "wall_id": "living_w3",
+          "type": "window",
+          "offset_along_wall": {
+            "value": 1.4,
+            "ci_low": 1.342,
+            "ci_high": 1.458,
+            "sigma": 0.0353,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "width": {
+            "value": 1.2,
+            "ci_low": 1.156,
+            "ci_high": 1.244,
+            "sigma": 0.0267,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "detection_confidence": 0.86,
+          "height": {
+            "value": 1.3,
+            "ci_low": 1.244,
+            "ci_high": 1.356,
+            "sigma": 0.034,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "sill_height": {
+            "value": 0.9,
+            "ci_low": 0.852,
+            "ci_high": 0.948,
+            "sigma": 0.0292,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          }
+        },
+        {
+          "id": "op_p1",
+          "wall_id": "living_w1",
+          "type": "passage",
+          "offset_along_wall": {
+            "value": 0.5,
+            "ci_low": 0.46,
+            "ci_high": 0.54,
+            "sigma": 0.0243,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "width": {
+            "value": 1.0,
+            "ci_low": 0.96,
+            "ci_high": 1.04,
+            "sigma": 0.0243,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "detection_confidence": 0.77,
+          "height": {
+            "value": 2.1,
+            "ci_low": 2.028,
+            "ci_high": 2.172,
+            "sigma": 0.0438,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          }
+        }
+      ],
+      "surfaces": [
+        {
+          "id": "living_s_w1",
+          "room_id": "living",
+          "kind": "wall",
+          "area": {
+            "value": 11.382,
+            "ci_low": 10.793,
+            "ci_high": 11.971,
+            "sigma": 0.3581,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "plane": {
+            "normal": [
+              0.0,
+              -1.0,
+              0.0
+            ],
+            "d": -0.0,
+            "rms_m": 0.012
+          }
+        },
+        {
+          "id": "living_s_w2",
+          "room_id": "living",
+          "kind": "wall",
+          "area": {
+            "value": 9.756,
+            "ci_low": 9.248,
+            "ci_high": 10.264,
+            "sigma": 0.3087,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "plane": {
+            "normal": [
+              1.0,
+              -0.0,
+              0.0
+            ],
+            "d": -4.2,
+            "rms_m": 0.012
+          }
+        },
+        {
+          "id": "living_s_w3",
+          "room_id": "living",
+          "kind": "wall",
+          "area": {
+            "value": 11.382,
+            "ci_low": 10.793,
+            "ci_high": 11.971,
+            "sigma": 0.3581,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "plane": {
+            "normal": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "d": -3.6,
+            "rms_m": 0.012
+          }
+        },
+        {
+          "id": "living_s_w4",
+          "room_id": "living",
+          "kind": "wall",
+          "area": {
+            "value": 9.756,
+            "ci_low": 9.248,
+            "ci_high": 10.264,
+            "sigma": 0.3087,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "plane": {
+            "normal": [
+              -1.0,
+              -0.0,
+              0.0
+            ],
+            "d": 0.0,
+            "rms_m": 0.012
+          }
+        },
+        {
+          "id": "living_s_floor",
+          "room_id": "living",
+          "kind": "floor",
+          "area": {
+            "value": 15.12,
+            "ci_low": 14.344,
+            "ci_high": 15.896,
+            "sigma": 0.4717,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "plane": {
+            "normal": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "d": 0.0,
+            "rms_m": 0.009
+          }
+        },
+        {
+          "id": "living_s_ceiling",
+          "room_id": "living",
+          "kind": "ceiling",
+          "area": {
+            "value": 15.12,
+            "ci_low": 14.344,
+            "ci_high": 15.896,
+            "sigma": 0.4717,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "plane": {
+            "normal": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "d": -2.71,
+            "rms_m": 0.009
+          }
+        }
+      ],
+      "quality": {
+        "coverage_fraction": 0.82,
+        "n_frames": 14,
+        "exposure_score": 0.74,
+        "mirror_suspected": false
+      }
+    },
+    {
+      "id": "kitchen",
+      "label": "Kitchen",
+      "label_confidence": 0.88,
+      "polygon": [
+        [
+          4.2,
+          1.2
+        ],
+        [
+          7.2,
+          1.2
+        ],
+        [
+          7.2,
+          3.6
+        ],
+        [
+          4.2,
+          3.6
+        ]
+      ],
+      "walls": [
+        {
+          "id": "kitchen_w1",
+          "start": [
+            4.2,
+            1.2
+          ],
+          "end": [
+            7.2,
+            1.2
+          ],
+          "length": {
+            "value": 3.0,
+            "ci_low": 2.89,
+            "ci_high": 3.11,
+            "sigma": 0.0669,
+            "source": "measured",
+            "method": "photo_sfm_scaled",
+            "n_support": 11
+          },
+          "surface_id": "kitchen_s_w1",
+          "shared_with_room_id": "washroom"
+        },
+        {
+          "id": "kitchen_w2",
+          "start": [
+            7.2,
+            1.2
+          ],
+          "end": [
+            7.2,
+            3.6
+          ],
+          "length": {
+            "value": 2.4,
+            "ci_low": 2.308,
+            "ci_high": 2.492,
+            "sigma": 0.0559,
+            "source": "measured",
+            "method": "photo_sfm_scaled",
+            "n_support": 11
+          },
+          "surface_id": "kitchen_s_w2"
+        },
+        {
+          "id": "kitchen_w3",
+          "start": [
+            7.2,
+            3.6
+          ],
+          "end": [
+            4.2,
+            3.6
+          ],
+          "length": {
+            "value": 3.0,
+            "ci_low": 2.89,
+            "ci_high": 3.11,
+            "sigma": 0.0669,
+            "source": "measured",
+            "method": "photo_sfm_scaled",
+            "n_support": 11
+          },
+          "surface_id": "kitchen_s_w3"
+        },
+        {
+          "id": "kitchen_w4",
+          "start": [
+            4.2,
+            3.6
+          ],
+          "end": [
+            4.2,
+            1.2
+          ],
+          "length": {
+            "value": 2.4,
+            "ci_low": 2.308,
+            "ci_high": 2.492,
+            "sigma": 0.0559,
+            "source": "measured",
+            "method": "photo_sfm_scaled",
+            "n_support": 11
+          },
+          "surface_id": "kitchen_s_w4",
+          "shared_with_room_id": "living"
+        }
+      ],
+      "ceiling_height": {
+        "value": 2.68,
+        "ci_low": 2.596,
+        "ci_high": 2.764,
+        "sigma": 0.0508,
+        "source": "measured",
+        "method": "photo_sfm_scaled",
+        "n_support": 11
+      },
+      "ceiling_height_spread_m": 0.02,
+      "floor_area": {
+        "value": 7.2,
+        "ci_low": 6.82,
+        "ci_high": 7.58,
+        "sigma": 0.231,
+        "source": "measured",
+        "method": "photo_sfm_scaled"
+      },
+      "openings": [
+        {
+          "id": "op_win2",
+          "wall_id": "kitchen_w2",
+          "type": "window",
+          "offset_along_wall": {
+            "value": 0.8,
+            "ci_low": 0.754,
+            "ci_high": 0.846,
+            "sigma": 0.028,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "width": {
+            "value": 1.0,
+            "ci_low": 0.96,
+            "ci_high": 1.04,
+            "sigma": 0.0243,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "detection_confidence": 0.84,
+          "height": {
+            "value": 1.2,
+            "ci_low": 1.146,
+            "ci_high": 1.254,
+            "sigma": 0.0328,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "sill_height": {
+            "value": 1.0,
+            "ci_low": 0.95,
+            "ci_high": 1.05,
+            "sigma": 0.0304,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          }
+        }
+      ],
+      "surfaces": [
+        {
+          "id": "kitchen_s_w1",
+          "room_id": "kitchen",
+          "kind": "wall",
+          "area": {
+            "value": 8.04,
+            "ci_low": 7.618,
+            "ci_high": 8.462,
+            "sigma": 0.2565,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "plane": {
+            "normal": [
+              0.0,
+              -1.0,
+              0.0
+            ],
+            "d": 1.2,
+            "rms_m": 0.012
+          }
+        },
+        {
+          "id": "kitchen_s_w2",
+          "room_id": "kitchen",
+          "kind": "wall",
+          "area": {
+            "value": 6.432,
+            "ci_low": 6.09,
+            "ci_high": 6.774,
+            "sigma": 0.2077,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "plane": {
+            "normal": [
+              1.0,
+              -0.0,
+              0.0
+            ],
+            "d": -7.2,
+            "rms_m": 0.012
+          }
+        },
+        {
+          "id": "kitchen_s_w3",
+          "room_id": "kitchen",
+          "kind": "wall",
+          "area": {
+            "value": 8.04,
+            "ci_low": 7.618,
+            "ci_high": 8.462,
+            "sigma": 0.2565,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "plane": {
+            "normal": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "d": -3.6,
+            "rms_m": 0.012
+          }
+        },
+        {
+          "id": "kitchen_s_w4",
+          "room_id": "kitchen",
+          "kind": "wall",
+          "area": {
+            "value": 6.432,
+            "ci_low": 6.09,
+            "ci_high": 6.774,
+            "sigma": 0.2077,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "plane": {
+            "normal": [
+              -1.0,
+              -0.0,
+              0.0
+            ],
+            "d": 4.2,
+            "rms_m": 0.012
+          }
+        },
+        {
+          "id": "kitchen_s_floor",
+          "room_id": "kitchen",
+          "kind": "floor",
+          "area": {
+            "value": 7.2,
+            "ci_low": 6.82,
+            "ci_high": 7.58,
+            "sigma": 0.231,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "plane": {
+            "normal": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "d": 0.0,
+            "rms_m": 0.009
+          }
+        },
+        {
+          "id": "kitchen_s_ceiling",
+          "room_id": "kitchen",
+          "kind": "ceiling",
+          "area": {
+            "value": 7.2,
+            "ci_low": 6.82,
+            "ci_high": 7.58,
+            "sigma": 0.231,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "plane": {
+            "normal": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "d": -2.68,
+            "rms_m": 0.009
+          }
+        }
+      ],
+      "quality": {
+        "coverage_fraction": 0.82,
+        "n_frames": 11,
+        "exposure_score": 0.74,
+        "mirror_suspected": false
+      }
+    },
+    {
+      "id": "washroom",
+      "label": "Washroom",
+      "label_confidence": 0.83,
+      "polygon": [
+        [
+          4.2,
+          -1.2
+        ],
+        [
+          6.0,
+          -1.2
+        ],
+        [
+          6.0,
+          1.2
+        ],
+        [
+          4.2,
+          1.2
+        ]
+      ],
+      "walls": [
+        {
+          "id": "washroom_w1",
+          "start": [
+            4.2,
+            -1.2
+          ],
+          "end": [
+            6.0,
+            -1.2
+          ],
+          "length": {
+            "value": 1.8,
+            "ci_low": 1.726,
+            "ci_high": 1.874,
+            "sigma": 0.045,
+            "source": "measured",
+            "method": "photo_sfm_scaled",
+            "n_support": 8
+          },
+          "surface_id": "washroom_s_w1"
+        },
+        {
+          "id": "washroom_w2",
+          "start": [
+            6.0,
+            -1.2
+          ],
+          "end": [
+            6.0,
+            1.2
+          ],
+          "length": {
+            "value": 2.4,
+            "ci_low": 2.308,
+            "ci_high": 2.492,
+            "sigma": 0.0559,
+            "source": "measured",
+            "method": "photo_sfm_scaled",
+            "n_support": 8
+          },
+          "surface_id": "washroom_s_w2"
+        },
+        {
+          "id": "washroom_w3",
+          "start": [
+            6.0,
+            1.2
+          ],
+          "end": [
+            4.2,
+            1.2
+          ],
+          "length": {
+            "value": 1.8,
+            "ci_low": 1.726,
+            "ci_high": 1.874,
+            "sigma": 0.045,
+            "source": "measured",
+            "method": "photo_sfm_scaled",
+            "n_support": 8
+          },
+          "surface_id": "washroom_s_w3",
+          "shared_with_room_id": "kitchen"
+        },
+        {
+          "id": "washroom_w4",
+          "start": [
+            4.2,
+            1.2
+          ],
+          "end": [
+            4.2,
+            -1.2
+          ],
+          "length": {
+            "value": 2.4,
+            "ci_low": 2.308,
+            "ci_high": 2.492,
+            "sigma": 0.0559,
+            "source": "measured",
+            "method": "photo_sfm_scaled",
+            "n_support": 8
+          },
+          "surface_id": "washroom_s_w4"
+        }
+      ],
+      "ceiling_height": {
+        "value": 2.62,
+        "ci_low": 2.538,
+        "ci_high": 2.702,
+        "sigma": 0.0501,
+        "source": "measured",
+        "method": "photo_sfm_scaled",
+        "n_support": 8
+      },
+      "ceiling_height_spread_m": 0.02,
+      "floor_area": {
+        "value": 4.32,
+        "ci_low": 4.084,
+        "ci_high": 4.556,
+        "sigma": 0.1435,
+        "source": "measured",
+        "method": "photo_sfm_scaled"
+      },
+      "openings": [
+        {
+          "id": "op_d2",
+          "wall_id": "washroom_w3",
+          "type": "door",
+          "offset_along_wall": {
+            "value": 0.9,
+            "ci_low": 0.852,
+            "ci_high": 0.948,
+            "sigma": 0.0292,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "width": {
+            "value": 0.8,
+            "ci_low": 0.764,
+            "ci_high": 0.836,
+            "sigma": 0.0219,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "detection_confidence": 0.87,
+          "height": {
+            "value": 2.02,
+            "ci_low": 1.95,
+            "ci_high": 2.09,
+            "sigma": 0.0428,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "connects_to_room_id": "kitchen"
+        },
+        {
+          "id": "op_win3",
+          "wall_id": "washroom_w1",
+          "type": "window",
+          "offset_along_wall": {
+            "value": 0.6,
+            "ci_low": 0.558,
+            "ci_high": 0.642,
+            "sigma": 0.0255,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "width": {
+            "value": 0.6,
+            "ci_low": 0.568,
+            "ci_high": 0.632,
+            "sigma": 0.0195,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "detection_confidence": 0.79,
+          "height": {
+            "value": 0.8,
+            "ci_low": 0.754,
+            "ci_high": 0.846,
+            "sigma": 0.028,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "sill_height": {
+            "value": 1.4,
+            "ci_low": 1.342,
+            "ci_high": 1.458,
+            "sigma": 0.0353,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          }
+        }
+      ],
+      "surfaces": [
+        {
+          "id": "washroom_s_w1",
+          "room_id": "washroom",
+          "kind": "wall",
+          "area": {
+            "value": 4.716,
+            "ci_low": 4.46,
+            "ci_high": 4.972,
+            "sigma": 0.1555,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "plane": {
+            "normal": [
+              0.0,
+              -1.0,
+              0.0
+            ],
+            "d": -1.2,
+            "rms_m": 0.012
+          }
+        },
+        {
+          "id": "washroom_s_w2",
+          "room_id": "washroom",
+          "kind": "wall",
+          "area": {
+            "value": 6.288,
+            "ci_low": 5.954,
+            "ci_high": 6.622,
+            "sigma": 0.2033,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "plane": {
+            "normal": [
+              1.0,
+              -0.0,
+              0.0
+            ],
+            "d": -6.0,
+            "rms_m": 0.012
+          }
+        },
+        {
+          "id": "washroom_s_w3",
+          "room_id": "washroom",
+          "kind": "wall",
+          "area": {
+            "value": 4.716,
+            "ci_low": 4.46,
+            "ci_high": 4.972,
+            "sigma": 0.1555,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "plane": {
+            "normal": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "d": -1.2,
+            "rms_m": 0.012
+          }
+        },
+        {
+          "id": "washroom_s_w4",
+          "room_id": "washroom",
+          "kind": "wall",
+          "area": {
+            "value": 6.288,
+            "ci_low": 5.954,
+            "ci_high": 6.622,
+            "sigma": 0.2033,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "plane": {
+            "normal": [
+              -1.0,
+              -0.0,
+              0.0
+            ],
+            "d": 4.2,
+            "rms_m": 0.012
+          }
+        },
+        {
+          "id": "washroom_s_floor",
+          "room_id": "washroom",
+          "kind": "floor",
+          "area": {
+            "value": 4.32,
+            "ci_low": 4.084,
+            "ci_high": 4.556,
+            "sigma": 0.1435,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "plane": {
+            "normal": [
+              0.0,
+              0.0,
+              1.0
+            ],
+            "d": 0.0,
+            "rms_m": 0.009
+          }
+        },
+        {
+          "id": "washroom_s_ceiling",
+          "room_id": "washroom",
+          "kind": "ceiling",
+          "area": {
+            "value": 4.32,
+            "ci_low": 4.084,
+            "ci_high": 4.556,
+            "sigma": 0.1435,
+            "source": "measured",
+            "method": "photo_sfm_scaled"
+          },
+          "plane": {
+            "normal": [
+              0.0,
+              0.0,
+              -1.0
+            ],
+            "d": -2.62,
+            "rms_m": 0.009
+          }
+        }
+      ],
+      "quality": {
+        "coverage_fraction": 0.82,
+        "n_frames": 8,
+        "exposure_score": 0.74,
+        "mirror_suspected": false
+      }
+    }
+  ],
+  "adjacency": [
+    {
+      "room_a": "living",
+      "room_b": "kitchen",
+      "via_opening_id": "op_d1",
+      "evidence": "trajectory",
+      "confidence": 0.92
+    },
+    {
+      "room_a": "kitchen",
+      "room_b": "washroom",
+      "via_opening_id": "op_d2",
+      "evidence": "protocol_order",
+      "confidence": 0.85
+    }
+  ],
+  "damage_regions": [
+    {
+      "id": "dmg-1",
+      "surface_id": "living_s_w4",
+      "class": "water_stain",
+      "class_confidence": 0.81,
+      "extent": {
+        "area_m2": {
+          "value": 0.3,
+          "ci_low": 0.225,
+          "ci_high": 0.375,
+          "sigma": 0.0456,
+          "source": "measured",
+          "method": "photo_sfm_scaled"
+        },
+        "bbox_uv_m": [
+          1.0,
+          0.3,
+          1.7,
+          0.9
+        ]
+      },
+      "polygon_uv_m": [
+        [
+          1.0,
+          0.3
+        ],
+        [
+          1.7,
+          0.3
+        ],
+        [
+          1.7,
+          0.9
+        ],
+        [
+          1.0,
+          0.9
+        ]
+      ],
+      "evidence_frames": [
+        "IMG_0142.HEIC",
+        "IMG_0143.HEIC"
+      ]
+    },
+    {
+      "id": "dmg-2",
+      "surface_id": "kitchen_s_ceiling",
+      "class": "crack",
+      "class_confidence": 0.74,
+      "extent": {
+        "area_m2": {
+          "value": 0.05,
+          "ci_low": 0.03,
+          "ci_high": 0.07,
+          "sigma": 0.0122,
+          "source": "measured",
+          "method": "photo_sfm_scaled"
+        },
+        "bbox_uv_m": [
+          0.5,
+          0.5,
+          1.4,
+          0.6
+        ],
+        "length_m": {
+          "value": 0.9,
+          "ci_low": 0.76,
+          "ci_high": 1.04,
+          "sigma": 0.0851,
+          "source": "measured",
+          "method": "photo_sfm_scaled"
+        }
+      },
+      "evidence_frames": [
+        "IMG_0161.HEIC"
+      ]
+    }
+  ],
+  "concealed_damage_flags": [
+    {
+      "id": "cf-1",
+      "rule_id": "CD-01",
+      "rule_text": "Water stain on a wall adjacent to a wet room suggests concealed moisture in the wall cavity.",
+      "triggered_by": [
+        "dmg-1"
+      ],
+      "surface_ids": [
+        "living_s_w4"
+      ],
+      "confidence": 0.55
+    }
+  ],
+  "scope_items": [
+    {
+      "id": "sc-1",
+      "surface_id": "living_s_w4",
+      "code": "PNT-WALL-INT",
+      "description": "Seal and repaint water-stained wall (full wall)",
+      "quantity": {
+        "value": 9.756,
+        "ci_low": 9.248,
+        "ci_high": 10.264,
+        "sigma": 0.3087,
+        "source": "measured",
+        "method": "photo_sfm_scaled"
+      },
+      "unit": "m2",
+      "derived_from": [
+        "dmg-1"
+      ]
+    },
+    {
+      "id": "sc-2",
+      "surface_id": "kitchen_s_ceiling",
+      "code": "CRK-FILL",
+      "description": "Rake out, fill and sand ceiling crack",
+      "quantity": {
+        "value": 0.9,
+        "ci_low": 0.76,
+        "ci_high": 1.04,
+        "sigma": 0.0851,
+        "source": "measured",
+        "method": "photo_sfm_scaled"
+      },
+      "unit": "lm",
+      "derived_from": [
+        "dmg-2"
+      ]
+    }
+  ],
+  "drift": {
+    "correction": "off",
+    "method": "none",
+    "loop_closures": 0,
+    "footprint_change_m2": 0.0
+  },
+  "calibration": {
+    "nominal_coverage": 0.9,
+    "method": "split_conformal_per_tier",
+    "calibration_set_id": "cal-2026-09-photo",
+    "tier_floor_fraction": 0.03
+  },
+  "timing": {
+    "total_s": 84.2,
+    "device": "MacBook Air M2",
+    "stages": {
+      "ingest": 3.1,
+      "sfm": 41.7,
+      "planes": 12.4,
+      "openings": 6.8,
+      "damage": 15.9,
+      "render": 4.3
+    }
+  },
+  "render": {
+    "svg": "render/plan.svg",
+    "png": "render/plan.png"
+  },
+  "warnings": [
+    "Exit shot missing for washroom; coverage reduced."
+  ]
+}

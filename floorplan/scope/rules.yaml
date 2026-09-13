@@ -1,0 +1,75 @@
+# Concealed-damage rules. Evaluated by floorplan.scope.engine.concealed_flags over the schema JSON
+# (rooms / adjacency / damage_regions). One flag per (rule, surface); triggered_by lists damage ids.
+#
+# Condition vocabulary (all listed keys must hold):
+#   damage_class:          list of classes, or "any"
+#   surface_kind:          list of [wall, ceiling, floor]
+#   max_height_from_floor: number; bbox v1 (top edge, m above floor) must be <= this
+#   room_type:             list of [wet, washroom, exterior]; the room that owns the surface
+#                            wet      = label contains kitchen/washroom/bathroom/toilet/bath
+#                            washroom = wet minus kitchen
+#                            exterior = label contains balcony/terrace/outside/exterior
+#   room_adjacent_to:      list of the same types; any room adjacent to the owning room
+#                            (adjacency edges + shared walls) has that type
+#   wall_shared_with:      list of [wet, washroom, exterior, any_room]; the room on the other side
+#                            of this wall (wall.shared_with_room_id, opening connects_to, or an
+#                            adjacency edge via an opening on the wall). A wall with a window counts
+#                            as exterior.
+#   location:              corner         -> bbox u within corner_margin_m (default 0.4) of a wall end
+#                          opening_corner -> bbox u within opening_margin_m (default 0.5) of an edge
+#                                            of any opening on that wall
+#   other_side_has:        list of damage classes present on the wall surface on the other side of
+#                            the partition (in the adjacent room)
+rules:
+  - id: R1
+    text: "Possible concealed plumbing/leak path above; inspect ceiling void"
+    confidence: 0.6
+    when:
+      damage_class: [water_stain]
+      surface_kind: [ceiling]
+      room_adjacent_to: [wet]
+
+  - id: R2
+    text: "Possible rising damp / moisture ingress behind finish"
+    confidence: 0.55
+    when:
+      damage_class: [water_stain, peeling_paint]
+      surface_kind: [wall]
+      max_height_from_floor: 0.4
+      wall_shared_with: [wet, exterior]
+
+  - id: R3
+    text: "Possible condensation from thermal bridge; check insulation"
+    confidence: 0.5
+    when:
+      damage_class: [mold]
+      surface_kind: [wall]
+      wall_shared_with: [exterior]
+      location: corner
+      corner_margin_m: 0.4
+
+  - id: R4
+    text: "Possible lintel/settlement movement; structural check"
+    confidence: 0.5
+    when:
+      damage_class: [crack]
+      surface_kind: [wall]
+      location: opening_corner
+      opening_margin_m: 0.5
+
+  - id: R5
+    text: "Moisture migrating through partition"
+    confidence: 0.45
+    when:
+      damage_class: [water_stain]
+      surface_kind: [wall]
+      other_side_has: [peeling_paint]
+
+  - id: R6
+    text: "Check waterproofing membrane behind tiles"
+    confidence: 0.4
+    when:
+      damage_class: any
+      surface_kind: [wall]
+      room_type: [washroom]
+      wall_shared_with: [any_room]

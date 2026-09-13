@@ -1,0 +1,61 @@
+# Scope line items keyed by "<damage class>/<surface kind>"; "<class>/*" is the fallback for any kind.
+# qty is an expression over: surface_area, region_area, bbox_w, bbox_h, bbox_longest (metres / m2),
+# with max() / min() available. Items whose qty depends on the region are summed across regions on
+# the same surface; surface-only quantities are emitted once per (surface, code).
+items:
+  water_stain/ceiling:
+    - code: PNT-STAINBLOCK-CEIL
+      description: "Stain-block primer and repaint whole ceiling surface"
+      unit: m2
+      qty: surface_area
+    - code: PLB-LEAK-INVESTIGATE
+      description: "Investigate and repair leak source above ceiling"
+      unit: ea
+      qty: 1
+  water_stain/wall:
+    - code: PNT-STAINBLOCK-WALL
+      description: "Stain-block primer and repaint wall surface"
+      unit: m2
+      qty: surface_area
+  water_stain/*:
+    - code: PNT-STAINBLOCK
+      description: "Stain-block primer and repaint surface"
+      unit: m2
+      qty: surface_area
+  mold/*:
+    - code: MLD-TREAT
+      description: "Antimicrobial treatment of affected area incl. 0.5 m margin"
+      unit: m2
+      qty: region_area * 2.5
+    - code: PNT-REPAINT
+      description: "Repaint surface after treatment"
+      unit: m2
+      qty: surface_area
+  crack/*:
+    - code: CRK-RAKE-FILL-TAPE
+      description: "Rake out, fill, tape and skim crack"
+      unit: lm
+      qty: bbox_longest
+    - code: PNT-REPAINT
+      description: "Repaint surface after crack repair"
+      unit: m2
+      qty: surface_area
+  peeling_paint/*:
+    - code: PNT-SCRAPE-PRIME
+      description: "Scrape back, prime and repaint affected area"
+      unit: m2
+      qty: max(region_area * 3, 1.0)
+  hole/*:
+    - code: DRY-PATCH
+      description: "Patch and skim drywall hole"
+      unit: m2
+      qty: region_area + 0.1
+    - code: PNT-REPAINT
+      description: "Repaint surface after patching"
+      unit: m2
+      qty: surface_area
+  efflorescence/*:
+    - code: EFF-CLEAN-SEAL
+      description: "Clean off salt deposits and seal surface"
+      unit: m2
+      qty: region_area * 2
