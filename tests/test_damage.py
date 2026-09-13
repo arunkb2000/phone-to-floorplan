@@ -5,8 +5,8 @@ import numpy as np
 import pytest
 
 from floorplan.core.types import Plane
-from floorplan.damage.detect import DamageDetector, box_iou, weights_available
-from floorplan.damage.project import merge_regions, regions_from_frame
+from floorplan.perception.detect import DamageDetector, box_iou, weights_available
+from floorplan.perception.project import merge_regions, regions_from_frame
 
 STAIN_BOX = (150, 120, 330, 300)   # drawing region for the blotch (x0, y0, x1, y1)
 CRACK_BOX = (450, 90, 610, 400)    # drawing region for the crack polyline
@@ -34,7 +34,7 @@ def synthetic_wall(seed: int = 0):
     # irregular brown blotch: several overlapping ellipses inside STAIN_BOX
     x0, y0, x1, y1 = STAIN_BOX
     cx, cy = (x0 + x1) // 2, (y0 + y1) // 2
-    for k in range(7):
+    for _k in range(7):
         ex = int(rng.integers(-25, 26)) + cx
         ey = int(rng.integers(-35, 36)) + cy
         ax = int(rng.integers(40, (x1 - x0) // 2))
@@ -136,9 +136,12 @@ def test_merge_regions_unions_overlapping_same_class():
     pts = _wall_grid()
     plane_id = np.zeros(pts.shape[:2], int)
     plane = Plane(normal=np.array([1.0, 0.0, 0.0]), d=0.0, kind="wall")
-    m1 = np.zeros(pts.shape[:2], bool); m1[100:160, 100:160] = True
-    m2 = np.zeros(pts.shape[:2], bool); m2[130:190, 130:190] = True
-    m3 = np.zeros(pts.shape[:2], bool); m3[100:160, 300:360] = True
+    m1 = np.zeros(pts.shape[:2], bool)
+    m1[100:160, 100:160] = True
+    m2 = np.zeros(pts.shape[:2], bool)
+    m2[130:190, 130:190] = True
+    m3 = np.zeros(pts.shape[:2], bool)
+    m3[100:160, 300:360] = True
     dets = [{"cls": "mold", "score": s, "box": (0, 0, 1, 1), "mask": m} for s, m in ((0.4, m1), (0.6, m2), (0.5, m3))]
     regs = regions_from_frame(dets, pts, plane_id, [plane], ["S"], "f")
     assert len(regs) == 2
@@ -154,9 +157,9 @@ def test_region_to_json_validates_against_schema():
 
     import jsonschema
 
-    from floorplan.damage.project import region_to_json
+    from floorplan.perception.project import region_to_json
 
-    schema = json.loads((Path(__file__).resolve().parents[1] / "floorplan/schema/output.schema.json").read_text())
+    schema = json.loads((Path(__file__).resolve().parents[1] / "src/floorplan/schema/output.schema.json").read_text())
     pts = _wall_grid()
     plane_id = np.zeros(pts.shape[:2], int)
     plane = Plane(normal=np.array([1.0, 0.0, 0.0]), d=0.0, kind="wall")

@@ -1,7 +1,14 @@
 """Unit tests for the per-frame geometry on an analytically ray-cast box room (no learned models)."""
 import numpy as np
 
-from floorplan.geometry.frame import analyse_frame, backproject, best_rotation, rotate_geom, wall_openings, rotz
+from floorplan.geometry.frame import (
+    analyse_frame,
+    backproject,
+    best_rotation,
+    rotate_geom,
+    rotz,
+    wall_openings,
+)
 
 
 def box_depth(cam_pos, yaw_deg, pitch_deg, Lx, Ly, H, K, W, Hpx, door=None, noise=0.0, seed=0):
@@ -67,7 +74,8 @@ def test_door_detection_width():
                       door=("A", 1.5, 2.4, 2.05), noise=0.002)
     P = backproject(depth, K)
     g = analyse_frame(P, up_hint=np.array([0, -1.0, 0]), depth_rel_err=0.01)
-    k = best_rotation(g, (0, 1)); g = rotate_geom(g, k)
+    k = best_rotation(g, (0, 1))
+    g = rotate_geom(g, k)
     assert "+y" in g.walls and abs(g.walls["+y"]["dist"] - 2.7) < 0.05
     ops = wall_openings(g.P, "+y", g.walls["+y"]["dist"], g.cam_height)
     doors = [o for o in ops if o["type"] == "door"]

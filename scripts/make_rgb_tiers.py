@@ -13,7 +13,7 @@ per room we take the frames whose camera stands in that room, then choose the on
 the capture protocol (one from near the entrance, then the ones closest to each corner looking
 across the room). That is the same thing the protocol asks a person to do.
 
-    uv run python scripts/make_rgb_tiers.py Dataset/single_scan_with_ceiling --out benchmark/captures
+    uv run python scripts/make_rgb_tiers.py data/raw/single_scan_with_ceiling --out data/benchmark/captures
 """
 from __future__ import annotations
 
@@ -43,7 +43,7 @@ def exif_jpeg(rgb: np.ndarray, path: str, f35: int = F35, quality: int = 92):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("capture")
-    ap.add_argument("--out", default="benchmark/captures")
+    ap.add_argument("--out", default="data/benchmark/captures")
     ap.add_argument("--fps", type=float, default=4.0)
     ap.add_argument("--per-room", type=int, default=6)
     ap.add_argument("--name", default="")
@@ -96,13 +96,13 @@ def main():
     src = cv2.VideoCapture(os.path.join(args.capture, "rgb.mp4"))
     sfps = src.get(cv2.CAP_PROP_FPS) or 30.0
     step = max(1, int(round(sfps / args.video_fps)))
-    total = int(src.get(cv2.CAP_PROP_FRAME_COUNT) or 0)
+    int(src.get(cv2.CAP_PROP_FRAME_COUNT) or 0)
     w0, h0 = int(src.get(cv2.CAP_PROP_FRAME_WIDTH)), int(src.get(cv2.CAP_PROP_FRAME_HEIGHT))
     s = min(1.0, args.video_max_side / max(w0, h0))
     W, H = int(w0 * s) // 2 * 2, int(h0 * s) // 2 * 2
     out = cv2.VideoWriter(os.path.join(vid_dir, "walk.mp4"), cv2.VideoWriter_fourcc(*"mp4v"), args.video_fps, (W, H))
     # a palm cover wherever the walker crossed from one room to another, as the protocol asks
-    fi_of = {f.frame_index: i for i, f in enumerate(frames)}
+    {f.frame_index: i for i, f in enumerate(frames)}
     transit = set()
     prev = 0
     for i, f in enumerate(frames):

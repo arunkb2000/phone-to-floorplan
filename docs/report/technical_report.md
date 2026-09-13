@@ -99,7 +99,7 @@ non-overlap enforced and drops the placement confidence. It never refuses input.
    residual gap is distributed along the trajectory.
 
 The supplied captures drift by 17 cm over a 54 m walk and 39 cm over a 100 m walk before correction.
-The ablation table is in `bench/after/gates.md`.
+The ablation table is in `analysis/bench/after/gates.md`.
 
 ---
 
@@ -128,7 +128,7 @@ Every measurement leaves the geometry with a propagated sigma that is honest abo
 we modelled and silent about the ones we did not. We correct that with split conformal prediction: on
 a calibration split we compute `r = |error| / (1.645 · sigma)` for each measurement kind and take the
 quantile of `r` that puts 90 % of calibration residuals inside. That scalar, per tier and per kind,
-multiplies the sigma at output time (`floorplan/calib/factors.json`). Coverage before and after is in
+multiplies the sigma at output time (`floorplan/calibration/factors.json`). Coverage before and after is in
 the gate tables. A tier floor sits underneath, so a thin-input tier can never claim LiDAR precision
 no matter what the statistics say.
 
@@ -136,7 +136,7 @@ no matter what the statistics say.
 
 ## 6. The fix loop
 
-Declaration, evidence, shipped fix, before and after: `fixloop/DECLARATION.md` and `fixloop/DIFF.md`.
+Declaration, evidence, shipped fix, before and after: `analysis/fixloop/DECLARATION.md` and `analysis/fixloop/DIFF.md`.
 Both runs regenerate with `make before` and `make after`.
 
 ---

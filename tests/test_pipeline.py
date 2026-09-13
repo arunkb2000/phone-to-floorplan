@@ -7,11 +7,11 @@ import os
 import numpy as np
 import pytest
 
-from floorplan.geometry.assemble import build_plan, validate
-from floorplan.geometry.cloud import _reconstruct, hmaxima_seeds, merge_unwalled
-from floorplan.geometry.layout import Edge, close_polygon, rectilinear
 from floorplan.core.room import RoomOut
 from floorplan.core.types import Measurement, Opening
+from floorplan.geometry.assemble import build_plan, validate
+from floorplan.geometry.cloud import _reconstruct, hmaxima_seeds, merge_unwalled
+from floorplan.geometry.layout import close_polygon, rectilinear
 from floorplan.io.stray import stray_pose_to_zup
 
 
@@ -142,15 +142,15 @@ def test_photo_tier_intervals_are_wider_than_lidar_for_the_same_geometry():
     assert (wb["ci_high"] - wb["ci_low"]) > 3 * (wa["ci_high"] - wa["ci_low"])
 
 
-@pytest.mark.skipif(not os.path.isdir("Dataset/single_room"), reason="supplied captures not present")
+@pytest.mark.skipif(not os.path.isdir("data/raw/single_room"), reason="supplied captures not present")
 def test_lidar_tier_runs_end_to_end_and_is_deterministic():
     from floorplan.cli.main import run
     out = "/tmp/floorplan_test_run"
-    run("Dataset/single_room", out=out, damage=False)
+    run("data/raw/single_room", out=out, damage=False)
     p1 = json.load(open(os.path.join(out, "plan.json")))
     assert p1["rooms"] and validate(p1) == []
     assert all(r["ceiling_height"]["ci_low"] <= r["ceiling_height"]["value"] for r in p1["rooms"])
-    run("Dataset/single_room", out=out + "2", damage=False)
+    run("data/raw/single_room", out=out + "2", damage=False)
     p2 = json.load(open(os.path.join(out + "2", "plan.json")))
     strip = lambda p: json.dumps({k: v for k, v in p.items() if k != "timing"}, sort_keys=True)
     assert strip(p1) == strip(p2), "same input, different output: the pipeline is not deterministic"

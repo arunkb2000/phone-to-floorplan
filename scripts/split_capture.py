@@ -9,7 +9,7 @@ different positions and at different times, and neither knows the other exists.
 What this is not: it is not two separate walks, so it cannot expose an error that repeats because
 the walker always stands in the same place. The report says so.
 
-    uv run python scripts/split_capture.py Dataset/single_scan_with_ceiling --out benchmark/captures
+    uv run python scripts/split_capture.py data/raw/single_scan_with_ceiling --out data/benchmark/captures
 """
 from __future__ import annotations
 
@@ -22,7 +22,7 @@ import shutil
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("capture")
-    ap.add_argument("--out", default="benchmark/captures")
+    ap.add_argument("--out", default="data/benchmark/captures")
     ap.add_argument("--name", default="")
     ap.add_argument("--mode", choices=["halves", "interleave"], default="interleave")
     ap.add_argument("--link", action="store_true", default=True)

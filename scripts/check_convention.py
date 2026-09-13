@@ -6,7 +6,7 @@ diag(1, -1, -1). On the sample captures that conversion is wrong: the exported r
 OpenCV axes. This script scores each candidate convention by how sharply the vertical-normal points
 collapse onto a floor plane, and prints the table quoted in the technical report.
 
-    uv run python scripts/check_convention.py Dataset/single_room
+    uv run python scripts/check_convention.py data/raw/single_room
 """
 from __future__ import annotations
 
@@ -63,4 +63,4 @@ def main(d: str, stride: int = 40):
 
 
 if __name__ == "__main__":
-    main(sys.argv[1] if len(sys.argv) > 1 else "Dataset/single_room")
+    main(sys.argv[1] if len(sys.argv) > 1 else "data/raw/single_room")

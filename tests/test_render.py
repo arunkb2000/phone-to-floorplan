@@ -1,4 +1,4 @@
-"""Tests for floorplan.render.plan: fixture validity and SVG/PNG rendering."""
+"""Tests for floorplan.rendering.plan: fixture validity and SVG/PNG rendering."""
 import json
 import os
 from pathlib import Path
@@ -7,10 +7,10 @@ import jsonschema
 import pytest
 from PIL import Image
 
-from floorplan.render import render_plan
+from floorplan.rendering import render_plan
 
 ROOT = Path(__file__).resolve().parents[1]
-SCHEMA = ROOT / "floorplan" / "schema" / "output.schema.json"
+SCHEMA = ROOT / "src" / "floorplan" / "schema" / "output.schema.json"
 FIXTURE = ROOT / "tests" / "fixtures" / "sample_plan.json"
 
 

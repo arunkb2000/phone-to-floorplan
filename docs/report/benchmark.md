@@ -1,6 +1,6 @@
 # Benchmark: what it is, and what it can and cannot settle
 
-Read this before any number in `bench/after/gates.md`.
+Read this before any number in `analysis/bench/after/gates.md`.
 
 ## The data we were given, and the hole in it
 
@@ -78,4 +78,4 @@ on which frames arrived, which is what was broken.
 | Same rooms at all three tiers, multi-room included | LiDAR as supplied; photo and video derived from the same RGB stream | met, with the derivation disclosed above |
 | At least one room captured twice at the same tier | Interleaved-frame pair over the same rooms | met in the sense that matters operationally, not by a second physical walk |
 | Laser or tape ground truth on everything | Single-frame sensor reference | **not met.** See above |
-| Raw sensor data submitted | `Dataset/` as supplied, untouched | met |
+| Raw sensor data submitted | `data/raw/` as supplied, untouched | met |

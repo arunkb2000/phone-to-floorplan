@@ -25,8 +25,8 @@ UNCERTAINTY. Each reference value is the median over every qualifying frame, and
 uncertainty is the spread across those frames, which folds in sensor noise, incidence angle and the
 plane-fit residual. Measurements supported by fewer than `--min-frames` frames are dropped.
 
-    uv run python scripts/make_reference_gt.py Dataset/single_scan_with_ceiling \
-        --out benchmark/ground_truth/flatA.yaml
+    uv run python scripts/make_reference_gt.py data/raw/single_scan_with_ceiling \
+        --out data/benchmark/ground_truth/flatA.yaml
 """
 from __future__ import annotations
 
@@ -142,7 +142,7 @@ def measure_frame(f, min_gap=0.55, max_gap=2.6):
             if w is not None:
                 walls[tag] = w
     # a wall seen from its floor line to its ceiling line gives the room height inside one frame
-    for tag, w in walls.items():
+    for w in walls.values():
         z = w["pts"] @ up
         lo, hi = np.percentile(z, [0.5, 99.5])
         if 1.9 < hi - lo < 4.2 and w["n_pts"] > 6000:
@@ -160,7 +160,7 @@ def measure_frame(f, min_gap=0.55, max_gap=2.6):
     if spans:
         out["spans"] = spans
     ops = []
-    for tag, w in walls.items():
+    for w in walls.values():
         if w["n_pts"] < 4000:
             continue
         wl = np.cross(up, w["n"])

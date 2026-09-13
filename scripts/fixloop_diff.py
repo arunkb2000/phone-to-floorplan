@@ -1,4 +1,4 @@
-"""Render the fix-loop before/after comparison into fixloop/DIFF.md."""
+"""Render the fix-loop before/after comparison into analysis/fixloop/DIFF.md."""
 from __future__ import annotations
 
 import json
@@ -22,9 +22,9 @@ def repeatability(results):
         PB = [(r["id"], Polygon(r["polygon"]), r) for r in B["rooms"] if len(r["polygon"]) >= 3]
         ious, cds, wds = [], [], []
         paired = 0
-        for ida, ga, ra in PA:
+        for _ida, ga, ra in PA:
             best, br = 0.0, None
-            for idb, gb, rb in PB:
+            for _idb, gb, rb in PB:
                 inter = ga.buffer(0).intersection(gb.buffer(0)).area
                 iou = inter / max(ga.area + gb.area - inter, 1e-6)
                 if iou > best:
@@ -51,7 +51,7 @@ def load(d):
     return r
 
 
-def main(before_dir="fixloop/before", after_dir="fixloop/after", out="fixloop/DIFF.md"):
+def main(before_dir="analysis/fixloop/before", after_dir="analysis/fixloop/after", out="analysis/fixloop/DIFF.md"):
     A, B = load(before_dir), load(after_dir)
     ra, rb = repeatability(A), repeatability(B)
     L = ["# Fix loop: before and after", "",
@@ -90,13 +90,14 @@ def main(before_dir="fixloop/before", after_dir="fixloop/after", out="fixloop/DI
     for k in sorted(set(A) | set(B)):
         a = A.get(k, {}).get("summary", {})
         b = B.get(k, {}).get("summary", {})
-        g = lambda d, f, fmt="{}": (fmt.format(d[f]) if f in d else "-")
+        def g(d, f, fmt="{}"):
+            return (fmt.format(d[f]) if f in d else "-")
         L.append(f"| {k} | {g(a,'n_rooms')} | {g(b,'n_rooms')} | {g(a,'footprint_m2','{:.2f}')} | "
                  f"{g(b,'footprint_m2','{:.2f}')} | {g(a,'n_openings')} | {g(b,'n_openings')} | "
                  f"{g(a,'overlap_pct','{:.1f} %')} | {g(b,'overlap_pct','{:.1f} %')} | "
                  f"{g(a,'total_s','{:.1f}')} | {g(b,'total_s','{:.1f}')} |")
 
-    L += ["", "## Code diff", "", "```", sh(f"git diff --stat fixloop-before fixloop-after -- floorplan"), "```", "",
+    L += ["", "## Code diff", "", "```", sh("git diff --stat fixloop-before fixloop-after -- floorplan"), "```", "",
           "The whole fix is in the room-seeding half of `floorplan/geometry/cloud.py`. The pre-fix "
           "seeding is kept as `_threshold_cascade_seeds` and is still reachable with "
           "`floorplan run ... --room-seeds cascade`, so the before-run is reproducible from the "

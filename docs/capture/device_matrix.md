@@ -17,7 +17,7 @@ on CPU, several times slower but with identical output.
 
 ## Accuracy, measured
 
-From `bench/after/gates.md`. **Read [docs/report/benchmark.md](../report/benchmark.md) first.** These
+From `analysis/bench/after/gates.md`. **Read [docs/report/benchmark.md](../report/benchmark.md) first.** These
 are not tape measurements: the supplied captures are of a property we cannot enter, so the reference
 is a single-frame sensor measurement, and the ceiling-height reference in particular under-reads
 because it is usually the visible vertical extent of a wall. A ceiling error of a few centimetres
@@ -39,12 +39,12 @@ which is not an accuracy claim anyone should make, so absolute sigma floors are 
 measurement kind from the sensor's physics (±1 cm class). The second is the reference: with 13
 matched measurements against a reference whose own ceiling spread is 16 cm, there is not enough
 signal to fit conformal factors without simply fitting to our own noise, so
-`floorplan/calib/factors.json` ships empty and the tier floors do the work. That is the honest state
+`floorplan/calibration/factors.json` ships empty and the tier floors do the work. That is the honest state
 of the calibration, not a claim that it is calibrated.
 
 ### What we can say without any external reference
 
-These need no ground truth and carry the real weight (`bench/after/gates.md`, `fixloop/DIFF.md`):
+These need no ground truth and carry the real weight (`analysis/bench/after/gates.md`, `analysis/fixloop/DIFF.md`):
 
 | Property | Result |
 |---|---|

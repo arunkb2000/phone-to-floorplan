@@ -6,7 +6,7 @@ Three input tiers — photos, video, LiDAR — one command, one JSON schema, not
 
 ```bash
 make setup && make weights                          # once, about 5 minutes
-uv run floorplan run Dataset/single_scan_with_ceiling --out results/
+uv run floorplan run data/raw/single_scan_with_ceiling --out results/
 ```
 
 ```
@@ -27,7 +27,7 @@ You get `plan.json` (validates against `floorplan/schema/output.schema.json`), `
 git clone <this repo> && cd phone-to-floorplan
 make setup        # installs uv if absent, pins Python 3.12, syncs the locked dependency set
 make weights      # ~1.8 GB of pinned model weights from Hugging Face, SHA-256 manifest written
-make run CAP=Dataset/single_scan_with_ceiling OUT=results
+make run CAP=data/raw/single_scan_with_ceiling OUT=results
 ```
 
 Only `make setup` and `make weights` touch the network. After that the pipeline is fully offline,
@@ -58,7 +58,7 @@ The tier is detected from the folder you hand over:
 | `floorplan run <capture> --drift-correction off` | the drift ablation |
 | `floorplan run <capture> --legacy` | the pre-fix behaviour, for the fix-loop before-run |
 | `floorplan validate <plan.json>` | check a plan against the published schema |
-| `floorplan bench --out bench/latest` | the whole benchmark and its gate tables |
+| `floorplan bench --out analysis/bench/latest` | the whole benchmark and its gate tables |
 | `make reproduce` | regenerate every reported number from the raw captures |
 | `LIVE=1 make reproduce` | same, with the model cache cleared and the live path forced |
 
@@ -66,9 +66,9 @@ The tier is detected from the folder you hand over:
 
 1. [docs/report/benchmark.md](docs/report/benchmark.md) — what the ground truth is, and which gates
    the supplied data can and cannot settle. Read this before any number.
-2. [fixloop/DECLARATION.md](fixloop/DECLARATION.md) and [fixloop/DIFF.md](fixloop/DIFF.md) — the
+2. [analysis/fixloop/DECLARATION.md](analysis/fixloop/DECLARATION.md) and [analysis/fixloop/DIFF.md](analysis/fixloop/DIFF.md) — the
    worst gate, its root cause, the shipped fix, and what actually happened.
-3. [bench/after/gates.md](bench/after/gates.md) — every gate at every tier.
+3. [analysis/bench/after/gates.md](analysis/bench/after/gates.md) — every gate at every tier.
 4. [docs/report/technical_report.md](docs/report/technical_report.md) — architecture, drift, error
    budget, calibration, failure modes. Six pages.
 5. [docs/compliance_matrix.md](docs/compliance_matrix.md) — requirement to file to artefact to
@@ -77,16 +77,16 @@ The tier is detected from the folder you hand over:
 ## Layout
 
 ```
-Dataset/          the three supplied Stray Scanner captures, untouched
+data/raw/          the three supplied Stray Scanner captures, untouched
 floorplan/
   io/             loaders: stray.py, photos.py, video.py
   geometry/       cloud.py (global cloud, rooms), layout.py (polygons, openings),
                   drift.py, frame.py, depth.py, stitch.py, assemble.py
   tiers/          lidar.py, video.py, photo.py, mono.py
   damage/ scope/ calib/ render/ cli/ schema/
-benchmark/        bench.yaml, derived captures, reference ground truth
-bench/after/      the current gate tables
-fixloop/          DECLARATION.md, before/, after/, DIFF.md
+data/benchmark/        bench.yaml, derived captures, reference ground truth
+analysis/bench/after/      the current gate tables
+analysis/fixloop/          DECLARATION.md, before/, after/, DIFF.md
 scripts/          setup, weights, reference GT, derived captures, reproduction
 docs/             capture protocol, device matrix, reports, compliance matrix
 ```

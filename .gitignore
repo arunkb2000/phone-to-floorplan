@@ -9,11 +9,15 @@ weights/
 bench/*/debug/
 *.DS_Store
 # raw captures are large; tracked via LFS or fetch script (decided week 1)
-benchmark/captures/**/*.mp4
-benchmark/captures/**/*.mov
-benchmark/captures/**/depth/
-benchmark/captures/**/confidence/
-benchmark/captures/**/rgb/
-# the gate tables and both fix-loop runs ARE deliverables; only the debug dumps are ignored
-bench/**/debug/
-fixloop/**/debug/
+data/benchmark/captures/**/*.mp4
+data/benchmark/captures/**/*.mov
+data/benchmark/captures/**/depth/
+data/benchmark/captures/**/confidence/
+data/benchmark/captures/**/rgb/
+# the gate tables and both fix-loop runs ARE deliverables; only debug dumps and scratch runs are not
+analysis/**/debug/
+analysis/results/
+analysis/bench/latest/
+
+# the supplied captures: 6 GB, shipped alongside the repo rather than inside it
+data/raw/

@@ -14,7 +14,7 @@ The tier is detected from the folder contents. Nothing else changes between tier
 
 ## Timings, measured on this machine
 
-Apple M5, 16 GB, Metal backend. From `bench/after/gates.md`.
+Apple M5, 16 GB, Metal backend. From `analysis/bench/after/gates.md`.
 
 | Capture | Tier | Input size | Wall clock |
 |---|---|---|---|

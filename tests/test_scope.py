@@ -9,7 +9,7 @@ import numpy as np
 
 from floorplan.scope.engine import concealed_flags, scope_items
 
-SCHEMA = json.loads((Path(__file__).resolve().parents[1] / "floorplan/schema/output.schema.json").read_text())
+SCHEMA = json.loads((Path(__file__).resolve().parents[1] / "src/floorplan/schema/output.schema.json").read_text())
 
 
 def m(v):

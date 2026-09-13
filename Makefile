@@ -1,5 +1,5 @@
 # One command per capture:  make run CAP=<capture folder> OUT=<output folder>
-.PHONY: setup weights test run bench before after fixdiff calibrate reproduce clean
+.PHONY: setup weights test lint run bench calibrate before after fixdiff reproduce clean
 
 setup:          ## clean-machine install; target under 15 minutes
 	bash scripts/setup_env.sh
@@ -10,27 +10,30 @@ weights:        ## fetch pinned model weights and write weights/SHA256SUMS
 test:
 	uv run --extra dev pytest -q
 
-run:            ## make run CAP=Dataset/single_scan_with_ceiling OUT=results/x
+lint:
+	uv run --extra dev ruff check src tests scripts
+
+run:            ## make run CAP=data/raw/single_scan_with_ceiling OUT=analysis/results/x
 	uv run floorplan run $(CAP) --out $(OUT)
 
-bench:          ## full benchmark -> bench/latest/gates.md
-	uv run floorplan bench --out bench/latest
+bench:          ## full benchmark -> analysis/bench/latest/gates.md
+	uv run floorplan bench --out analysis/bench/latest
 
-calibrate:      ## fit the conformal interval factors, holding out the capture they are applied to
-	uv run python -c "from floorplan.calib.fit import fit_factors; fit_factors('bench/latest/results.json', holdout='flatA')"
+calibrate:      ## fit conformal interval factors, holding out the capture they are applied to
+	uv run python -c "from floorplan.calibration.fit import fit_factors; fit_factors('analysis/bench/latest/results.json', holdout='flatA')"
 
-before:         ## fix-loop before-run: shipped code, pre-fix behaviour (--legacy)
-	uv run floorplan bench --out fixloop/before --legacy
+before:         ## fix-loop before-run: shipped code, pre-fix behaviour
+	uv run floorplan bench --out analysis/fixloop/before --legacy
 
-after:          ## regenerate the fix-loop after-run at tag fixloop-after
-	uv run floorplan bench --out fixloop/after
+after:          ## fix-loop after-run
+	uv run floorplan bench --out analysis/fixloop/after
 	git tag -f fixloop-after
 
-fixdiff:        ## render fixloop/DIFF.md from the two runs
+fixdiff:        ## render analysis/fixloop/DIFF.md from the two runs
 	uv run python scripts/fixloop_diff.py
 
 reproduce:      ## regenerate every reported number from the raw captures
 	bash scripts/reproduce.sh
 
 clean:
-	rm -rf results bench/latest
+	rm -rf analysis/results analysis/bench/latest

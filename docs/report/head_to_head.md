@@ -32,5 +32,5 @@ available on Pro devices), export its plan, and fill this table:
 |---|---|---|---|---|---|---|
 
 with a tie declared when our error is within 0.5 cm of theirs, plus the app version and its raw
-export committed under `benchmark/app_exports/`. The scoring code for that table is the same
+export committed under `data/benchmark/app_exports/`. The scoring code for that table is the same
 matching used in `floorplan/cli/bench.py`; only the data is missing.
