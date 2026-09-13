@@ -97,12 +97,12 @@ def main(before_dir="analysis/fixloop/before", after_dir="analysis/fixloop/after
                  f"{g(a,'overlap_pct','{:.1f} %')} | {g(b,'overlap_pct','{:.1f} %')} | "
                  f"{g(a,'total_s','{:.1f}')} | {g(b,'total_s','{:.1f}')} |")
 
-    L += ["", "## Code diff", "", "```", sh("git diff --stat fixloop-before fixloop-after -- floorplan"), "```", "",
+    L += ["", "## Code diff", "", "```", sh("git diff -M --stat fixloop-before fixloop-after -- floorplan src/floorplan"), "```", "",
           "The whole fix is in the room-seeding half of `floorplan/geometry/cloud.py`. The pre-fix "
           "seeding is kept as `_threshold_cascade_seeds` and is still reachable with "
           "`floorplan run ... --room-seeds cascade`, so the before-run is reproducible from the "
           "after-run's code.", "",
-          "```diff", sh("git diff fixloop-before fixloop-after -- floorplan/geometry/cloud.py"), "```"]
+          "```diff", sh("git diff -M fixloop-before fixloop-after -- floorplan/geometry/cloud.py src/floorplan/geometry/cloud.py"), "```"]
     os.makedirs(os.path.dirname(out), exist_ok=True)
     with open(out, "w") as f:
         f.write("\n".join(L) + "\n")
