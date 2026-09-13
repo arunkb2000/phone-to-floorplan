@@ -1489,9 +1489,1078 @@
    "confidence": 0.55
   }
  ],
- "damage_regions": [],
+ "damage_regions": [
+  {
+   "id": "01_space:dmg:0",
+   "surface_id": "01_space:floor",
+   "class": "water_stain",
+   "class_confidence": 0.439,
+   "extent": {
+    "area_m2": {
+     "value": 0.1928,
+     "ci_low": 0.1243,
+     "ci_high": 0.2614,
+     "sigma": 0.0417,
+     "source": "measured",
+     "method": "open-vocabulary detection, mask refined, projected onto the surface plane",
+     "n_support": 2796
+    },
+    "bbox_uv_m": [
+     5.907,
+     3.792,
+     6.646,
+     4.11
+    ]
+   },
+   "polygon_uv_m": [
+    [
+     6.262,
+     3.792
+    ],
+    [
+     6.009,
+     3.823
+    ],
+    [
+     5.974,
+     3.844
+    ],
+    [
+     5.924,
+     3.907
+    ],
+    [
+     5.92,
+     3.915
+    ],
+    [
+     5.917,
+     3.924
+    ],
+    [
+     5.907,
+     4.064
+    ],
+    [
+     5.91,
+     4.089
+    ],
+    [
+     5.922,
+     4.089
+    ],
+    [
+     6.189,
+     4.099
+    ],
+    [
+     6.209,
+     4.1
+    ],
+    [
+     6.228,
+     4.101
+    ],
+    [
+     6.498,
+     4.109
+    ],
+    [
+     6.527,
+     4.11
+    ],
+    [
+     6.549,
+     4.107
+    ],
+    [
+     6.554,
+     4.104
+    ],
+    [
+     6.646,
+     3.853
+    ],
+    [
+     6.64,
+     3.852
+    ],
+    [
+     6.599,
+     3.844
+    ],
+    [
+     6.585,
+     3.841
+    ],
+    [
+     6.577,
+     3.84
+    ]
+   ],
+   "evidence_frames": [
+    "data/raw/single_scan_with_ceiling#001241"
+   ],
+   "n_views": 1
+  },
+  {
+   "id": "01_space:dmg:1",
+   "surface_id": "01_space:wall:W11",
+   "class": "peeling_paint",
+   "class_confidence": 0.369,
+   "extent": {
+    "area_m2": {
+     "value": 3.3326,
+     "ci_low": 2.4802,
+     "ci_high": 4.1851,
+     "sigma": 0.5182,
+     "source": "measured",
+     "method": "open-vocabulary detection, mask refined, projected onto the surface plane",
+     "n_support": 16062
+    },
+    "bbox_uv_m": [
+     -0.162,
+     -0.027,
+     2.373,
+     1.531
+    ]
+   },
+   "polygon_uv_m": [
+    [
+     1.559,
+     -0.027
+    ],
+    [
+     0.788,
+     -0.011
+    ],
+    [
+     0.703,
+     -0.009
+    ],
+    [
+     0.68,
+     -0.008
+    ],
+    [
+     0.426,
+     0.002
+    ],
+    [
+     0.371,
+     0.005
+    ],
+    [
+     0.325,
+     0.009
+    ],
+    [
+     0.297,
+     0.011
+    ],
+    [
+     0.272,
+     0.015
+    ],
+    [
+     0.221,
+     0.021
+    ],
+    [
+     0.092,
+     0.042
+    ],
+    [
+     0.069,
+     0.048
+    ],
+    [
+     0.032,
+     0.058
+    ],
+    [
+     0.01,
+     0.065
+    ],
+    [
+     -0.011,
+     0.072
+    ],
+    [
+     -0.03,
+     0.08
+    ],
+    [
+     -0.06,
+     0.101
+    ],
+    [
+     -0.072,
+     0.112
+    ],
+    [
+     -0.084,
+     0.124
+    ],
+    [
+     -0.093,
+     0.137
+    ],
+    [
+     -0.101,
+     0.15
+    ],
+    [
+     -0.109,
+     0.164
+    ],
+    [
+     -0.115,
+     0.178
+    ],
+    [
+     -0.122,
+     0.192
+    ],
+    [
+     -0.13,
+     0.221
+    ],
+    [
+     -0.133,
+     0.237
+    ],
+    [
+     -0.157,
+     0.469
+    ],
+    [
+     -0.162,
+     0.53
+    ],
+    [
+     -0.161,
+     0.545
+    ],
+    [
+     -0.16,
+     0.561
+    ],
+    [
+     -0.07,
+     1.512
+    ],
+    [
+     -0.038,
+     1.526
+    ],
+    [
+     -0.015,
+     1.527
+    ],
+    [
+     0.009,
+     1.528
+    ],
+    [
+     0.086,
+     1.53
+    ],
+    [
+     0.101,
+     1.531
+    ],
+    [
+     0.16,
+     1.531
+    ],
+    [
+     0.181,
+     1.531
+    ],
+    [
+     1.346,
+     1.525
+    ],
+    [
+     1.361,
+     1.525
+    ],
+    [
+     2.343,
+     0.767
+    ],
+    [
+     2.366,
+     0.744
+    ],
+    [
+     2.37,
+     0.738
+    ],
+    [
+     2.373,
+     0.73
+    ],
+    [
+     2.373,
+     0.724
+    ],
+    [
+     2.373,
+     0.721
+    ],
+    [
+     2.373,
+     0.717
+    ],
+    [
+     2.368,
+     0.688
+    ],
+    [
+     2.123,
+     -0.014
+    ],
+    [
+     2.114,
+     -0.014
+    ]
+   ],
+   "evidence_frames": [
+    "data/raw/single_scan_with_ceiling#004877"
+   ],
+   "n_views": 1
+  },
+  {
+   "id": "01_space:dmg:2",
+   "surface_id": "01_space:wall:W25",
+   "class": "peeling_paint",
+   "class_confidence": 0.365,
+   "extent": {
+    "area_m2": {
+     "value": 0.4705,
+     "ci_low": 0.3361,
+     "ci_high": 0.6049,
+     "sigma": 0.0817,
+     "source": "measured",
+     "method": "open-vocabulary detection, mask refined, projected onto the surface plane",
+     "n_support": 16672
+    },
+    "bbox_uv_m": [
+     -0.072,
+     0.014,
+     0.541,
+     1.328
+    ]
+   },
+   "polygon_uv_m": [
+    [
+     0.541,
+     0.014
+    ],
+    [
+     0.509,
+     0.029
+    ],
+    [
+     0.494,
+     0.038
+    ],
+    [
+     0.486,
+     0.042
+    ],
+    [
+     0.478,
+     0.047
+    ],
+    [
+     0.47,
+     0.051
+    ],
+    [
+     0.447,
+     0.064
+    ],
+    [
+     0.439,
+     0.069
+    ],
+    [
+     0.423,
+     0.079
+    ],
+    [
+     0.378,
+     0.109
+    ],
+    [
+     0.37,
+     0.114
+    ],
+    [
+     0.326,
+     0.148
+    ],
+    [
+     -0.068,
+     0.701
+    ],
+    [
+     -0.072,
+     0.844
+    ],
+    [
+     -0.072,
+     0.849
+    ],
+    [
+     -0.069,
+     0.866
+    ],
+    [
+     -0.012,
+     1.302
+    ],
+    [
+     0.056,
+     1.326
+    ],
+    [
+     0.069,
+     1.328
+    ],
+    [
+     0.08,
+     1.328
+    ],
+    [
+     0.154,
+     1.325
+    ],
+    [
+     0.166,
+     1.324
+    ],
+    [
+     0.32,
+     1.27
+    ],
+    [
+     0.389,
+     1.011
+    ],
+    [
+     0.398,
+     0.964
+    ],
+    [
+     0.539,
+     0.026
+    ]
+   ],
+   "evidence_frames": [
+    "data/raw/single_scan_with_ceiling#003049"
+   ],
+   "n_views": 1
+  },
+  {
+   "id": "01_space:dmg:3",
+   "surface_id": "01_space:floor",
+   "class": "peeling_paint",
+   "class_confidence": 0.336,
+   "extent": {
+    "area_m2": {
+     "value": 1.2125,
+     "ci_low": 0.8907,
+     "ci_high": 1.5342,
+     "sigma": 0.1956,
+     "source": "measured",
+     "method": "open-vocabulary detection, mask refined, projected onto the surface plane",
+     "n_support": 13029
+    },
+    "bbox_uv_m": [
+     4.692,
+     3.389,
+     6.912,
+     4.111
+    ]
+   },
+   "polygon_uv_m": [
+    [
+     4.888,
+     3.389
+    ],
+    [
+     4.828,
+     3.391
+    ],
+    [
+     4.808,
+     3.4
+    ],
+    [
+     4.791,
+     3.425
+    ],
+    [
+     4.784,
+     3.438
+    ],
+    [
+     4.778,
+     3.451
+    ],
+    [
+     4.754,
+     3.516
+    ],
+    [
+     4.745,
+     3.543
+    ],
+    [
+     4.731,
+     3.582
+    ],
+    [
+     4.692,
+     3.832
+    ],
+    [
+     4.715,
+     3.86
+    ],
+    [
+     4.996,
+     3.908
+    ],
+    [
+     5.246,
+     3.95
+    ],
+    [
+     5.475,
+     3.988
+    ],
+    [
+     6.189,
+     4.099
+    ],
+    [
+     6.209,
+     4.1
+    ],
+    [
+     6.538,
+     4.111
+    ],
+    [
+     6.55,
+     4.11
+    ],
+    [
+     6.554,
+     4.104
+    ],
+    [
+     6.912,
+     3.44
+    ],
+    [
+     6.904,
+     3.44
+    ]
+   ],
+   "evidence_frames": [
+    "data/raw/single_scan_with_ceiling#001241"
+   ],
+   "n_views": 1
+  },
+  {
+   "id": "01_space:dmg:4",
+   "surface_id": "01_space:wall:W8",
+   "class": "hole",
+   "class_confidence": 0.333,
+   "extent": {
+    "area_m2": {
+     "value": 1.2032,
+     "ci_low": 0.8274,
+     "ci_high": 1.579,
+     "sigma": 0.2285,
+     "source": "measured",
+     "method": "open-vocabulary detection, mask refined, projected onto the surface plane",
+     "n_support": 1267
+    },
+    "bbox_uv_m": [
+     -0.779,
+     0.701,
+     0.316,
+     2.134
+    ]
+   },
+   "polygon_uv_m": [
+    [
+     -0.77,
+     0.701
+    ],
+    [
+     -0.779,
+     0.722
+    ],
+    [
+     -0.766,
+     1.039
+    ],
+    [
+     -0.707,
+     1.772
+    ],
+    [
+     -0.702,
+     1.813
+    ],
+    [
+     -0.685,
+     1.892
+    ],
+    [
+     -0.68,
+     1.912
+    ],
+    [
+     -0.621,
+     2.04
+    ],
+    [
+     -0.602,
+     2.074
+    ],
+    [
+     -0.572,
+     2.124
+    ],
+    [
+     -0.537,
+     2.134
+    ],
+    [
+     0.278,
+     1.985
+    ],
+    [
+     0.298,
+     1.953
+    ],
+    [
+     0.3,
+     1.95
+    ],
+    [
+     0.301,
+     1.946
+    ],
+    [
+     0.316,
+     1.532
+    ],
+    [
+     0.306,
+     1.147
+    ],
+    [
+     0.304,
+     1.125
+    ],
+    [
+     0.301,
+     1.091
+    ],
+    [
+     0.3,
+     1.088
+    ]
+   ],
+   "evidence_frames": [
+    "data/raw/single_scan_with_ceiling#005457"
+   ],
+   "n_views": 1
+  },
+  {
+   "id": "01_space:dmg:5",
+   "surface_id": "01_space:floor",
+   "class": "water_stain",
+   "class_confidence": 0.325,
+   "extent": {
+    "area_m2": {
+     "value": 3.2572,
+     "ci_low": 2.4257,
+     "ci_high": 4.0887,
+     "sigma": 0.5054,
+     "source": "measured",
+     "method": "open-vocabulary detection, mask refined, projected onto the surface plane",
+     "n_support": 18971
+    },
+    "bbox_uv_m": [
+     2.525,
+     4.983,
+     5.355,
+     7.066
+    ]
+   },
+   "polygon_uv_m": [
+    [
+     4.262,
+     4.983
+    ],
+    [
+     2.525,
+     6.413
+    ],
+    [
+     2.535,
+     6.429
+    ],
+    [
+     2.546,
+     6.444
+    ],
+    [
+     3.141,
+     6.828
+    ],
+    [
+     3.145,
+     6.831
+    ],
+    [
+     3.151,
+     6.833
+    ],
+    [
+     3.164,
+     6.837
+    ],
+    [
+     3.797,
+     6.998
+    ],
+    [
+     4.104,
+     7.053
+    ],
+    [
+     4.126,
+     7.057
+    ],
+    [
+     4.167,
+     7.064
+    ],
+    [
+     4.178,
+     7.066
+    ],
+    [
+     4.258,
+     7.044
+    ],
+    [
+     4.431,
+     6.994
+    ],
+    [
+     4.52,
+     6.968
+    ],
+    [
+     4.531,
+     6.964
+    ],
+    [
+     4.564,
+     6.952
+    ],
+    [
+     5.349,
+     6.594
+    ],
+    [
+     5.354,
+     6.587
+    ],
+    [
+     5.355,
+     6.585
+    ],
+    [
+     4.747,
+     5.527
+    ],
+    [
+     4.713,
+     5.47
+    ],
+    [
+     4.653,
+     5.37
+    ],
+    [
+     4.507,
+     5.162
+    ]
+   ],
+   "evidence_frames": [
+    "data/raw/single_scan_with_ceiling#000616"
+   ],
+   "n_views": 1
+  },
+  {
+   "id": "01_space:dmg:6",
+   "surface_id": "01_space:floor",
+   "class": "water_stain",
+   "class_confidence": 0.309,
+   "extent": {
+    "area_m2": {
+     "value": 0.2418,
+     "ci_low": 0.1591,
+     "ci_high": 0.3245,
+     "sigma": 0.0503,
+     "source": "measured",
+     "method": "open-vocabulary detection, mask refined, projected onto the surface plane",
+     "n_support": 2411
+    },
+    "bbox_uv_m": [
+     5.528,
+     7.509,
+     6.244,
+     8.243
+    ]
+   },
+   "polygon_uv_m": [
+    [
+     5.528,
+     7.509
+    ],
+    [
+     5.963,
+     8.177
+    ],
+    [
+     5.998,
+     8.223
+    ],
+    [
+     6.024,
+     8.243
+    ],
+    [
+     6.05,
+     8.234
+    ],
+    [
+     6.118,
+     8.195
+    ],
+    [
+     6.122,
+     8.188
+    ],
+    [
+     6.131,
+     8.173
+    ],
+    [
+     6.157,
+     8.127
+    ],
+    [
+     6.182,
+     8.081
+    ],
+    [
+     6.19,
+     8.065
+    ],
+    [
+     6.238,
+     7.928
+    ],
+    [
+     6.244,
+     7.869
+    ],
+    [
+     6.237,
+     7.832
+    ],
+    [
+     6.231,
+     7.817
+    ],
+    [
+     6.21,
+     7.782
+    ],
+    [
+     6.196,
+     7.762
+    ],
+    [
+     6.079,
+     7.682
+    ],
+    [
+     6.072,
+     7.677
+    ],
+    [
+     5.579,
+     7.518
+    ],
+    [
+     5.572,
+     7.516
+    ],
+    [
+     5.56,
+     7.513
+    ],
+    [
+     5.549,
+     7.511
+    ],
+    [
+     5.533,
+     7.509
+    ]
+   ],
+   "evidence_frames": [
+    "data/raw/single_scan_with_ceiling#004281"
+   ],
+   "n_views": 1
+  }
+ ],
  "concealed_damage_flags": [],
- "scope_items": [],
+ "scope_items": [
+  {
+   "id": "S001",
+   "surface_id": "01_space:floor",
+   "code": "PNT-STAINBLOCK",
+   "description": "Stain-block primer and repaint surface",
+   "quantity": {
+    "value": 49.14,
+    "ci_low": 41.0565,
+    "ci_high": 57.2235,
+    "sigma": 4.914,
+    "source": "inferred",
+    "method": "catalogue:PNT-STAINBLOCK",
+    "n_support": 3
+   },
+   "unit": "m2",
+   "derived_from": [
+    "01_space:dmg:0",
+    "01_space:dmg:5",
+    "01_space:dmg:6"
+   ]
+  },
+  {
+   "id": "S002",
+   "surface_id": "01_space:wall:W11",
+   "code": "PNT-SCRAPE-PRIME",
+   "description": "Scrape back, prime and repaint affected area",
+   "quantity": {
+    "value": 9.9978,
+    "ci_low": 8.3532,
+    "ci_high": 11.6424,
+    "sigma": 0.9998,
+    "source": "inferred",
+    "method": "catalogue:PNT-SCRAPE-PRIME",
+    "n_support": 1
+   },
+   "unit": "m2",
+   "derived_from": [
+    "01_space:dmg:1"
+   ]
+  },
+  {
+   "id": "S003",
+   "surface_id": "01_space:wall:W25",
+   "code": "PNT-SCRAPE-PRIME",
+   "description": "Scrape back, prime and repaint affected area",
+   "quantity": {
+    "value": 1.4115,
+    "ci_low": 1.1793,
+    "ci_high": 1.6437,
+    "sigma": 0.1411,
+    "source": "inferred",
+    "method": "catalogue:PNT-SCRAPE-PRIME",
+    "n_support": 1
+   },
+   "unit": "m2",
+   "derived_from": [
+    "01_space:dmg:2"
+   ]
+  },
+  {
+   "id": "S004",
+   "surface_id": "01_space:floor",
+   "code": "PNT-SCRAPE-PRIME",
+   "description": "Scrape back, prime and repaint affected area",
+   "quantity": {
+    "value": 3.6375,
+    "ci_low": 3.0391,
+    "ci_high": 4.2359,
+    "sigma": 0.3638,
+    "source": "inferred",
+    "method": "catalogue:PNT-SCRAPE-PRIME",
+    "n_support": 1
+   },
+   "unit": "m2",
+   "derived_from": [
+    "01_space:dmg:3"
+   ]
+  },
+  {
+   "id": "S005",
+   "surface_id": "01_space:wall:W8",
+   "code": "DRY-PATCH",
+   "description": "Patch and skim drywall hole",
+   "quantity": {
+    "value": 1.3032,
+    "ci_low": 1.0888,
+    "ci_high": 1.5176,
+    "sigma": 0.1303,
+    "source": "inferred",
+    "method": "catalogue:DRY-PATCH",
+    "n_support": 1
+   },
+   "unit": "m2",
+   "derived_from": [
+    "01_space:dmg:4"
+   ]
+  },
+  {
+   "id": "S006",
+   "surface_id": "01_space:wall:W8",
+   "code": "PNT-REPAINT",
+   "description": "Repaint surface after patching",
+   "quantity": {
+    "value": 7.1268,
+    "ci_low": 5.9544,
+    "ci_high": 8.2992,
+    "sigma": 0.7127,
+    "source": "inferred",
+    "method": "catalogue:PNT-REPAINT",
+    "n_support": 1
+   },
+   "unit": "m2",
+   "derived_from": [
+    "01_space:dmg:4"
+   ]
+  }
+ ],
  "calibration": {
   "nominal_coverage": 0.9,
   "method": "propagated sigma x per-tier split-conformal factor, with a per-tier relative floor",
@@ -1500,14 +2569,15 @@
   "factors": {}
  },
  "timing": {
-  "total_s": 5.65,
+  "total_s": 72.25,
   "device": "arm64 Darwin",
   "stages": {
-   "load": 0.5,
-   "drift": 0.62,
-   "cloud": 2.52,
-   "geometry": 1.26,
-   "render": 0.24
+   "load": 52.58,
+   "drift": 0.69,
+   "cloud": 2.84,
+   "geometry": 1.28,
+   "damage": 13.95,
+   "render": 0.32
   }
  },
  "render": {

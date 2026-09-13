@@ -1,7 +1,7 @@
 {
- "total_s": 0.91,
+ "total_s": 0.97,
  "n_frames": 147,
- "load_s": 0.08,
+ "load_s": 0.14,
  "drift_s": 0.12,
  "room_seeds": "cascade",
  "cloud_s": 0.44,
@@ -9,7 +9,7 @@
  "yaw_deg": 66.88,
  "floor_z": 0.0074,
  "ceil_z": null,
- "geometry_s": 0.14,
+ "geometry_s": 0.13,
  "n_rooms": 2,
  "render_s": 0.08
 }

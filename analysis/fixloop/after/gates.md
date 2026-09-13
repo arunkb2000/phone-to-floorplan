@@ -8,14 +8,14 @@ Read `docs/report/benchmark.md` first: it states what the reference ground truth
 
 | Capture | Tier | Rooms | Openings | Footprint m2 | Overlap | Mean wall coverage | Pipeline s |
 |---|---|---|---|---|---|---|---|
-| flatA_lidar | lidar | 5 | 4 | 56.67 | 0.1 % | 95% | 6.2 |
-| flatA_lidar_driftoff | lidar | 6 | 6 | 55.29 | 0.4 % | 95% | 5.4 |
-| flatB_lidar | lidar | 6 | 6 | 43.51 | 1.2 % | 90% | 3.4 |
-| roomC_lidar | lidar | 3 | 1 | 17.80 | 1.3 % | 86% | 1.0 |
-| flatA_lidar_repa | lidar | 4 | 4 | 53.08 | 0.4 % | 90% | 3.3 |
-| flatA_lidar_repb | lidar | 6 | 5 | 55.25 | 0.1 % | 86% | 3.5 |
-| flatA_photo | photo | 3 | 2 | 21.34 | 0.0 % | 92% | 1.0 |
-| flatA_video | video | 2 | 4 | 7.04 | 0.0 % | 62% | 4.4 |
+| flatA_lidar | lidar | 5 | 4 | 56.67 | 0.1 % | 95% | 97.5 |
+| flatA_lidar_driftoff | lidar | 6 | 6 | 55.29 | 0.4 % | 95% | 97.6 |
+| flatB_lidar | lidar | 6 | 6 | 43.51 | 1.2 % | 90% | 3.9 |
+| roomC_lidar | lidar | 3 | 1 | 17.80 | 1.3 % | 86% | 1.1 |
+| flatA_lidar_repa | lidar | 4 | 4 | 53.08 | 0.4 % | 90% | 3.5 |
+| flatA_lidar_repb | lidar | 6 | 5 | 55.25 | 0.1 % | 86% | 3.8 |
+| flatA_photo | photo | 6 | 6 | 27.66 | 1.6 % | 75% | 2.1 |
+| flatA_video | video | 3 | 6 | 14.30 | 0.0 % | 58% | 7.5 |
 
 ## Tier: lidar
 
@@ -34,19 +34,19 @@ Read `docs/report/benchmark.md` first: it states what the reference ground truth
 
 | Gate | Requirement | Result | Verdict |
 |---|---|---|---|
-| Opening width | <= 2 cm on >= 85 % | 0/1 matched within 2 cm, 1 reference openings missed, 3 predictions unmatched. Lenient 0%, strict 0%. MAE 9.0 cm | FAIL |
-| Ceiling height | <= 1.5 cm per room | 0/2 matched within 1.5 cm (0 reference heights unmatched); MAE 13.3 cm, bias -13.3 cm | FAIL |
-| Interval calibration | 90 % nominal coverage | 67 % of 3 matched measurements contain the reference point value; 67 % overlap the reference's own 90 % interval | FAIL |
+| Opening width | <= 2 cm on >= 85 % | 0/2 matched within 2 cm, 0 reference openings missed, 4 predictions unmatched. Lenient 0%, strict 0%. MAE 10.5 cm | FAIL |
+| Ceiling height | <= 1.5 cm per room | 1/1 matched within 1.5 cm (1 reference heights unmatched); MAE 1.4 cm, bias -1.4 cm | PASS |
+| Interval calibration | 90 % nominal coverage | 67 % of 3 matched measurements contain the reference point value; 100 % overlap the reference's own 90 % interval | FAIL |
 | Room overlap (flatA_video) | stitched rooms must not overlap | 0.0 % of the total room area | PASS |
 
 ## Tier: photo
 
 | Gate | Requirement | Result | Verdict |
 |---|---|---|---|
-| Opening width | <= 2 cm on >= 85 % | 1/2 matched within 2 cm, 0 reference openings missed, 0 predictions unmatched. Lenient 50%, strict 50%. MAE 5.8 cm | FAIL |
-| Ceiling height | <= 1.5 cm per room | 0/0 matched within 1.5 cm (2 reference heights unmatched); MAE nan cm, bias +nan cm | FAIL |
-| Interval calibration | 90 % nominal coverage | 100 % of 2 matched measurements contain the reference point value; 100 % overlap the reference's own 90 % interval | FAIL |
-| Room overlap (flatA_photo) | stitched rooms must not overlap | 0.0 % of the total room area | PASS |
+| Opening width | <= 2 cm on >= 85 % | 1/2 matched within 2 cm, 0 reference openings missed, 4 predictions unmatched. Lenient 50%, strict 17%. MAE 3.7 cm | FAIL |
+| Ceiling height | <= 1.5 cm per room | 0/1 matched within 1.5 cm (1 reference heights unmatched); MAE 3.9 cm, bias -3.9 cm | FAIL |
+| Interval calibration | 90 % nominal coverage | 100 % of 3 matched measurements contain the reference point value; 100 % overlap the reference's own 90 % interval | FAIL |
+| Room overlap (flatA_photo) | stitched rooms must not overlap | 1.6 % of the total room area | FAIL |
 
 ## Repeatability
 
@@ -74,14 +74,14 @@ Walls are matched between the two passes by where their plane sits, not by sorte
 
 | Capture | Rooms | Walls dimensioned | Openings | Adjacency | Damage regions | Concealed flags | Scope items | Ceiling source |
 |---|---|---|---|---|---|---|---|---|
-| flatA_lidar | 5 | 38 | 4 | 5 | 0 | 0 | 0 | measured |
-| flatA_lidar_driftoff | 6 | 40 | 6 | 6 | 0 | 0 | 0 | measured |
+| flatA_lidar | 5 | 38 | 4 | 5 | 7 | 0 | 7 | measured |
+| flatA_lidar_driftoff | 6 | 40 | 6 | 6 | 7 | 0 | 7 | measured |
 | flatB_lidar | 6 | 47 | 6 | 6 | 0 | 0 | 0 | prior |
 | roomC_lidar | 3 | 19 | 1 | 2 | 0 | 0 | 0 | prior |
 | flatA_lidar_repa | 4 | 39 | 4 | 4 | 0 | 0 | 0 | measured |
 | flatA_lidar_repb | 6 | 50 | 5 | 6 | 0 | 0 | 0 | measured |
-| flatA_photo | 3 | 12 | 2 | 2 | 0 | 0 | 0 | measured |
-| flatA_video | 2 | 8 | 4 | 1 | 0 | 0 | 0 | measured |
+| flatA_photo | 6 | 24 | 6 | 5 | 0 | 0 | 0 | measured |
+| flatA_video | 3 | 12 | 6 | 2 | 0 | 0 | 0 | measured |
 
 ## Every scored measurement
 
@@ -104,11 +104,11 @@ Walls are matched between the two passes by where their plane sits, not by sorte
 | flatA_lidar_repb | lidar | opening_width | 0.620 | 5 | 0.647 | +2.7 cm | 1.2 cm | no | 06_space:06_space:G |
 | flatA_lidar_repb | lidar | ceiling_height | 1.966 | 8 | 2.172 | +20.6 cm | 1.0 cm | no | 03_space: |
 | flatA_lidar_repb | lidar | ceiling_height | 2.315 | 8 | 2.320 | +0.4 cm | 1.0 cm | yes | 01_space: |
-| flatA_photo | photo | opening_width | 0.890 | 8 | 0.786 | -10.4 cm | 7.4 cm | yes | 03_space:03_space:B |
-| flatA_photo | photo | opening_width | 0.620 | 5 | 0.633 | +1.3 cm | 8.1 cm | yes | 02_space:02_space:B |
+| flatA_photo | photo | opening_width | 0.890 | 8 | 0.952 | +6.2 cm | 10.9 cm | yes | 04_space:04_space:B |
+| flatA_photo | photo | opening_width | 0.620 | 5 | 0.633 | +1.3 cm | 8.1 cm | yes | 05_space:05_space:B |
 | flatA_photo | photo | ceiling_height | 1.966 | 8 | MISSED |  |  | no |  |
-| flatA_photo | photo | ceiling_height | 2.315 | 8 | MISSED |  |  | no |  |
-| flatA_video | video | opening_width | 0.890 | 8 | 0.800 | -9.0 cm | 6.1 cm | yes | 02_space:02_space:D |
-| flatA_video | video | opening_width | 0.620 | 5 | MISSED |  |  | no |  |
-| flatA_video | video | ceiling_height | 1.966 | 8 | 1.753 | -21.2 cm | 5.5 cm | no | 01_space: |
-| flatA_video | video | ceiling_height | 2.315 | 8 | 2.261 | -5.4 cm | 4.5 cm | yes | 02_space: |
+| flatA_photo | photo | ceiling_height | 2.315 | 8 | 2.276 | -3.9 cm | 12.7 cm | yes | 06_space: |
+| flatA_video | video | opening_width | 0.890 | 8 | 0.800 | -9.0 cm | 6.1 cm | yes | 03_space:03_space:D |
+| flatA_video | video | opening_width | 0.620 | 5 | 0.500 | -12.0 cm | 6.5 cm | no | 02_space:02_space:D |
+| flatA_video | video | ceiling_height | 1.966 | 8 | MISSED |  |  | no |  |
+| flatA_video | video | ceiling_height | 2.315 | 8 | 2.301 | -1.4 cm | 5.4 cm | yes | 03_space: |

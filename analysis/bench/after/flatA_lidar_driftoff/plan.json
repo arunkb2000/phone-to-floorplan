@@ -3348,14 +3348,14 @@
   "factors": {}
  },
  "timing": {
-  "total_s": 77.47,
+  "total_s": 98.51,
   "device": "arm64 Darwin",
   "stages": {
-   "load": 59.02,
+   "load": 78.91,
    "drift": 0.0,
-   "cloud": 2.87,
-   "geometry": 2.16,
-   "damage": 12.92,
+   "cloud": 3.01,
+   "geometry": 2.03,
+   "damage": 14.04,
    "render": 0.15
   }
  },

@@ -3132,15 +3132,15 @@
   "factors": {}
  },
  "timing": {
-  "total_s": 72.32,
+  "total_s": 99.02,
   "device": "arm64 Darwin",
   "stages": {
-   "load": 51.88,
-   "drift": 0.76,
-   "cloud": 2.84,
-   "geometry": 1.95,
-   "damage": 14.04,
-   "render": 0.32
+   "load": 76.25,
+   "drift": 0.75,
+   "cloud": 2.56,
+   "geometry": 1.79,
+   "damage": 16.76,
+   "render": 0.33
   }
  },
  "render": {

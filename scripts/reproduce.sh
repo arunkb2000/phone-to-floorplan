@@ -31,5 +31,15 @@ make after
 echo "== fix loop: diff"
 make fixdiff
 
+echo "== headline gate tables"
+uv run floorplan bench --out analysis/bench/after
+
+echo "== tests"
+uv run --extra dev pytest -q
+
 echo
-echo "done. read analysis/fixloop/DIFF.md, analysis/fixloop/after/gates.md and docs/report/benchmark.md"
+echo "done."
+echo "  analysis/bench/after/gates.md      every gate at every tier"
+echo "  analysis/fixloop/DIFF.md           before against after"
+echo "  analysis/fixloop/POSTMORTEM.md     what the fix got right and wrong"
+echo "  docs/report/benchmark.md           what the ground truth is, and is not"

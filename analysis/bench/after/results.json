@@ -21,12 +21,13 @@
    "n_scope": 7,
    "unmatched_openings": 2,
    "unmatched_ceilings": 3,
+   "unmatched_walls": 38,
    "ceiling_sources": [
     "measured"
    ],
    "mean_coverage": 0.951,
-   "total_s": 72.32,
-   "wall_s": 72.5
+   "total_s": 99.02,
+   "wall_s": 99.2
   },
   "rows": [
    {
@@ -113,12 +114,13 @@
    "n_scope": 7,
    "unmatched_openings": 4,
    "unmatched_ceilings": 5,
+   "unmatched_walls": 40,
    "ceiling_sources": [
     "measured"
    ],
    "mean_coverage": 0.954,
-   "total_s": 77.47,
-   "wall_s": 77.6
+   "total_s": 98.51,
+   "wall_s": 98.6
   },
   "rows": [
    {
@@ -205,12 +207,13 @@
    "n_scope": 0,
    "unmatched_openings": 5,
    "unmatched_ceilings": 6,
+   "unmatched_walls": 47,
    "ceiling_sources": [
     "prior"
    ],
    "mean_coverage": 0.898,
-   "total_s": 3.74,
-   "wall_s": 3.8
+   "total_s": 3.64,
+   "wall_s": 3.6
   },
   "rows": [
    {
@@ -252,11 +255,12 @@
    "n_scope": 0,
    "unmatched_openings": 1,
    "unmatched_ceilings": 3,
+   "unmatched_walls": 19,
    "ceiling_sources": [
     "prior"
    ],
    "mean_coverage": 0.858,
-   "total_s": 1.09,
+   "total_s": 1.08,
    "wall_s": 1.1
   },
   "rows": []
@@ -283,12 +287,13 @@
    "n_scope": 0,
    "unmatched_openings": 2,
    "unmatched_ceilings": 2,
+   "unmatched_walls": 39,
    "ceiling_sources": [
     "measured"
    ],
    "mean_coverage": 0.905,
-   "total_s": 3.5,
-   "wall_s": 3.5
+   "total_s": 3.43,
+   "wall_s": 3.4
   },
   "rows": [
    {
@@ -375,12 +380,13 @@
    "n_scope": 0,
    "unmatched_openings": 3,
    "unmatched_ceilings": 4,
+   "unmatched_walls": 50,
    "ceiling_sources": [
     "measured"
    ],
    "mean_coverage": 0.861,
-   "total_s": 3.71,
-   "wall_s": 3.7
+   "total_s": 3.59,
+   "wall_s": 3.6
   },
   "rows": [
    {
@@ -456,37 +462,38 @@
   "gt": "single_scan_with_ceiling.yaml",
   "path": "data/benchmark/captures/photo_flatA",
   "summary": {
-   "n_rooms": 3,
-   "footprint_m2": 21.338,
-   "sum_room_area_m2": 21.338,
-   "overlap_pct": 0.0,
-   "n_openings": 2,
-   "n_adjacency": 2,
+   "n_rooms": 6,
+   "footprint_m2": 27.659,
+   "sum_room_area_m2": 28.102,
+   "overlap_pct": 1.58,
+   "n_openings": 6,
+   "n_adjacency": 5,
    "n_damage": 0,
    "n_flags": 0,
    "n_scope": 0,
-   "unmatched_openings": 0,
-   "unmatched_ceilings": 3,
+   "unmatched_openings": 4,
+   "unmatched_ceilings": 5,
+   "unmatched_walls": 24,
    "ceiling_sources": [
     "measured"
    ],
-   "mean_coverage": 0.917,
-   "total_s": 1.03,
-   "wall_s": 1.0
+   "mean_coverage": 0.75,
+   "total_s": 2.1,
+   "wall_s": 2.1
   },
   "rows": [
    {
     "kind": "opening_width",
     "gt": 0.89,
-    "pred": 0.7859,
-    "err": -0.10409999999999997,
-    "sigma": 0.0738,
+    "pred": 0.9517,
+    "err": 0.06169999999999998,
+    "sigma": 0.1088,
     "covered": true,
     "covered_overlap": true,
     "gt_sigma": 0.0201,
     "gt_n": 8,
     "status": "matched",
-    "where": "03_space:03_space:B",
+    "where": "04_space:04_space:B",
     "capture": "flatA_photo",
     "tier": "photo"
    },
@@ -501,7 +508,7 @@
     "gt_sigma": 0.0107,
     "gt_n": 5,
     "status": "matched",
-    "where": "02_space:02_space:B",
+    "where": "05_space:05_space:B",
     "capture": "flatA_photo",
     "tier": "photo"
    },
@@ -523,15 +530,15 @@
    {
     "kind": "ceiling_height",
     "gt": 2.3154,
-    "pred": null,
-    "err": null,
-    "sigma": null,
-    "covered": false,
-    "covered_overlap": false,
+    "pred": 2.2761,
+    "err": -0.03929999999999989,
+    "sigma": 0.1269,
+    "covered": true,
+    "covered_overlap": true,
     "gt_sigma": 0.0208,
     "gt_n": 8,
-    "status": "missed",
-    "where": "",
+    "status": "matched",
+    "where": "06_space:",
     "capture": "flatA_photo",
     "tier": "photo"
    }
@@ -548,23 +555,24 @@
   "gt": "single_scan_with_ceiling.yaml",
   "path": "data/benchmark/captures/video_flatA",
   "summary": {
-   "n_rooms": 2,
-   "footprint_m2": 7.035,
-   "sum_room_area_m2": 7.035,
+   "n_rooms": 3,
+   "footprint_m2": 14.299,
+   "sum_room_area_m2": 14.299,
    "overlap_pct": 0.0,
-   "n_openings": 4,
-   "n_adjacency": 1,
+   "n_openings": 6,
+   "n_adjacency": 2,
    "n_damage": 0,
    "n_flags": 0,
    "n_scope": 0,
-   "unmatched_openings": 3,
-   "unmatched_ceilings": 0,
+   "unmatched_openings": 4,
+   "unmatched_ceilings": 2,
+   "unmatched_walls": 12,
    "ceiling_sources": [
     "measured"
    ],
-   "mean_coverage": 0.625,
-   "total_s": 5.37,
-   "wall_s": 5.4
+   "mean_coverage": 0.583,
+   "total_s": 7.21,
+   "wall_s": 7.2
   },
   "rows": [
    {
@@ -578,20 +586,35 @@
     "gt_sigma": 0.0201,
     "gt_n": 8,
     "status": "matched",
-    "where": "02_space:02_space:D",
+    "where": "03_space:03_space:D",
     "capture": "flatA_video",
     "tier": "video"
    },
    {
     "kind": "opening_width",
     "gt": 0.62,
+    "pred": 0.5,
+    "err": -0.12,
+    "sigma": 0.0651,
+    "covered": false,
+    "covered_overlap": true,
+    "gt_sigma": 0.0107,
+    "gt_n": 5,
+    "status": "matched",
+    "where": "02_space:02_space:D",
+    "capture": "flatA_video",
+    "tier": "video"
+   },
+   {
+    "kind": "ceiling_height",
+    "gt": 1.9658,
     "pred": null,
     "err": null,
     "sigma": null,
     "covered": false,
     "covered_overlap": false,
-    "gt_sigma": 0.0107,
-    "gt_n": 5,
+    "gt_sigma": 0.0106,
+    "gt_n": 8,
     "status": "missed",
     "where": "",
     "capture": "flatA_video",
@@ -599,31 +622,16 @@
    },
    {
     "kind": "ceiling_height",
-    "gt": 1.9658,
-    "pred": 1.7534,
-    "err": -0.21239999999999992,
-    "sigma": 0.0548,
-    "covered": false,
-    "covered_overlap": false,
-    "gt_sigma": 0.0106,
-    "gt_n": 8,
-    "status": "matched",
-    "where": "01_space:",
-    "capture": "flatA_video",
-    "tier": "video"
-   },
-   {
-    "kind": "ceiling_height",
     "gt": 2.3154,
-    "pred": 2.261,
-    "err": -0.05439999999999978,
-    "sigma": 0.0449,
+    "pred": 2.3014,
+    "err": -0.01399999999999979,
+    "sigma": 0.0541,
     "covered": true,
     "covered_overlap": true,
     "gt_sigma": 0.0208,
     "gt_n": 8,
     "status": "matched",
-    "where": "02_space:",
+    "where": "03_space:",
     "capture": "flatA_video",
     "tier": "video"
    }

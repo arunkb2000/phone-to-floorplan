@@ -2531,14 +2531,14 @@
   "factors": {}
  },
  "timing": {
-  "total_s": 3.37,
+  "total_s": 3.91,
   "device": "arm64 Darwin",
   "stages": {
-   "load": 0.26,
-   "drift": 0.33,
-   "cloud": 1.36,
-   "geometry": 1.11,
-   "render": 0.14
+   "load": 0.45,
+   "drift": 0.35,
+   "cloud": 1.47,
+   "geometry": 1.27,
+   "render": 0.16
   }
  },
  "render": {

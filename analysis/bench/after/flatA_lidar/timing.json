@@ -1,16 +1,16 @@
 {
- "total_s": 72.32,
+ "total_s": 99.02,
  "n_frames": 846,
- "load_s": 51.88,
- "drift_s": 0.76,
+ "load_s": 76.25,
+ "drift_s": 0.75,
  "room_seeds": "hmaxima",
- "cloud_s": 2.84,
+ "cloud_s": 2.56,
  "n_points": 8521663,
  "yaw_deg": 62.38,
  "floor_z": -0.0372,
  "ceil_z": 2.2334,
- "geometry_s": 1.95,
+ "geometry_s": 1.79,
  "n_rooms": 5,
- "damage_s": 14.04,
- "render_s": 0.32
+ "damage_s": 16.76,
+ "render_s": 0.33
 }

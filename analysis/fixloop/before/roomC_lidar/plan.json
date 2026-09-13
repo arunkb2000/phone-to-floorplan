@@ -751,13 +751,13 @@
   "factors": {}
  },
  "timing": {
-  "total_s": 0.91,
+  "total_s": 0.97,
   "device": "arm64 Darwin",
   "stages": {
-   "load": 0.08,
+   "load": 0.14,
    "drift": 0.12,
    "cloud": 0.44,
-   "geometry": 0.14,
+   "geometry": 0.13,
    "render": 0.08
   }
  },

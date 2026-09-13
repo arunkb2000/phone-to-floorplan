@@ -1981,13 +1981,13 @@
   "factors": {}
  },
  "timing": {
-  "total_s": 3.09,
+  "total_s": 3.13,
   "device": "arm64 Darwin",
   "stages": {
-   "load": 0.36,
-   "drift": 0.31,
-   "cloud": 1.25,
-   "geometry": 0.85,
+   "load": 0.43,
+   "drift": 0.32,
+   "cloud": 1.23,
+   "geometry": 0.83,
    "render": 0.12
   }
  },
