@@ -1951,14 +1951,14 @@
   "factors": {}
  },
  "timing": {
-  "total_s": 5.95,
+  "total_s": 4.97,
   "device": "arm64 Darwin",
   "stages": {
-   "load": 0.8,
+   "load": 0.52,
    "drift": 0.0,
-   "cloud": 2.8,
-   "geometry": 1.8,
-   "render": 0.13
+   "cloud": 2.37,
+   "geometry": 1.62,
+   "render": 0.12
   }
  },
  "render": {

@@ -25,8 +25,8 @@
     "measured"
    ],
    "mean_coverage": 0.983,
-   "total_s": 9.83,
-   "wall_s": 9.9
+   "total_s": 6.26,
+   "wall_s": 6.3
   },
   "rows": [
    {
@@ -113,8 +113,8 @@
     "measured"
    ],
    "mean_coverage": 0.868,
-   "total_s": 5.95,
-   "wall_s": 6.0
+   "total_s": 4.97,
+   "wall_s": 5.0
   },
   "rows": [
    {
@@ -201,8 +201,8 @@
     "prior"
    ],
    "mean_coverage": 0.935,
-   "total_s": 3.65,
-   "wall_s": 3.7
+   "total_s": 3.31,
+   "wall_s": 3.3
   },
   "rows": [
    {
@@ -247,8 +247,8 @@
     "prior"
    ],
    "mean_coverage": 0.831,
-   "total_s": 1.01,
-   "wall_s": 1.0
+   "total_s": 0.95,
+   "wall_s": 0.9
   },
   "rows": []
  },
@@ -278,8 +278,8 @@
     "measured"
    ],
    "mean_coverage": 0.739,
-   "total_s": 3.5,
-   "wall_s": 3.5
+   "total_s": 3.12,
+   "wall_s": 3.1
   },
   "rows": [
    {
@@ -366,8 +366,8 @@
     "measured"
    ],
    "mean_coverage": 0.819,
-   "total_s": 3.29,
-   "wall_s": 3.3
+   "total_s": 3.01,
+   "wall_s": 3.0
   },
   "rows": [
    {
@@ -440,30 +440,30 @@
   "path": "benchmark/captures/photo_flatA",
   "summary": {
    "n_rooms": 3,
-   "footprint_m2": 16.831,
-   "sum_room_area_m2": 16.831,
+   "footprint_m2": 21.338,
+   "sum_room_area_m2": 21.338,
    "overlap_pct": 0.0,
-   "n_openings": 4,
+   "n_openings": 2,
    "n_adjacency": 2,
    "n_damage": 0,
    "n_flags": 0,
    "n_scope": 0,
-   "unmatched_openings": 2,
-   "unmatched_ceilings": 2,
+   "unmatched_openings": 0,
+   "unmatched_ceilings": 3,
    "ceiling_sources": [
     "measured"
    ],
    "mean_coverage": 0.917,
-   "total_s": 811.64,
-   "wall_s": 811.6
+   "total_s": 1.01,
+   "wall_s": 1.0
   },
   "rows": [
    {
     "kind": "opening_width",
     "gt": 0.89,
-    "pred": 0.788,
-    "err": -0.10199999999999998,
-    "sigma": 0.0737,
+    "pred": 0.7859,
+    "err": -0.10409999999999997,
+    "sigma": 0.0738,
     "covered": true,
     "gt_sigma": 0.0201,
     "gt_n": 8,
@@ -475,9 +475,9 @@
    {
     "kind": "opening_width",
     "gt": 0.62,
-    "pred": 0.7188,
-    "err": 0.0988,
-    "sigma": 0.1498,
+    "pred": 0.6327,
+    "err": 0.012700000000000045,
+    "sigma": 0.0806,
     "covered": true,
     "gt_sigma": 0.0107,
     "gt_n": 5,
@@ -489,14 +489,14 @@
    {
     "kind": "ceiling_height",
     "gt": 1.9658,
-    "pred": 1.8524,
-    "err": -0.11339999999999995,
-    "sigma": 0.1092,
-    "covered": true,
+    "pred": null,
+    "err": null,
+    "sigma": null,
+    "covered": false,
     "gt_sigma": 0.0106,
     "gt_n": 8,
-    "status": "matched",
-    "where": "03_space:",
+    "status": "missed",
+    "where": "",
     "capture": "flatA_photo",
     "tier": "photo"
    },
@@ -528,61 +528,47 @@
   "path": "benchmark/captures/video_flatA",
   "summary": {
    "n_rooms": 2,
-   "footprint_m2": 8.689,
-   "sum_room_area_m2": 8.689,
+   "footprint_m2": 7.035,
+   "sum_room_area_m2": 7.035,
    "overlap_pct": 0.0,
-   "n_openings": 6,
+   "n_openings": 4,
    "n_adjacency": 1,
    "n_damage": 0,
    "n_flags": 0,
    "n_scope": 0,
-   "unmatched_openings": 5,
-   "unmatched_ceilings": 1,
+   "unmatched_openings": 3,
+   "unmatched_ceilings": 0,
    "ceiling_sources": [
     "measured"
    ],
    "mean_coverage": 0.625,
-   "total_s": 19.91,
-   "wall_s": 19.9
+   "total_s": 4.43,
+   "wall_s": 4.4
   },
   "rows": [
    {
     "kind": "opening_width",
     "gt": 0.89,
-    "pred": null,
-    "err": null,
-    "sigma": null,
-    "covered": false,
+    "pred": 0.8,
+    "err": -0.08999999999999997,
+    "sigma": 0.0609,
+    "covered": true,
     "gt_sigma": 0.0201,
     "gt_n": 8,
-    "status": "missed",
-    "where": "",
-    "capture": "flatA_video",
-    "tier": "video"
-   },
-   {
-    "kind": "opening_width",
-    "gt": 0.62,
-    "pred": 0.623,
-    "err": 0.0030000000000000027,
-    "sigma": 0.0532,
-    "covered": true,
-    "gt_sigma": 0.0107,
-    "gt_n": 5,
     "status": "matched",
     "where": "02_space:02_space:D",
     "capture": "flatA_video",
     "tier": "video"
    },
    {
-    "kind": "ceiling_height",
-    "gt": 1.9658,
+    "kind": "opening_width",
+    "gt": 0.62,
     "pred": null,
     "err": null,
     "sigma": null,
     "covered": false,
-    "gt_sigma": 0.0106,
-    "gt_n": 8,
+    "gt_sigma": 0.0107,
+    "gt_n": 5,
     "status": "missed",
     "where": "",
     "capture": "flatA_video",
@@ -590,10 +576,24 @@
    },
    {
     "kind": "ceiling_height",
+    "gt": 1.9658,
+    "pred": 1.7534,
+    "err": -0.21239999999999992,
+    "sigma": 0.0548,
+    "covered": false,
+    "gt_sigma": 0.0106,
+    "gt_n": 8,
+    "status": "matched",
+    "where": "01_space:",
+    "capture": "flatA_video",
+    "tier": "video"
+   },
+   {
+    "kind": "ceiling_height",
     "gt": 2.3154,
-    "pred": 2.301,
-    "err": -0.014399999999999746,
-    "sigma": 0.0427,
+    "pred": 2.261,
+    "err": -0.05439999999999978,
+    "sigma": 0.0449,
     "covered": true,
     "gt_sigma": 0.0208,
     "gt_n": 8,

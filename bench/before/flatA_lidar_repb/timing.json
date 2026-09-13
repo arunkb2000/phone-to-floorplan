@@ -1,14 +1,14 @@
 {
- "total_s": 3.29,
+ "total_s": 3.01,
  "n_frames": 426,
- "load_s": 0.39,
- "drift_s": 0.34,
- "cloud_s": 1.39,
+ "load_s": 0.38,
+ "drift_s": 0.31,
+ "cloud_s": 1.22,
  "n_points": 4311185,
  "yaw_deg": 62.38,
  "floor_z": -0.0567,
  "ceil_z": 2.1857,
- "geometry_s": 0.85,
+ "geometry_s": 0.8,
  "n_rooms": 2,
- "render_s": 0.13
+ "render_s": 0.12
 }
