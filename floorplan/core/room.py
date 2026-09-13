@@ -30,6 +30,8 @@ class RoomOut:
     warnings: list = field(default_factory=list)
     placement_confidence: float = 0.9
     surfaces_extra: dict = field(default_factory=dict)
+    label_confidence: float = 0.3
+    fixtures: dict = field(default_factory=dict)
     frames: list = field(default_factory=list)     # source Frames, for the damage pass
     geoms: list = field(default_factory=list)
 

@@ -235,6 +235,10 @@ class DamageDetector:
             d["mask"] = grabcut_mask(rgb, d["box"])
         return dets
 
+    def run_queries(self, rgb: np.ndarray, queries: dict[str, list[str]], threshold: float) -> list[dict]:
+        """Boxes for an arbitrary query set, no mask refinement. Used for room-type fixtures."""
+        return self._run(rgb, queries, threshold, self.max_dets)
+
     def detect_openings(self, rgb: np.ndarray) -> list[dict]:
         """Door / window boxes (same dict shape, ``mask`` is the box) for vetoing phantom openings."""
         dets = self._run(rgb, OPENING_QUERIES, self.opening_threshold, self.max_dets)

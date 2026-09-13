@@ -88,7 +88,8 @@ def build_plan(rooms: list[RoomOut], edges_adj: list[dict], tier: str, capture: 
                 d["connects_to_room_id"] = o.connects_to
             openings.append(d)
         out_rooms.append({
-            "id": rid, "label": r.label or rid, "label_confidence": 0.9 if r.label else 0.3,
+            "id": rid, "label": r.label or "unlabelled", "label_confidence": round(float(r.label_confidence), 3),
+            "fixtures_seen": r.fixtures,
             "polygon": [[round(float(p[0]), 4), round(float(p[1]), 4)] for p in poly],
             "walls": walls,
             "ceiling_height": mj(r.ceiling, tier, "ceiling", factors, fl),

@@ -48,7 +48,7 @@ def input_hash(capture_dir: str) -> str:
 def run(capture_dir: str, out: str = "results", tier: str = "auto", drift_correction: str = "on",
         device: str = "auto", depth_model: str = "small", no_cache: bool = False, damage: bool = True,
         fps: float = 4.0, max_frames: int = 1200, room_seeds: str = "hmaxima",
-        drift_datum: str = "robust", legacy: bool = False):
+        drift_datum: str = "robust", legacy: bool = False, label_rooms: bool = False):
     """Produce plan.json, plan.svg, plan.png and timing.json from ONE capture folder."""
     from floorplan.geometry.assemble import build_plan, validate
     from floorplan.geometry.stitch import adjacency_from_placement
@@ -72,6 +72,31 @@ def run(capture_dir: str, out: str = "results", tier: str = "auto", drift_correc
     else:
         from floorplan.tiers.photo import run_photo
         rooms, edges = run_photo(capture_dir, depth_size=depth_model, device=device, use_cache=not no_cache, log=log)
+
+    if label_rooms:
+        t0 = time.time()
+        try:
+            from floorplan.damage.rooms import label_rooms as _label
+            if tier == "lidar":
+                from floorplan.geometry.cloud import Grid
+                g, lab, frames = aux.get("grid"), aux.get("labels"), aux.get("frames") or []
+                def frames_for(room):
+                    if g is None or lab is None or not frames:
+                        return []
+                    idx = int(room.key.split("_")[0]) if room.key.split("_")[0].isdigit() else 0
+                    out = []
+                    for f in frames:
+                        i, j = g.to_cell(f.pose[0, 3], f.pose[1, 3])
+                        if 0 <= i < lab.shape[0] and 0 <= j < lab.shape[1] and lab[i, j] == idx:
+                            out.append(f)
+                    return out
+            else:
+                def frames_for(room):
+                    return getattr(room, "frames", [])
+            _label(rooms, frames_for, device=device)
+        except Exception as e:
+            log["label_error"] = f"{type(e).__name__}: {e}"
+        log["label_s"] = round(time.time() - t0, 2)
 
     damage_regions = []
     if damage:
