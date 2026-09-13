@@ -21,6 +21,10 @@ dependencies = [
   "exifread",
   "huggingface_hub",
   "shapely",
+  "pillow-heif",
+  "transformers",
+  "safetensors",
+  "pandas",
 ]
 
 [project.optional-dependencies]
