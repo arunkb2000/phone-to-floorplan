@@ -1,0 +1,54 @@
+capture: single_scan_floor_only
+method: single-frame reference; see the docstring of scripts/make_reference_gt.py
+independent_of:
+- poses
+- pose graph
+- drift correction
+- multi-frame fusion
+- room segmentation
+- all floorplan geometry modules
+not_independent_of:
+- the LiDAR sensor's own range accuracy
+frames_used: 12
+frames_scanned: 228
+ceiling_height: []
+wall_to_wall: []
+opening_width:
+- value: 0.9
+  n_frames: 7
+  spread_m: 0.08
+  sigma_m: 0.009
+per_frame:
+- frame: 2013
+  ceiling_height: 2.6691
+- frame: 2237
+  openings:
+  - 0.92
+  - 0.9
+- frame: 2261
+  openings:
+  - 0.9
+- frame: 2283
+  openings:
+  - 0.9
+- frame: 2305
+  openings:
+  - 0.94
+- frame: 2327
+  openings:
+  - 0.86
+- frame: 2372
+  openings:
+  - 0.88
+- frame: 3221
+  ceiling_height: 1.9185
+- frame: 3780
+  ceiling_height: 1.9542
+- frame: 3907
+  openings:
+  - 0.68
+- frame: 4972
+  ceiling_height: 2.1487
+- frame: 5081
+  openings:
+  - 0.64

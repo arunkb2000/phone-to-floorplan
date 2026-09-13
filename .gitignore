@@ -13,3 +13,4 @@ benchmark/captures/**/*.mp4
 benchmark/captures/**/*.mov
 benchmark/captures/**/depth/
 benchmark/captures/**/confidence/
+benchmark/captures/**/rgb/

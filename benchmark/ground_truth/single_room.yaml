@@ -1,0 +1,17 @@
+capture: single_room
+method: single-frame reference; see the docstring of scripts/make_reference_gt.py
+independent_of:
+- poses
+- pose graph
+- drift correction
+- multi-frame fusion
+- room segmentation
+- all floorplan geometry modules
+not_independent_of:
+- the LiDAR sensor's own range accuracy
+frames_used: 0
+frames_scanned: 74
+ceiling_height: []
+wall_to_wall: []
+opening_width: []
+per_frame: []

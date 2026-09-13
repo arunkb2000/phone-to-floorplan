@@ -1,0 +1,50 @@
+# Benchmark manifest. `floorplan bench` runs every row and scores it.
+#
+# The assessment supplied three LiDAR captures and no photo or video captures, and no tape access to
+# the property. What each row is, and what it can and cannot prove, is spelled out in
+# docs/report/benchmark.md and in the docstrings of the scripts that build the derived captures.
+captures:
+  - name: flatA_lidar                      # multi-room, ceilings scanned
+    path: Dataset/single_scan_with_ceiling
+    tier: lidar
+    gt: single_scan_with_ceiling.yaml
+    role: multiroom
+    variants:
+      - {suffix: "", drift: "on"}
+      - {suffix: "_driftoff", drift: "off"}
+
+  - name: flatB_lidar                      # multi-room, ceilings never scanned: the honest-interval case
+    path: Dataset/single_scan_floor_only
+    tier: lidar
+    gt: single_scan_floor_only.yaml
+    role: multiroom
+
+  - name: roomC_lidar                      # short single-space walk
+    path: Dataset/single_room
+    tier: lidar
+    gt: single_room.yaml
+    role: single
+
+  - name: flatA_lidar_repa                 # repeatability pair: disjoint frames over the same rooms
+    path: benchmark/captures/flatA_repa
+    tier: lidar
+    gt: single_scan_with_ceiling.yaml
+    role: repeat
+  - name: flatA_lidar_repb
+    path: benchmark/captures/flatA_repb
+    tier: lidar
+    gt: single_scan_with_ceiling.yaml
+    role: repeat
+    repeat_of: flatA_lidar_repa
+
+  - name: flatA_photo                      # same rooms, photo tier: 6 stills per room, EXIF only
+    path: benchmark/captures/photo_flatA
+    tier: photo
+    gt: single_scan_with_ceiling.yaml
+    role: multiroom
+
+  - name: flatA_video                      # same rooms, video tier: one walkthrough clip
+    path: benchmark/captures/video_flatA
+    tier: video
+    gt: single_scan_with_ceiling.yaml
+    role: multiroom

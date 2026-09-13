@@ -1,0 +1,134 @@
+capture: single_scan_with_ceiling
+method: single-frame reference; see the docstring of scripts/make_reference_gt.py
+independent_of:
+- poses
+- pose graph
+- drift correction
+- multi-frame fusion
+- room segmentation
+- all floorplan geometry modules
+not_independent_of:
+- the LiDAR sensor's own range accuracy
+frames_used: 42
+frames_scanned: 427
+ceiling_height:
+- value: 1.9658
+  n_frames: 8
+  spread_m: 0.0896
+  sigma_m: 0.0106
+- value: 2.3154
+  n_frames: 8
+  spread_m: 0.1612
+  sigma_m: 0.0208
+wall_to_wall: []
+opening_width:
+- value: 0.89
+  n_frames: 8
+  spread_m: 0.18
+  sigma_m: 0.0201
+- value: 0.62
+  n_frames: 5
+  spread_m: 0.06
+  sigma_m: 0.0107
+per_frame:
+- frame: 748
+  openings:
+  - 0.8
+- frame: 2584
+  openings:
+  - 0.58
+- frame: 2609
+  openings:
+  - 0.58
+- frame: 3511
+  openings:
+  - 0.84
+- frame: 3923
+  ceiling_height: 2.2339
+- frame: 4098
+  openings:
+  - 0.82
+  - 0.88
+- frame: 4123
+  openings:
+  - 0.9
+- frame: 4172
+  openings:
+  - 0.9
+- frame: 5219
+  ceiling_height: 2.0768
+- frame: 5325
+  ceiling_height: 1.9836
+- frame: 5348
+  ceiling_height: 2.0842
+- frame: 5371
+  ceiling_height: 1.997
+- frame: 5434
+  ceiling_height: 2.0748
+- frame: 5695
+  ceiling_height: 1.9511
+- frame: 5716
+  ceiling_height: 2.8784
+- frame: 5739
+  ceiling_height: 2.8769
+- frame: 5761
+  ceiling_height: 2.8944
+  openings:
+  - 0.62
+- frame: 5784
+  ceiling_height: 2.4451
+- frame: 5809
+  ceiling_height: 2.6406
+- frame: 5873
+  ceiling_height: 2.14
+- frame: 5896
+  ceiling_height: 1.9987
+- frame: 5937
+  ceiling_height: 2.1441
+- frame: 6052
+  ceiling_height: 1.9091
+- frame: 6072
+  ceiling_height: 1.9595
+- frame: 6134
+  ceiling_height: 2.2192
+- frame: 6156
+  ceiling_height: 2.5386
+- frame: 6178
+  ceiling_height: 2.6636
+- frame: 6199
+  ceiling_height: 2.3089
+- frame: 6219
+  ceiling_height: 2.2737
+- frame: 6239
+  ceiling_height: 2.3673
+- frame: 6280
+  ceiling_height: 2.3804
+- frame: 6571
+  ceiling_height: 2.3219
+- frame: 6615
+  ceiling_height: 1.9293
+- frame: 7889
+  openings:
+  - 2.16
+- frame: 8497
+  ceiling_height: 2.9619
+- frame: 8518
+  ceiling_height: 2.9589
+- frame: 8668
+  openings:
+  - 0.64
+- frame: 8716
+  openings:
+  - 0.98
+- frame: 8740
+  ceiling_height: 1.9721
+  openings:
+  - 0.94
+- frame: 8763
+  openings:
+  - 1.04
+- frame: 8829
+  openings:
+  - 0.62
+- frame: 9438
+  ceiling_height: 2.3723

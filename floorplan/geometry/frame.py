@@ -23,16 +23,19 @@ def backproject(depth: np.ndarray, K: np.ndarray, stride: int = 1) -> np.ndarray
     return pts
 
 
-def normals_from_grid(P: np.ndarray) -> np.ndarray:
-    """Normals via central differences on the organised grid. Unit vectors, NaN where undefined."""
+def normals_from_grid(P: np.ndarray, k: int = 4) -> np.ndarray:
+    """Normals via central differences with a ±k pixel stencil (noise-robust). Unit vectors, NaN where undefined."""
     dx = np.full_like(P, np.nan)
     dy = np.full_like(P, np.nan)
-    dx[:, 1:-1] = P[:, 2:] - P[:, :-2]
-    dy[1:-1, :] = P[2:, :] - P[:-2, :]
+    dx[:, k:-k] = P[:, 2 * k:] - P[:, :-2 * k]
+    dy[k:-k, :] = P[2 * k:, :] - P[:-2 * k, :]
     n = np.cross(dx, dy)
     nn = np.linalg.norm(n, axis=-1, keepdims=True)
     with np.errstate(invalid="ignore", divide="ignore"):
         n = n / nn
+    # orient every normal toward the camera (origin): the visible side satisfies n·p < 0
+    flip = np.sum(n * P, axis=-1) > 0
+    n[flip] *= -1
     return n
 
 
@@ -52,7 +55,7 @@ def ransac_plane(pts: np.ndarray, normals: np.ndarray | None, axis: np.ndarray, 
     if len(pts) < min_inliers:
         return None
     if normals is not None:
-        cosang = np.abs(normals @ axis)
+        cosang = normals @ axis          # normals are oriented toward the camera, so the sign matters
         cand = pts[cosang > np.cos(np.radians(max_angle_deg))]
     else:
         cand = pts
@@ -195,7 +198,7 @@ def analyse_frame(P_cam: np.ndarray, *, up_hint: np.ndarray, seed: int = 0, dept
         # farthest strongly supported peak = the room wall (nearer peaks are furniture)
         h, e = np.histogram(proj, bins=int(np.ceil(proj.max() / 0.05)) + 1, range=(0, proj.max() + 0.05))
         h = np.convolve(h, np.ones(3) / 3, mode="same")
-        peak_min = max(60, 0.15 * h.max())
+        peak_min = max(60, 0.4 * h.max(), 0.02 * len(pts))
         idx = np.where(h >= peak_min)[0]
         if len(idx) == 0:
             continue
@@ -205,7 +208,7 @@ def analyse_frame(P_cam: np.ndarray, *, up_hint: np.ndarray, seed: int = 0, dept
         lo, hi = e[far[0]], e[far[-1] + 1]
         inl = q[(proj_all := (q @ axis)) >= lo - 0.05]
         inl = inl[(inl @ axis) <= hi + 0.05]
-        if len(inl) < 100:
+        if len(inl) < max(100, 0.02 * len(pts)):
             continue
         n, d, rms = fit_plane(inl)
         if n @ (-axis) < 0:
@@ -269,9 +272,10 @@ def best_rotation(g: "FrameGeom", expected_view_xy: np.ndarray) -> int:
 def wall_uz(P: np.ndarray, direction: str, dist: float, cam_h: float):
     """Split a frame's points w.r.t. the wall plane at `dist` along `direction`.
 
-    Returns (on_u, on_z, cross_u, cross_z, lo, hi): on-wall points and, for points BEHIND the wall,
-    the (u, z) where the camera ray crosses the wall plane. u is the lateral coordinate in the frame's
-    Manhattan frame (x for y-walls, y for x-walls), z is height above the floor.
+    Returns dict(on_u, on_z, cross_u, cross_z, near_u, near_z): on-wall points, ray crossings (u, z) of
+    points BEHIND the wall plane, and NEAR points (occluders in front of the wall) projected along
+    their ray onto the wall plane. u is the lateral coordinate in the frame's Manhattan frame
+    (x for y-walls, y for x-walls) relative to the camera; z is height above the floor.
     """
     axis = DIRS[direction]
     lat_axis = np.array([0, 1.0, 0]) if abs(axis[0]) > 0.5 else np.array([1.0, 0, 0])
@@ -283,19 +287,29 @@ def wall_uz(P: np.ndarray, direction: str, dist: float, cam_h: float):
     ch = cam_h if np.isfinite(cam_h) else 1.4
     on = np.abs(a - dist) <= 0.12
     behind = a > dist + 0.25
-    on_u, on_z = Q[on] @ lat_axis, Q[on][:, 2] + ch
+    near = (a < dist - 0.25) & (a > 0.3)
+    out = {"on_u": Q[on] @ lat_axis, "on_z": Q[on][:, 2] + ch}
     t = dist / a[behind]
     cross = Q[behind] * t[:, None]
-    cross_u, cross_z = cross @ lat_axis, cross[:, 2] + ch
-    return on_u, on_z, cross_u, cross_z
+    out["cross_u"], out["cross_z"] = cross @ lat_axis, cross[:, 2] + ch
+    t = dist / a[near]
+    npr = Q[near] * t[:, None]
+    out["near_u"], out["near_z"] = npr @ lat_axis, npr[:, 2] + ch
+    return out
 
 
-def openings_from_uz(on_u, on_z, cross_u, cross_z, *, bin_m: float = 0.05, min_w: float = 0.55,
-                     max_w: float = 1.4, min_support: int = 6):
-    """Holes in a wall from on-wall (u,z) samples and ray crossings (u,z) of points behind the wall."""
+def openings_from_uz(uz: dict, *, bin_m: float = 0.05, min_w: float = 0.55, max_w: float = 1.4,
+                     min_support: int = 6, u_range: tuple | None = None):
+    """Holes in a wall from (u, z) samples: on-wall points, ray crossings of points behind the wall,
+    and near occluders projected onto the wall. Doors: floor-touching gaps; windows: elevated gaps,
+    detected from crossings (monocular/LiDAR through glass) or from a no-return hole (LiDAR glass)."""
+    on_u, on_z = uz["on_u"], uz["on_z"]
     if len(on_u) < 100:
         return []
-    lo, hi = np.percentile(on_u, 1), np.percentile(on_u, 99)
+    if u_range is None:
+        lo, hi = np.percentile(on_u, 1), np.percentile(on_u, 99)
+    else:
+        lo, hi = u_range
     nb = int(np.ceil((hi - lo) / bin_m)) + 1
     if nb < 4:
         return []
@@ -303,7 +317,9 @@ def openings_from_uz(on_u, on_z, cross_u, cross_z, *, bin_m: float = 0.05, min_w
     nz = int(np.ceil(3.2 / zb))
     rng = [[lo, lo + nb * bin_m], [0, nz * zb]]
     Go, _, _ = np.histogram2d(on_u, on_z, bins=[nb, nz], range=rng)
-    Gb, _, _ = np.histogram2d(cross_u, cross_z, bins=[nb, nz], range=rng)
+    Gb, _, _ = np.histogram2d(uz["cross_u"], uz["cross_z"], bins=[nb, nz], range=rng)
+    Gn, _, _ = np.histogram2d(uz["near_u"], uz["near_z"], bins=[nb, nz], range=rng)
+    col_ref = np.median(Go.sum(1)[Go.sum(1) > 0]) if (Go.sum(1) > 0).any() else 1.0   # typical on-wall column
     out = []
 
     def runs(mask):
@@ -317,42 +333,113 @@ def openings_from_uz(on_u, on_z, cross_u, cross_z, *, bin_m: float = 0.05, min_w
             yield i, j
             i = j + 1
 
-    def edge_refine(i, j):
-        # fractional edges from the balance of behind vs on-wall in the boundary bins
+    def halfmax_edges(i, j, o):
+        """Sub-bin edges from where the on-wall column profile crosses half of its plateau."""
+        left = o[max(0, i - 14):max(0, i - 3)]; right = o[j + 4:j + 15]
+        pl = np.median(left) if len(left) else np.nan
+        pr = np.median(right) if len(right) else np.nan
         u0 = lo + i * bin_m; u1 = lo + (j + 1) * bin_m
+        if np.isfinite(pl) and pl > 0:
+            k = i
+            while k - 1 >= 0 and o[k - 1] < 0.5 * pl:
+                k -= 1
+            if k - 1 >= 0 and o[k - 1] != o[k]:
+                frac = (0.5 * pl - o[k]) / (o[k - 1] - o[k])      # 0 at column k, 1 at column k-1
+                u0 = lo + k * bin_m + bin_m * (0.5 - frac)
+            else:
+                u0 = lo + k * bin_m
+        if np.isfinite(pr) and pr > 0:
+            k = j
+            while k + 1 < nb and o[k + 1] < 0.5 * pr:
+                k += 1
+            if k + 1 < nb and o[k + 1] != o[k]:
+                frac = (0.5 * pr - o[k]) / (o[k + 1] - o[k])
+                u1 = lo + (k + 1) * bin_m - bin_m * (0.5 - frac)
+            else:
+                u1 = lo + (k + 1) * bin_m
         return u0, u1
 
+    def refine(i, j, b, o):
+        return halfmax_edges(i, j, o)
+
+    def emit(i, j, b, o, band_lo, force_type=None):
+        u0, u1 = refine(i, j, b, o)
+        width = u1 - u0
+        col = Gb[i:j + 1].sum(0)
+        zs = np.where(col >= 2)[0]
+        top = float((zs.max() + 1) * zb) if len(zs) else np.nan
+        bottom = float(zs.min() * zb) if len(zs) else np.nan
+        below_on = Go[i:j + 1, :int(0.6 / zb)].sum() / max(j - i + 1, 1)
+        typ = force_type or ("window" if below_on > 0.25 * col_ref * (0.6 / 3.2) * 4 else "door")
+        if typ == "door":
+            bottom = 0.0
+        return dict(type=typ, u0=float(u0), u1=float(u1), width=float(width), top=top, bottom=bottom,
+                    support=int(b[i:j + 1].sum()))
+
+    # 1) floor-touching gaps with crossings: doors (or passages)
     zsel = slice(int(0.3 / zb), int(1.6 / zb))
-    b = Gb[:, zsel].sum(1); o = Go[:, zsel].sum(1)
+    b = Gb[:, zsel].sum(1); o = Go[:, zsel].sum(1); n = Gn[:, zsel].sum(1)
     hole = (b >= min_support) & (b > 2.0 * o)
     for i, j in runs(hole):
-        width = (j - i + 1) * bin_m
-        u0, u1 = edge_refine(i, j)
-        if min_w <= width <= max_w and (Go[:i, zsel].sum() + Go[j + 1:, zsel].sum()) > 20:
-            col = Gb[i:j + 1].sum(0)
-            zs = np.where(col >= 2)[0]
-            top = float((zs.max() + 1) * zb) if len(zs) else np.nan
-            bottom = float(zs.min() * zb) if len(zs) else np.nan
-            typ = "door" if (np.isfinite(bottom) and bottom <= 0.35) else "window"
-            out.append(dict(type=typ, u0=float(u0), u1=float(u1), width=float(width), top=top, bottom=bottom,
-                            support=int(b[i:j + 1].sum())))
+        d = emit(i, j, b, o, 0.3)
+        if min_w <= d["width"] <= max_w * 1.6 and (Go[:i, zsel].sum() + Go[j + 1:, zsel].sum()) > 20:
+            out.append(d)
+    # 2) elevated gaps: windows from crossings
     zsel2 = slice(int(0.9 / zb), int(1.9 / zb))
-    b2 = Gb[:, zsel2].sum(1); o2 = Go[:, zsel2].sum(1)
+    b2 = Gb[:, zsel2].sum(1); o2 = Go[:, zsel2].sum(1); n2 = Gn[:, zsel2].sum(1)
     below = Go[:, :int(0.7 / zb)].sum(1)
     hole2 = (b2 >= min_support) & (b2 > 2.0 * o2) & (below >= 2)
     for i, j in runs(hole2):
+        d = emit(i, j, b2, o2, 0.9, force_type="window")
+        if 0.4 <= d["width"] <= 3.0 and not any(abs(0.5 * (d["u0"] + d["u1"]) - 0.5 * (q["u0"] + q["u1"])) < 0.5 for q in out):
+            out.append(d)
+    # 3) elevated no-return gaps (LiDAR through glass): no on-wall, no near occluder, wall below and beside
+    quiet = (o2 <= 0.05 * col_ref) & (n2 <= 1) & (below >= 0.1 * col_ref)
+    for i, j in runs(quiet):
         width = (j - i + 1) * bin_m
-        u0, u1 = edge_refine(i, j)
-        if 0.4 <= width <= 3.0 and not any(abs(0.5 * (u0 + u1) - 0.5 * (q["u0"] + q["u1"])) < 0.5 for q in out):
-            col = Gb[i:j + 1].sum(0)
-            zs = np.where(col >= 2)[0]
-            top = float((zs.max() + 1) * zb) if len(zs) else np.nan
-            bottom = float(zs.min() * zb) if len(zs) else np.nan
-            out.append(dict(type="window", u0=float(u0), u1=float(u1), width=float(width), top=top, bottom=bottom,
-                            support=int(b2[i:j + 1].sum())))
+        if not (0.4 <= width <= 3.0):
+            continue
+        side_ok = (i > 0 and o2[i - 1] > 0.1 * col_ref) or (j + 1 < nb and o2[j + 1] > 0.1 * col_ref)
+        if not side_ok:
+            continue
+        u0, u1 = lo + i * bin_m, lo + (j + 1) * bin_m
+        if any(abs(0.5 * (u0 + u1) - 0.5 * (q["u0"] + q["u1"])) < 0.5 for q in out):
+            continue
+        colz = Go[i:j + 1].sum(0)
+        zs = np.where(colz <= 0.05 * col_ref / nz * 4)[0]
+        zs = zs[(zs >= int(0.5 / zb)) & (zs < int(2.4 / zb))]
+        bottom = float(zs.min() * zb) if len(zs) else 0.9
+        top = float((zs.max() + 1) * zb) if len(zs) else 2.0
+        out.append(dict(type="window", u0=float(u0), u1=float(u1), width=float(width), top=top, bottom=bottom,
+                        support=int(below[i:j + 1].sum()), no_return=True))
+    # 4) floor-touching no-return gaps (door to the outside / unscanned space): no wall, no occluder,
+    #    wall present on both sides and above the door head
+    quiet_d = (o <= 0.05 * col_ref) & (n <= 1) & (b <= 1)
+    for i, j in runs(quiet_d):
+        width = (j - i + 1) * bin_m
+        if not (min_w <= width <= max_w):
+            continue
+        side_l = o[max(0, i - 6):i].max() if i > 0 else 0
+        side_r = o[j + 1:j + 7].max() if j + 1 < nb else 0
+        if not (side_l > 0.12 * col_ref and side_r > 0.12 * col_ref):
+            continue
+        above = Go[i:j + 1, int(2.2 / zb):int(3.0 / zb)].sum() / max(j - i + 1, 1)
+        u0, u1 = halfmax_edges(i, j, o)
+        width = u1 - u0
+        if not (min_w <= width <= max_w):
+            continue
+        if any(abs(0.5 * (u0 + u1) - 0.5 * (q["u0"] + q["u1"])) < 0.5 for q in out):
+            continue
+        colz = Go[i:j + 1].sum(0)
+        zs = np.where(colz > 0.05 * col_ref / nz * 4)[0]
+        zs = zs[zs >= int(1.6 / zb)]
+        top = float(zs.min() * zb) if len(zs) else 2.0
+        out.append(dict(type="door", u0=float(u0), u1=float(u1), width=float(width), top=top, bottom=0.0,
+                        support=int(o[i - 1] + o[j + 1]), no_return=True, weak=(above < 0.05 * col_ref)))
+    if u_range is not None:
+        out = [d for d in out if d["u1"] > lo + 0.05 and d["u0"] < hi - 0.05]
     return out
 
 
 def wall_openings(P: np.ndarray, direction: str, dist: float, cam_h: float, **kw):
-    on_u, on_z, cross_u, cross_z = wall_uz(P, direction, dist, cam_h)
-    return openings_from_uz(on_u, on_z, cross_u, cross_z, **kw)
+    return openings_from_uz(wall_uz(P, direction, dist, cam_h), **kw)

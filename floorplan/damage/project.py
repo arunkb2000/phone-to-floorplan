@@ -3,9 +3,10 @@
 UV convention (shared with the geometry module through ``plane_basis``):
   * wall:    u = horizontal direction along the wall = normalize(z_up x n), v = up.
   * floor / ceiling: u = world x, v = world y (projected into the plane).
-  * origin  = the plane point closest to the world origin (-d * n) unless the Plane carries an
-    ``origin`` attribute (a 3-vector), which then wins. For walls ``v`` is measured from
-    ``floor_z`` so that v reads as height above the floor.
+  * origin  = the plane point closest to the world origin (-d * n), shifted for walls so that
+    v == 0 at z == ``floor_z`` (v reads as height above the floor). If the Plane carries an
+    ``origin`` attribute (a 3-vector, e.g. the wall's start corner at floor level) it is used
+    as-is and ``floor_z`` is ignored.
 """
 from __future__ import annotations
 
@@ -29,10 +30,8 @@ def plane_basis(plane: Plane, floor_z: float = 0.0):
     """Return (origin, u, v) for ``plane``; uv = ((p - origin)·u, (p - origin)·v)."""
     n = _unit(np.asarray(plane.normal, dtype=np.float64))
     origin = getattr(plane, "origin", None)
-    if origin is None:
-        origin = -float(plane.d) * n
-    else:
-        origin = np.asarray(origin, dtype=np.float64)
+    explicit = origin is not None
+    origin = np.asarray(origin, dtype=np.float64) if explicit else -float(plane.d) * n
     if plane.kind == "wall":
         u = _unit(np.cross(Z_UP, n))
         if np.linalg.norm(u) < 1e-6:  # degenerate: "wall" with vertical normal
@@ -40,8 +39,8 @@ def plane_basis(plane: Plane, floor_z: float = 0.0):
         v = _unit(np.cross(n, u))
         if v[2] < 0:
             v = -v
-        # measure v from the floor: shift origin along v so that v == 0 at z == floor_z
-        if abs(v[2]) > 1e-6:
+        # derived origin only: shift along v so that v == 0 at z == floor_z
+        if not explicit and abs(v[2]) > 1e-6:
             origin = origin + v * ((floor_z - origin[2]) / v[2])
     else:
         x_axis = np.array([1.0, 0.0, 0.0])

@@ -9,8 +9,8 @@ from __future__ import annotations
 import numpy as np
 
 from floorplan.core.types import Frame, Measurement, Opening, RoomEstimate
-from floorplan.geometry.frame import (FrameGeom, analyse_frame, backproject, best_rotation, rotate_geom,
-                                      view_dir_xy, wall_openings)
+from floorplan.geometry.frame import (FrameGeom, analyse_frame, backproject, best_rotation, openings_from_uz,
+                                      rotate_geom, view_dir_xy, wall_openings, wall_uz)
 
 TIER_SIGMA_FLOOR = {"photo": 0.035, "video": 0.02, "lidar": 0.004}   # relative σ floor per wall length
 TIER_DEPTH_REL_ERR = {"photo": 0.05, "video": 0.045, "lidar": 0.01}
@@ -107,7 +107,7 @@ def _fuse(vals, sigs, floor_abs=0.0):
 
 
 def fuse_room(frames: list[Frame], geoms: list[FrameGeom | None], key: str, label: str, tier: str,
-              cam_xy: list | None = None) -> RoomEstimate:
+              cam_xy: list | None = None, expected: dict | None = None) -> RoomEstimate:
     """geoms must already be oriented into the room frame. cam_xy: optional known camera positions
     (LiDAR) as (x, y) per frame in the room frame (any origin; walls are then absolute)."""
     floor_rel = TIER_SIGMA_FLOOR[tier]
@@ -118,6 +118,17 @@ def fuse_room(frames: list[Frame], geoms: list[FrameGeom | None], key: str, labe
             h = g.cam_height + g.ceil_above
             ch_v.append(h); ch_s.append(g.depth_rel_err * h * 0.7 + 0.008)
     ch, chs, chn = _fuse(ch_v, ch_s)
+    ceiling_method = "floor–ceiling plane distance"
+    if not np.isfinite(ch):
+        # same person, same hand height: combine camera height (frames seeing the floor) with the
+        # ceiling clearance (frames seeing the ceiling); extra σ for the hand-height variation
+        hs = [g.cam_height for g in geoms if g is not None and np.isfinite(g.cam_height)]
+        cs = [g.ceil_above for g in geoms if g is not None and np.isfinite(g.ceil_above)]
+        if hs and cs:
+            ch = float(np.median(hs) + np.median(cs))
+            chs = float(np.hypot(0.05, 0.03 * ch)); chn = min(len(hs), len(cs))
+            ceiling_method = "median camera height + median ceiling clearance (different frames)"
+            ch_v = [ch]
     chs = max(chs, floor_rel * 0.5 * (ch if np.isfinite(ch) else 2.7))
     spread = float(np.std(ch_v)) if len(ch_v) > 1 else 0.0
 
@@ -138,10 +149,14 @@ def fuse_room(frames: list[Frame], geoms: list[FrameGeom | None], key: str, labe
         for g, c in zip(geoms, cam_xy):
             if g is None or c is None:
                 continue
-            for d, w in g.walls.items():
+            for d, w in list(g.walls.items()):
                 ax = 0 if d[1] == "x" else 1
                 sgn = 1 if d[0] == "+" else -1
-                absw[d].append((c[ax] + sgn * w["dist"], g.depth_rel_err * w["dist"] + w["rms"] + 0.005))
+                coord = c[ax] + sgn * w["dist"]
+                if expected is not None and d in expected and abs(coord - expected[d]) > 0.25:
+                    del g.walls[d]          # a wall of another room seen through a door: not ours
+                    continue
+                absw[d].append((coord, g.depth_rel_err * w["dist"] + w["rms"] + 0.005))
         L = {}
         for axis, (pos, neg) in enumerate((("+x", "-x"), ("+y", "-y"))):
             p = _fuse([v for v, s in absw[pos]], [s for v, s in absw[pos]])
@@ -190,7 +205,7 @@ def fuse_room(frames: list[Frame], geoms: list[FrameGeom | None], key: str, labe
         key=key, label=label,
         length_x=Measurement(lx, lxs, src_x, "wall-pair distances fused over frames", lxn),
         length_y=Measurement(ly, lys, src_y, "wall-pair distances fused over frames", lyn),
-        ceiling=Measurement(ch, chs, "measured" if chn else "prior", "floor–ceiling plane distance", chn),
+        ceiling=Measurement(ch, chs, "measured" if chn else "prior", ceiling_method, chn),
         n_frames=sum(g is not None for g in geoms), coverage=min(1.0, n_walls_seen / 4.0),
         warnings=warnings, ceiling_spread=spread,
     )
@@ -206,7 +221,51 @@ def fuse_room(frames: list[Frame], geoms: list[FrameGeom | None], key: str, labe
     return room
 
 
+def _accumulated_openings(frames, geoms, room: RoomEstimate, cam_xy, x0, y0) -> list[Opening]:
+    """LiDAR: accumulate (u, z) samples of every frame per wall in room coordinates, detect once."""
+    Lx, Ly = room.length_x.value, room.length_y.value
+    acc = {L: {k: [] for k in ("on_u", "on_z", "cross_u", "cross_z", "near_u", "near_z")} for L in "ABCD"}
+    for i, (fr, g) in enumerate(zip(frames, geoms)):
+        if g is None or g.P is None or cam_xy[i] is None:
+            continue
+        cx, cy = cam_xy[i][0] - x0, cam_xy[i][1] - y0
+        for d, w in g.walls.items():
+            letter = LETTER[d]
+            uz = wall_uz(g.P, d, w["dist"], g.cam_height)
+            if letter == "A":
+                f = lambda u: cx + u
+            elif letter == "C":
+                f = lambda u: Lx - (cx + u)
+            elif letter == "B":
+                f = lambda u: Ly - (cy + u)
+            else:
+                f = lambda u: cy + u
+            for k in ("on", "cross", "near"):
+                acc[letter][k + "_u"].append(f(uz[k + "_u"])); acc[letter][k + "_z"].append(uz[k + "_z"])
+    out = []
+    for letter, a in acc.items():
+        if not a["on_u"]:
+            continue
+        uz = {k: (np.concatenate(v) if v else np.array([])) for k, v in a.items()}
+        L = Lx if letter in "AC" else Ly
+        for op in openings_from_uz(uz, bin_m=0.02, min_support=15, u_range=(0.0, L)):
+            u0, u1 = max(0.0, op["u0"]), min(L, op["u1"])
+            n_sup = op["support"]
+            o = Opening(wall_id=letter, type=op["type"],
+                        offset=Measurement(u0, 0.015, "measured", "accumulated ray crossings through the wall plane", n_sup),
+                        width=Measurement(u1 - u0, 0.012, "measured", "accumulated hole width in wall point density", n_sup),
+                        confidence=min(0.95, 0.5 + 0.0005 * n_sup))
+            if np.isfinite(op["top"]):
+                o.height = Measurement(op["top"] - (op["bottom"] if np.isfinite(op["bottom"]) else 0.0), 0.06, "measured", "hole vertical extent", n_sup)
+            if op["type"] == "window" and np.isfinite(op["bottom"]):
+                o.sill = Measurement(op["bottom"], 0.06, "measured", "hole bottom", n_sup)
+            out.append(o)
+    return out
+
+
 def _room_openings(frames, geoms, room: RoomEstimate, cam_xy, x0, y0) -> list[Opening]:
+    if cam_xy is not None:
+        return _accumulated_openings(frames, geoms, room, cam_xy, x0, y0)
     Lx, Ly = room.length_x.value, room.length_y.value
     cands = []
     corner_i = 0

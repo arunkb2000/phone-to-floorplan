@@ -8,8 +8,20 @@ from floorplan.core.types import Plane
 from floorplan.damage.detect import DamageDetector, box_iou, weights_available
 from floorplan.damage.project import merge_regions, regions_from_frame
 
-STAIN_BOX = (150, 120, 330, 300)   # x0, y0, x1, y1
-CRACK_BOX = (450, 90, 610, 400)
+STAIN_BOX = (150, 120, 330, 300)   # drawing region for the blotch (x0, y0, x1, y1)
+CRACK_BOX = (450, 90, 610, 400)    # drawing region for the crack polyline
+
+
+def tight_boxes(img: np.ndarray) -> dict:
+    """Tight pixel bboxes of the drawn damage: brown pixels -> water_stain, dark non-brown -> crack."""
+    r, b = img[..., 0].astype(int), img[..., 2].astype(int)
+    brown = (r - b) > 30
+    dark = (img.mean(-1) < 100) & ~brown
+    out = {}
+    for cls, m in (("water_stain", brown), ("crack", dark)):
+        ys, xs = np.where(m)
+        out[cls] = (int(xs.min()), int(ys.min()), int(xs.max()) + 1, int(ys.max()) + 1)
+    return out
 
 
 def synthetic_wall(seed: int = 0):
@@ -40,9 +52,14 @@ def synthetic_wall(seed: int = 0):
     return img
 
 
+def _best_iou(dets, boxes):
+    return max([box_iou(d["box"], boxes[d["cls"]]) for d in dets if d["cls"] in boxes] + [0.0])
+
+
 @pytest.mark.skipif(not weights_available(), reason="OWLv2 weights not downloaded yet")
 def test_owlv2_boxes_land_on_drawn_damage():
     img = synthetic_wall()
+    boxes = tight_boxes(img)
     det = DamageDetector(score_threshold=0.1)
     dets = det.detect(img)
     assert dets, "no detections at all"
@@ -51,15 +68,17 @@ def test_owlv2_boxes_land_on_drawn_damage():
         x0, y0, x1, y1 = d["box"]
         assert 0 <= x0 < x1 <= W and 0 <= y0 < y1 <= H
         assert d["mask"].shape == (H, W) and d["mask"].dtype == bool and d["mask"].any()
-    best = 0.0
-    for d in dets:
-        if d["cls"] == "water_stain":
-            best = max(best, box_iou(d["box"], STAIN_BOX))
-        elif d["cls"] == "crack":
-            best = max(best, box_iou(d["box"], CRACK_BOX))
     # The box must land where the damage was drawn (guards the square-padding coordinate mapping).
+    best = _best_iou(dets, boxes)
     assert best >= 0.3, f"best IoU {best:.2f}; dets={[(d['cls'], round(d['score'], 2), d['box']) for d in dets]}"
     assert np.isfinite(det.last_inference_s)
+
+    # Portrait orientation exercises the other padding direction: rotate image and reference boxes.
+    imgT = np.ascontiguousarray(np.rot90(img))          # (x, y) -> (y, W - x)
+    boxesT = {c: (b[1], W - b[2], b[3], W - b[0]) for c, b in boxes.items()}
+    detsT = det.detect(imgT)
+    bestT = _best_iou(detsT, boxesT)
+    assert bestT >= 0.3, f"portrait best IoU {bestT:.2f}; dets={[(d['cls'], round(d['score'], 2), d['box']) for d in detsT]}"
 
 
 def _wall_grid(h=300, w=400, mpp=0.01):
@@ -149,3 +168,19 @@ def test_region_to_json_validates_against_schema():
     jsonschema.validate(js, {**schema["$defs"]["damage_region"], "$defs": schema["$defs"]})
     assert js["class"] == "hole" and js["extent"]["area_m2"]["ci_low"] <= js["extent"]["area_m2"]["value"]
     assert len(js["extent"]["bbox_uv_m"]) == 4 and js["evidence_frames"] == ["f.jpg"]
+
+
+def test_explicit_plane_origin_is_respected():
+    """Geometry passes wall origins at the wall start corner on the floor line; uv must be relative to it."""
+    pts = _wall_grid()
+    plane_id = np.zeros(pts.shape[:2], int)
+    plane = Plane(normal=np.array([1.0, 0.0, 0.0]), d=0.0, kind="wall")
+    plane.origin = np.array([0.0, 0.4, -1.0])            # u = y - 0.4, v = z + 1.0
+    mask = np.zeros(pts.shape[:2], bool)
+    h = pts.shape[0]
+    mask[h - 1 - 129:h - 1 - 99, 100:150] = True           # y in [1.0, 1.49], z in [1.0, 1.29]
+    regs = regions_from_frame([{"cls": "mold", "score": 0.5, "box": (0, 0, 1, 1), "mask": mask}],
+                              pts, plane_id, [plane], ["S"], "f", floor_z=5.0)   # floor_z ignored
+    u0, v0, u1, v1 = regs[0].bbox_uv_m
+    assert abs(u0 - 0.6) < 0.02 and abs(u1 - 1.1) < 0.02
+    assert abs(v0 - 2.0) < 0.02 and abs(v1 - 2.3) < 0.02

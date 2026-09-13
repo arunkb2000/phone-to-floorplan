@@ -1,7 +1,15 @@
-"""LiDAR-tier loader for Stray Scanner exports (and our synthetic clone of that format).
+"""LiDAR-tier loader for Stray Scanner exports (App Store, free) and our synthetic clone.
 
-Folder: camera_matrix.csv, odometry.csv (timestamp, frame, x, y, z, qx, qy, qz, qw; ARKit y-up world,
-OpenGL camera), depth/NNNNNN.png (16-bit mm, 192x256), confidence/NNNNNN.png (0/1/2), rgb.mp4 or rgb/*.jpg.
+Folder layout produced by the app:
+    camera_matrix.csv   3x3 intrinsics at the RGB resolution (1920x1440 on iPhone Pro)
+    odometry.csv        timestamp, frame, x, y, z, qx, qy, qz, qw [, fx, fy, cx, cy, ...]
+                        camera-to-world in ARKit's world (y up), OpenGL camera (x right, y up, -z fwd)
+    depth/NNNNNN.png    16-bit, millimetres, 256x192
+    confidence/NNNNNN.png  8-bit, 0 low / 1 medium / 2 high
+    rgb.mp4             H.264, RGB resolution, one frame per depth frame
+
+RGB is decoded lazily: the geometry runs on depth alone, and only the frames used for damage
+detection are pulled out of the video. That is the difference between a 15 s and a 4 min run.
 """
 from __future__ import annotations
 
@@ -14,9 +22,14 @@ from PIL import Image
 
 from floorplan.core.types import Frame
 
-# ARKit world is y-up; we work z-up. Camera: OpenGL (x right, y up, z back) → OpenCV (x right, y down, z fwd).
-_R_WORLD = np.array([[1, 0, 0], [0, 0, -1], [0, 1, 0]], dtype=np.float64)   # y-up → z-up
-_R_CAM = np.diag([1.0, -1.0, -1.0])                                             # GL cam → CV cam
+# ARKit world is y-up; we work z-up.
+_R_WORLD = np.array([[1, 0, 0], [0, 0, -1], [0, 1, 0]], dtype=np.float64)   # y-up -> z-up
+# Stray Scanner writes the rotation already in OpenCV camera axes (x right, y down, z forward), not
+# ARKit's OpenGL ones. Verified empirically on the sample captures: with the OpenGL flip the floor
+# smears over 3 m of height; without it the vertical-normal points collapse into a single 2 cm bin
+# 1.47 m below the ARKit origin, which is the phone's carry height. scripts/check_convention.py
+# reproduces that comparison.
+_R_CAM = np.eye(3)
 
 
 def _quat_to_R(qx, qy, qz, qw):
@@ -29,62 +42,126 @@ def _quat_to_R(qx, qy, qz, qw):
 
 
 def stray_pose_to_zup(x, y, z, qx, qy, qz, qw) -> np.ndarray:
-    """ARKit (y-up world, GL camera) camera-to-world → z-up world, OpenCV camera, 4x4."""
-    R = _quat_to_R(qx, qy, qz, qw)
+    """ARKit (y-up world, GL camera) camera-to-world -> z-up world, OpenCV camera, as a 4x4."""
     T = np.eye(4)
-    T[:3, :3] = _R_WORLD @ R @ _R_CAM
+    T[:3, :3] = _R_WORLD @ _quat_to_R(qx, qy, qz, qw) @ _R_CAM
     T[:3, 3] = _R_WORLD @ np.array([x, y, z], dtype=np.float64)
     return T
 
 
 def is_stray_capture(capture_dir: str) -> bool:
-    return os.path.exists(os.path.join(capture_dir, "odometry.csv")) and os.path.isdir(os.path.join(capture_dir, "depth"))
+    return (os.path.exists(os.path.join(capture_dir, "odometry.csv"))
+            and os.path.isdir(os.path.join(capture_dir, "depth")))
 
 
-def load_stray_capture(capture_dir: str, every: int = 1, max_frames: int = 3000) -> list[Frame]:
-    K_rgb = np.loadtxt(os.path.join(capture_dir, "camera_matrix.csv"), delimiter=",").reshape(3, 3)
+def read_odometry(capture_dir: str) -> dict[int, tuple[float, np.ndarray]]:
     poses = {}
     with open(os.path.join(capture_dir, "odometry.csv")) as f:
         rd = csv.reader(f)
-        header = next(rd)
+        next(rd, None)
         for row in rd:
-            if not row or row[0].strip().startswith("#"):
+            if len(row) < 9 or row[0].strip().startswith("#"):
                 continue
             t, fi = float(row[0]), int(float(row[1]))
-            x, y, z, qx, qy, qz, qw = map(float, row[2:9])
-            poses[fi] = (t, stray_pose_to_zup(x, y, z, qx, qy, qz, qw))
-    depth_files = sorted(f for f in os.listdir(os.path.join(capture_dir, "depth")) if f.endswith(".png"))
-    rgb_dir = os.path.join(capture_dir, "rgb")
-    mp4 = os.path.join(capture_dir, "rgb.mp4")
-    cap = cv2.VideoCapture(mp4) if os.path.exists(mp4) and not os.path.isdir(rgb_dir) else None
+            poses[fi] = (t, stray_pose_to_zup(*(float(v) for v in row[2:9])))
+    return poses
+
+
+class RGBSource:
+    """Lazy access to rgb.mp4 (or an rgb/ folder of stills) by frame index."""
+
+    def __init__(self, capture_dir: str):
+        self.dir = os.path.join(capture_dir, "rgb")
+        self.mp4 = os.path.join(capture_dir, "rgb.mp4")
+        self._cap = None
+        self._pos = -1
+
+    @property
+    def available(self) -> bool:
+        return os.path.isdir(self.dir) or os.path.exists(self.mp4)
+
+    def get(self, fi: int, max_side: int = 1280) -> np.ndarray | None:
+        if os.path.isdir(self.dir):
+            p = os.path.join(self.dir, f"{fi:06d}.jpg")
+            if not os.path.exists(p):
+                return None
+            img = np.asarray(Image.open(p).convert("RGB"), dtype=np.uint8)
+        else:
+            if self._cap is None:
+                if not os.path.exists(self.mp4):
+                    return None
+                self._cap = cv2.VideoCapture(self.mp4)
+            if fi != self._pos + 1:
+                self._cap.set(cv2.CAP_PROP_POS_FRAMES, fi)
+            ok, bgr = self._cap.read()
+            self._pos = fi
+            if not ok:
+                return None
+            img = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
+        h, w = img.shape[:2]
+        s = min(1.0, max_side / max(h, w))
+        if s < 1.0:
+            img = cv2.resize(img, (int(round(w * s)), int(round(h * s))), interpolation=cv2.INTER_AREA)
+        return img
+
+
+def load_stray_capture(capture_dir: str, every: int = 1, max_frames: int = 4000,
+                       target_fps: float | None = None, with_rgb: bool = False) -> list[Frame]:
+    """Frames with depth (metres), confidence, intrinsics at depth resolution and z-up poses.
+
+    `target_fps` subsamples by timestamp, which is what you want on a 46 fps capture; `every`
+    subsamples by index and is used when timestamps are unavailable.
+    """
+    K_rgb = np.loadtxt(os.path.join(capture_dir, "camera_matrix.csv"), delimiter=",").reshape(3, 3)
+    poses = read_odometry(capture_dir)
+    depth_dir = os.path.join(capture_dir, "depth")
+    conf_dir = os.path.join(capture_dir, "confidence")
+    depth_files = sorted(f for f in os.listdir(depth_dir) if f.endswith(".png"))
+    if not depth_files:
+        return []
+    probe = np.asarray(Image.open(os.path.join(depth_dir, depth_files[0])))
+    dh, dw = probe.shape[:2]
+    # the depth map is the RGB frame downscaled, so the intrinsics scale with it. The RGB width is
+    # 2*cx to within a pixel on every Stray export, which is how we recover it without decoding video.
+    rgb_w, rgb_h = 2.0 * K_rgb[0, 2], 2.0 * K_rgb[1, 2]
+    K_d = K_rgb.copy()
+    K_d[0] *= dw / rgb_w
+    K_d[1] *= dh / rgb_h
+    rgb = RGBSource(capture_dir) if with_rgb else None
+
+    keep: list[str] = []
+    if target_fps is not None and len(poses) > 1:
+        ts = sorted(t for t, _ in poses.values())
+        span = ts[-1] - ts[0]
+        if span > 0:
+            step = 1.0 / target_fps
+            next_t, chosen = ts[0], set()
+            for f in depth_files:
+                fi = int(os.path.splitext(f)[0])
+                if fi not in poses:
+                    continue
+                t = poses[fi][0]
+                if t + 1e-9 >= next_t:
+                    chosen.add(f)
+                    next_t = t + step
+            keep = [f for f in depth_files if f in chosen]
+    if not keep:
+        keep = [f for i, f in enumerate(depth_files) if i % max(1, every) == 0]
+    if len(keep) > max_frames:
+        idx = np.linspace(0, len(keep) - 1, max_frames).round().astype(int)
+        keep = [keep[i] for i in sorted(set(idx.tolist()))]
+
     frames: list[Frame] = []
-    for i, df in enumerate(depth_files):
-        fi = int(os.path.splitext(df)[0])
-        if fi not in poses or (i % every):
+    for f in keep:
+        fi = int(os.path.splitext(f)[0])
+        if fi not in poses:
             continue
-        depth = np.asarray(Image.open(os.path.join(capture_dir, "depth", df)), dtype=np.float32) / 1000.0
-        cf = os.path.join(capture_dir, "confidence", df)
-        conf = np.asarray(Image.open(cf), dtype=np.uint8) if os.path.exists(cf) else np.full(depth.shape, 2, np.uint8)
-        h, w = depth.shape
-        rgb = None
-        if cap is not None:
-            cap.set(cv2.CAP_PROP_POS_FRAMES, fi)
-            ok, fr = cap.read()
-            if ok:
-                rgb = cv2.cvtColor(fr, cv2.COLOR_BGR2RGB)
-        elif os.path.isdir(rgb_dir):
-            p = os.path.join(rgb_dir, f"{fi:06d}.jpg")
-            if os.path.exists(p):
-                rgb = np.asarray(Image.open(p).convert("RGB"), dtype=np.uint8)
-        if rgb is None:
-            rgb = np.zeros((h * 2, w * 2, 3), np.uint8)
-        # K for the depth resolution (geometry works at depth res; rgb kept at its own res with K_rgb)
-        K_d = K_rgb.copy()
-        K_d[0] *= w / rgb.shape[1] if rgb.shape[1] else 1.0
-        K_d[1] *= h / rgb.shape[0] if rgb.shape[0] else 1.0
+        depth = np.asarray(Image.open(os.path.join(depth_dir, f)), dtype=np.float32) / 1000.0
+        cp = os.path.join(conf_dir, f)
+        conf = np.asarray(Image.open(cp), dtype=np.uint8) if os.path.exists(cp) else np.full(depth.shape, 2, np.uint8)
         t, T = poses[fi]
-        frames.append(Frame(path=os.path.join(capture_dir, "depth", df), rgb=rgb, K=K_d, depth=depth, conf=conf,
-                            pose=T, t=t, depth_source="lidar"))
-        if len(frames) >= max_frames:
-            break
+        img = rgb.get(fi) if rgb is not None else None
+        frames.append(Frame(path=f"{capture_dir}#{fi:06d}", rgb=img if img is not None else np.zeros((1, 1, 3), np.uint8),
+                            K=K_d, depth=depth, conf=conf, pose=T, t=t, depth_source="lidar"))
+        frames[-1].frame_index = fi
     return frames

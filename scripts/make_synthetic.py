@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """Build the synthetic Stray Scanner benchmark captures.
 
-    uv run python scripts/make_synthetic.py [--out benchmark/captures] [--fps 5] [--seed 0]
+    uv run python scripts/make_synthetic.py [--out benchmark/captures] [--fps 10] [--seed 0]
 
 Writes
   synthetic_MR1          4 rooms, drift on
@@ -17,8 +17,14 @@ import time
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 
-from floorplan.io.synthetic import (FlatSpec, RoomSpec, check_shared_doors, generate,  # noqa: E402
-                                     load_stray_csv, mirror_offset)
+from floorplan.io.synthetic import (
+    FlatSpec,
+    RoomSpec,
+    check_shared_doors,
+    generate,
+    load_stray_csv,
+    mirror_offset,
+)
 
 
 def room1() -> RoomSpec:
@@ -84,15 +90,15 @@ def folder_size(path: str) -> tuple[int, int]:
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--out", default="benchmark/captures")
-    ap.add_argument("--fps", type=float, default=5.0)
+    ap.add_argument("--fps", type=float, default=10.0)
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--noise-mm", type=float, default=8.0)
     args = ap.parse_args()
 
     jobs = [
-        ("synthetic_MR1", flat_mr1(), dict(seed=args.seed, drift=True), None),
-        ("synthetic_MR1_nodrift", flat_mr1(), dict(seed=args.seed, drift=False), "synthetic_MR1"),
-        ("synthetic_R1_repeat", flat_r1(), dict(seed=args.seed + 101, drift=True), None),
+        ("synthetic_MR1", flat_mr1(), {"seed": args.seed, "drift": True}, None),
+        ("synthetic_MR1_nodrift", flat_mr1(), {"seed": args.seed, "drift": False}, "synthetic_MR1"),
+        ("synthetic_R1_repeat", flat_r1(), {"seed": args.seed + 101, "drift": True}, None),
     ]
     results = []
     for name, flat, kw, reuse in jobs:

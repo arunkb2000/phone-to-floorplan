@@ -471,7 +471,7 @@ class _Path:
         durs = np.array([e[1] for e in self.ev])
         starts = np.concatenate([[0.0], np.cumsum(durs)])
         total = starts[-1]
-        n = int(math.floor(total * fps)) + 1
+        n = math.floor(total * fps) + 1
         t = np.arange(n) / fps
         idx = np.clip(np.searchsorted(starts, t, side="right") - 1, 0, len(self.ev) - 1)
         xy = np.zeros((n, 2))
@@ -579,7 +579,7 @@ def build_trajectory(flat: FlatSpec, fps: float, walk_speed: float, rng: np.rand
 
 # --------------------------------------------------------------------------- drift
 def apply_drift(poses: np.ndarray, rng: np.random.Generator, trans_sigma_mm: float = 1.5,
-                yaw_sigma_deg: float = 0.02, yaw_bias_deg: float = 0.004) -> np.ndarray:
+                yaw_sigma_deg: float = 0.02, yaw_bias_deg: float = 0.001) -> np.ndarray:
     """Odometry = true pose composed with an accumulated error.
 
     Per frame the yaw error random-walks (sigma `yaw_sigma_deg`) with a constant bias
@@ -651,7 +651,7 @@ def ground_truth(flat: FlatSpec) -> dict:
 def generate(flat: FlatSpec, out_dir: str, *, seed: int = 0, drift: bool = True,
              noise_mm: float = 8.0, fps: float = 10.0, walk_speed: float = 0.5,
              drift_trans_sigma_mm: float = 1.5, drift_yaw_sigma_deg: float = 0.02,
-             drift_yaw_bias_deg: float = 0.004, reuse_frames_from: str | None = None,
+             drift_yaw_bias_deg: float = 0.001, reuse_frames_from: str | None = None,
              verbose: bool = True) -> dict:
     """Render a Stray Scanner style dataset into `out_dir`; returns the ground truth dict.
 
@@ -674,8 +674,7 @@ def generate(flat: FlatSpec, out_dir: str, *, seed: int = 0, drift: bool = True,
     for sub in ("depth", "confidence", "rgb"):
         os.makedirs(os.path.join(out_dir, sub), exist_ok=True)
     with open(os.path.join(out_dir, "camera_matrix.csv"), "w") as f:
-        for row in K_RGB:
-            f.write(", ".join(f"{v:.6f}" for v in row) + "\n")
+        f.writelines(", ".join(f"{v:.6f}" for v in row) + "\n" for row in K_RGB)
     write_stray_csv(os.path.join(out_dir, "odometry.csv"), t, poses_odom)
     write_stray_csv(os.path.join(out_dir, "traj_gt.csv"), t, poses_true)
 

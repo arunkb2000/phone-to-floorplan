@@ -136,77 +136,211 @@ def frame_geom_world(fr: Frame, yaw: float, seed: int = 0) -> FrameGeom | None:
                          R_override=R, yaw_override=yaw)
 
 
-def segment_rooms(frames: list[Frame], geoms: list[FrameGeom | None], cams: np.ndarray):
-    """Split the walk into room visits using the camera position against the running room box."""
-    n = len(frames)
-    seg = np.full(n, -1)
-    boxes = []   # per segment: dict with fused wall coords
-    cur = None; cur_id = -1; outside = 0
-    def obs(i):
-        g = geoms[i]; c = cams[i]
-        o = {}
+def wall_observations(geoms, cams):
+    """Absolute wall observations from oriented frames with known camera positions."""
+    obs = []
+    for i, (g, c) in enumerate(zip(geoms, cams)):
         if g is None:
-            return o
+            continue
         for d, w in g.walls.items():
             ax = 0 if d[1] == "x" else 1
-            o[d] = c[ax] + (1 if d[0] == "+" else -1) * w["dist"]
-        return o
-    def inside(box, c, margin=0.15):
-        for d, v in box.items():
-            if not np.isfinite(v):
-                continue
-            ax = 0 if d[1] == "x" else 1
-            if d[0] == "+" and c[ax] > v + margin:
-                return False
-            if d[0] == "-" and c[ax] < v - margin:
-                return False
-        return True
+            sgn = 1 if d[0] == "+" else -1
+            lat_ax = 1 - ax
+            obs.append(dict(frame=i, dir=d, axis=ax, coord=float(c[ax] + sgn * w["dist"]),
+                            lat_lo=float(c[lat_ax] + w["lat_min"]), lat_hi=float(c[lat_ax] + w["lat_max"]),
+                            dist=float(w["dist"]), rms=float(w["rms"]), n=int(w["n"])))
+    return obs
+
+
+def global_lines(obs, axis, bin_m=0.04, min_frames=6):
+    """1-D clustering of wall coordinates along one axis → list of dict(coord, support, spans)."""
+    o = [x for x in obs if x["axis"] == axis]
+    if not o:
+        return []
+    v = np.array([x["coord"] for x in o])
+    w = np.array([1.0 / (0.01 * x["dist"] + x["rms"] + 0.005) ** 2 for x in o])
+    lo, hi = v.min() - 0.2, v.max() + 0.2
+    nb = int(np.ceil((hi - lo) / bin_m))
+    h, e = np.histogram(v, bins=nb, range=(lo, hi))
+    hs = np.convolve(h, np.ones(3), mode="same")
+    lines = []
+    used = np.zeros(len(o), bool)
+    order = np.argsort(-hs)
+    for b in order:
+        if hs[b] < min_frames:
+            break
+        centre = lo + (b + 0.5) * bin_m
+        if any(abs(centre - L["coord"]) < 0.25 for L in lines):
+            continue
+        sel = (np.abs(v - centre) < 0.15) & ~used
+        if sel.sum() < min_frames:
+            continue
+        coord = float(np.sum(w[sel] * v[sel]) / np.sum(w[sel]))
+        sel = (np.abs(v - coord) < 0.15) & ~used
+        used |= sel
+        spans = [(o[i]["lat_lo"], o[i]["lat_hi"]) for i in np.where(sel)[0]]
+        lines.append(dict(coord=coord, support=int(sel.sum()), spans=spans,
+                          sigma=float(1.0 / np.sqrt(np.sum(w[sel])))))
+    # drop weakly supported lines (door jambs, furniture edges): need frames AND observed wall length
+    if lines:
+        smax = max(L["support"] for L in lines)
+        lines = [L for L in lines if L["support"] >= max(min_frames, 0.08 * smax)
+                 and sum(hi - lo for lo, hi in L["spans"]) >= 8.0]
+    lines.sort(key=lambda L: L["coord"])
+    return lines
+
+
+def _coverage(spans, a, b, step=0.05):
+    """Fraction of [a, b] covered by the union of spans."""
+    if b - a < step:
+        return 0.0
+    xs = np.arange(a + step / 2, b, step)
+    cov = np.zeros(len(xs), bool)
+    for lo, hi in spans:
+        cov |= (xs >= lo) & (xs <= hi)
+    return float(cov.mean())
+
+
+def anchor_translation(geoms, cams, poses, X, Y, window=8):
+    """Plane-anchored translation correction: each frame's wall observations are compared with the
+    global wall lines; the smoothed residual is removed from the camera positions (and poses)."""
+    n = len(cams)
+    res = np.full((n, 2), np.nan)
+    acc = [[[] for _ in range(2)] for _ in range(n)]
+    for o in wall_observations(geoms, cams):
+        lines = X if o["axis"] == 0 else Y
+        if not lines:
+            continue
+        L = min(lines, key=lambda L: abs(L["coord"] - o["coord"]))
+        if abs(L["coord"] - o["coord"]) < 0.2:
+            acc[o["frame"]][o["axis"]].append(o["coord"] - L["coord"])
     for i in range(n):
-        o = obs(i)
-        if cur is None:
-            cur = {k: [v] for k, v in o.items()}; cur_id += 1; boxes.append(cur); seg[i] = cur_id
+        for a in range(2):
+            if acc[i][a]:
+                res[i, a] = np.mean(acc[i][a])
+    corr = np.zeros((n, 2))
+    for a in range(2):
+        v = res[:, a]
+        idx = np.where(np.isfinite(v))[0]
+        if len(idx) < 3:
             continue
-        box = {k: np.median(v) for k, v in cur.items()}
-        disagree = any(k in box and abs(box[k] - v) > 0.35 for k, v in o.items())
-        if (not inside(box, cams[i])) or disagree:
-            outside += 1
-        else:
-            outside = 0
-        if outside >= 4:
-            cur = {k: [v] for k, v in o.items()}; cur_id += 1; boxes.append(cur); outside = 0
-            seg[i - 3:i + 1] = cur_id
+        sm = np.full(n, np.nan)
+        for i in range(n):
+            seg = v[max(0, i - window):i + window + 1]
+            seg = seg[np.isfinite(seg)]
+            if len(seg):
+                sm[i] = np.median(seg)
+        bad = ~np.isfinite(sm)
+        sm[bad] = np.interp(np.where(bad)[0], np.where(~bad)[0], sm[~bad])
+        corr[:, a] = sm
+    cams2 = cams - corr
+    return cams2, corr
+
+
+def rooms_from_cells(geoms, cams, X, Y, min_frames=5):
+    """Cells of the wall-line arrangement visited by the camera, merged where no wall separates them."""
+    xs = np.array([L["coord"] for L in X]); ys = np.array([L["coord"] for L in Y])
+    if len(xs) < 2 or len(ys) < 2:
+        return [], np.full(len(cams), -1)
+    ci = np.searchsorted(xs, cams[:, 0]) - 1
+    cj = np.searchsorted(ys, cams[:, 1]) - 1
+    valid = (ci >= 0) & (ci < len(xs) - 1) & (cj >= 0) & (cj < len(ys) - 1)
+    counts = {}
+    for i in np.where(valid)[0]:
+        counts[(ci[i], cj[i])] = counts.get((ci[i], cj[i]), 0) + 1
+    cells = [c for c, k in counts.items() if k >= min_frames]
+    parent = {c: c for c in cells}
+
+    def find(c):
+        while parent[c] != c:
+            parent[c] = parent[parent[c]]; c = parent[c]
+        return c
+
+    for (i, j) in cells:
+        # right neighbour across line x = xs[i+1] over span y ∈ [ys[j], ys[j+1]]
+        if (i + 1, j) in parent:
+            if _coverage(X[i + 1]["spans"], ys[j], ys[j + 1]) < 0.3:
+                parent[find((i, j))] = find((i + 1, j))
+        if (i, j + 1) in parent:
+            if _coverage(Y[j + 1]["spans"], xs[i], xs[i + 1]) < 0.3:
+                parent[find((i, j))] = find((i, j + 1))
+    comp = {}
+    for c in cells:
+        comp.setdefault(find(c), []).append(c)
+    # order rooms by first visit
+    first = {}
+    for i in np.where(valid)[0]:
+        c = (ci[i], cj[i])
+        if c in parent:
+            r = find(c)
+            first.setdefault(r, i)
+    order = sorted(comp, key=lambda r: first[r])
+    rooms = []
+    frame_room = np.full(len(cams), -1)
+    for k, r in enumerate(order):
+        cs = comp[r]
+        xi = [c[0] for c in cs]; yj = [c[1] for c in cs]
+        bounds = dict(xmin=float(xs[min(xi)]), xmax=float(xs[max(xi) + 1]), ymin=float(ys[min(yj)]), ymax=float(ys[max(yj) + 1]))
+        rect = len(cs) == (max(xi) - min(xi) + 1) * (max(yj) - min(yj) + 1)
+        rooms.append(dict(bounds=bounds, cells=cs, rectangular=rect))
+        for i in np.where(valid)[0]:
+            if (ci[i], cj[i]) in parent and find((ci[i], cj[i])) == r:
+                frame_room[i] = k
+    return rooms, frame_room
+
+
+def room_heights_from_points(frames, geoms, cams, stride: int = 3, bounds: dict | None = None,
+                            global_floor_z: float | None = None):
+    """Floor and ceiling z (world) from the accumulated near-horizontal surface points of a room.
+    Returns (floor_z, ceil_z, sigma, n_floor, n_ceil) or None."""
+    zf, zc = [], []
+    for k, (fr, g, c) in enumerate(zip(frames, geoms, cams)):
+        if g is None or g.P is None or (k % stride):
             continue
-        for k, v in o.items():
-            cur.setdefault(k, []).append(v)
-        seg[i] = cur_id
-    # merge segments that describe the same box (return to a room)
-    fused = [{k: float(np.median(v)) for k, v in b.items()} for b in boxes]
-    room_of_seg = list(range(len(boxes)))
-    for s in range(len(boxes)):
-        for r in range(s):
-            if room_of_seg[r] != r:
-                continue
-            a, b = fused[s], fused[r]
-            common = [k for k in a if k in b and np.isfinite(a[k]) and np.isfinite(b[k])]
-            if len(common) >= 2 and all(abs(a[k] - b[k]) < 0.3 for k in common):
-                room_of_seg[s] = r
-                break
-    # drop tiny segments (< 8 frames) into their predecessor
-    counts = np.bincount(seg[seg >= 0], minlength=len(boxes))
-    for s in range(1, len(boxes)):
-        if counts[s] < 8:
-            room_of_seg[s] = room_of_seg[s - 1]
-    rooms_order = []
-    for s in range(len(boxes)):
-        r = room_of_seg[s]
-        while room_of_seg[r] != r:
-            r = room_of_seg[r]
-        room_of_seg[s] = r
-        if r not in rooms_order:
-            rooms_order.append(r)
-    room_idx = np.array([rooms_order.index(room_of_seg[s]) for s in seg])
-    transitions = []
-    for i in range(1, n):
-        if room_idx[i] != room_idx[i - 1]:
-            transitions.append((int(room_idx[i - 1]), int(room_idx[i]), i))
-    return room_idx, len(rooms_order), transitions
+        P = g.P
+        N = normals_from_grid(P)
+        ok = np.isfinite(P).all(-1) & np.isfinite(N).all(-1)
+        if fr.conf is not None and fr.conf.shape == P.shape[:2]:
+            ok &= fr.conf >= 1
+        z = P[..., 2] + float(fr.pose[2, 3])
+        if bounds is not None:
+            xw = P[..., 0] + c[0]; yw = P[..., 1] + c[1]
+            ok &= (xw > bounds["xmin"] + 0.1) & (xw < bounds["xmax"] - 0.1) & (yw > bounds["ymin"] + 0.1) & (yw < bounds["ymax"] - 0.1)
+        up = N[..., 2] > 0.9          # normal toward camera & up → floor
+        down = N[..., 2] < -0.9       # ceiling
+        zf.append(z[ok & up]); zc.append(z[ok & down])
+    zf = np.concatenate(zf) if zf else np.array([]); zc = np.concatenate(zc) if zc else np.array([])
+    def mode_median(v, lo, hi):
+        h, e = np.histogram(v, bins=int((hi - lo) / 0.02) + 1, range=(lo, hi))
+        m = lo + (np.argmax(h) + 0.5) * 0.02
+        sel = np.abs(v - m) < 0.06
+        return float(np.median(v[sel])), int(sel.sum()), float(np.std(v[sel]))
+
+    if len(zc) < 300:
+        return None
+    if len(zf) >= 60:
+        fz, nf, sf = mode_median(zf, -1.0, 1.0)
+    elif global_floor_z is not None:
+        fz, nf, sf = global_floor_z, 10 ** 6, 0.004     # shallow room: floor rarely in the LiDAR's field of view
+    else:
+        return None
+    cz, nc, sc = mode_median(zc, 1.8, 4.5)
+    sigma = float(np.hypot(sf / np.sqrt(max(nf, 1)), sc / np.sqrt(max(nc, 1))) + 0.003)
+    return fz, cz, sigma, nf, nc
+
+
+def global_floor_z(frames, geoms, stride: int = 4) -> float | None:
+    zs = []
+    for k, (fr, g) in enumerate(zip(frames, geoms)):
+        if g is None or g.P is None or (k % stride):
+            continue
+        N = normals_from_grid(g.P)
+        ok = np.isfinite(g.P).all(-1) & np.isfinite(N).all(-1) & (N[..., 2] > 0.9)
+        z = g.P[..., 2][ok] + float(fr.pose[2, 3])
+        zs.append(z[np.abs(z) < 0.5])
+    zs = np.concatenate(zs) if zs else np.array([])
+    if len(zs) < 500:
+        return None
+    h, e = np.histogram(zs, bins=50, range=(-0.5, 0.5))
+    m = e[np.argmax(h)] + 0.01
+    return float(np.median(zs[np.abs(zs - m) < 0.06]))

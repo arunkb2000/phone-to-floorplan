@@ -1,4 +1,4 @@
-"""Command-line entry point: one command per capture."""
+"""One command per capture."""
 from __future__ import annotations
 
 import hashlib
@@ -9,25 +9,34 @@ import time
 
 import typer
 
-app = typer.Typer(help="phone-to-floorplan: iPhone capture → floor plan, damage, scope, intervals.")
+app = typer.Typer(help="phone-to-floorplan: an iPhone capture -> floor plan, damage, scope, calibrated intervals.",
+                  add_completion=False)
+
+VID_EXT = {".mov", ".mp4", ".m4v"}
+IMG_EXT = {".jpg", ".jpeg", ".png", ".heic", ".heif"}
 
 
 def detect_tier(capture_dir: str) -> str:
-    from floorplan.io.photos import is_photo_capture
     from floorplan.io.stray import is_stray_capture
-    from floorplan.io.video import is_video_capture
     if is_stray_capture(capture_dir):
         return "lidar"
-    if is_video_capture(capture_dir):
+    names = os.listdir(capture_dir)
+    if any(os.path.splitext(f)[1].lower() in VID_EXT for f in names):
         return "video"
-    if is_photo_capture(capture_dir):
+    for d in names:
+        p = os.path.join(capture_dir, d)
+        if os.path.isdir(p) and any(os.path.splitext(f)[1].lower() in IMG_EXT for f in os.listdir(p)):
+            return "photo"
+    if any(os.path.splitext(f)[1].lower() in IMG_EXT for f in names):
         return "photo"
-    raise typer.BadParameter(f"cannot detect a tier in {capture_dir}")
+    raise typer.BadParameter(f"cannot tell which tier {capture_dir} is: expected a Stray Scanner folder, "
+                             f"a video file, or one sub-folder of photos per room")
 
 
 def input_hash(capture_dir: str) -> str:
     h = hashlib.sha256()
-    for root, _, files in os.walk(capture_dir):
+    for root, dirs, files in os.walk(capture_dir):
+        dirs.sort()
         for f in sorted(files):
             p = os.path.join(root, f)
             h.update(os.path.relpath(p, capture_dir).encode())
@@ -37,54 +46,60 @@ def input_hash(capture_dir: str) -> str:
 
 @app.command()
 def run(capture_dir: str, out: str = "results", tier: str = "auto", drift_correction: str = "on",
-        device: str = "auto", depth_model: str = "small", no_cache: bool = False, damage: bool = True):
-    """Produce plan.json, plan.svg, plan.png and timing.json from one capture folder."""
+        device: str = "auto", depth_model: str = "small", no_cache: bool = False, damage: bool = True,
+        fps: float = 4.0, max_frames: int = 1200, rooms_txt: str = ""):
+    """Produce plan.json, plan.svg, plan.png and timing.json from ONE capture folder."""
     from floorplan.geometry.assemble import build_plan, validate
-    from floorplan.geometry.stitch import stitch
+    from floorplan.geometry.stitch import adjacency_from_placement
     t_all = time.time()
     tier = detect_tier(capture_dir) if tier == "auto" else tier
     os.makedirs(out, exist_ok=True)
     log: dict = {}
     drift = None
+    aux = {}
     if tier == "lidar":
         from floorplan.tiers.lidar import run_lidar
-        rooms, drift = run_lidar(capture_dir, drift_correction=(drift_correction == "on"), log=log)
-        edges = stitch(rooms, absolute=True)
+        rooms, drift, aux = run_lidar(capture_dir, drift_correction=(drift_correction == "on"), log=log,
+                                      target_fps=fps, max_frames=max_frames, with_rgb=damage)
+        edges = adjacency_from_placement(rooms)
+    elif tier == "video":
+        from floorplan.tiers.video import run_video
+        rooms, edges = run_video(capture_dir, depth_size=depth_model, device=device, use_cache=not no_cache, log=log)
     else:
-        runner = __import__(f"floorplan.tiers.{tier}", fromlist=["x"])
-        rooms = getattr(runner, f"run_{tier}")(capture_dir, depth_size=depth_model, device=device,
-                                               use_cache=not no_cache, log=log)
-        edges = stitch(rooms, absolute=False)
+        from floorplan.tiers.photo import run_photo
+        rooms, edges = run_photo(capture_dir, depth_size=depth_model, device=device, use_cache=not no_cache, log=log)
+
     damage_regions = []
     if damage:
         t0 = time.time()
         try:
             from floorplan.damage.pipeline import damage_for_rooms
-            damage_regions = damage_for_rooms(rooms, tier, device=device)
-        except Exception as e:  # damage is best-effort; geometry must never fail because of it
-            log["damage_error"] = repr(e)
+            damage_regions = damage_for_rooms(rooms, tier, device=device, aux=aux)
+        except Exception as e:
+            log["damage_error"] = f"{type(e).__name__}: {e}"
         log["damage_s"] = round(time.time() - t0, 2)
-    render = {"svg": "plan.svg", "png": "plan.png"}
-    capture = {"id": os.path.basename(os.path.abspath(capture_dir.rstrip('/'))),
+
+    capture = {"id": os.path.basename(os.path.abspath(capture_dir.rstrip("/"))),
                "source": {"lidar": "stray_scanner", "video": "ios_camera_video", "photo": "ios_camera_photos"}[tier],
                "device": "unknown", "input_sha256": input_hash(capture_dir)}
     timing = {"total_s": 0.0, "device": f"{platform.machine()} {platform.system()}", "stages": {}}
-    plan = build_plan(rooms, edges, tier, capture, timing, drift, render, damage_regions)
+    plan = build_plan(rooms, edges, tier, capture, timing, drift, {"svg": "plan.svg", "png": "plan.png"}, damage_regions)
     try:
         from floorplan.scope.engine import concealed_flags, scope_items
         plan["concealed_damage_flags"] = concealed_flags(plan["rooms"], plan["adjacency"], plan["damage_regions"])
         plan["scope_items"] = scope_items(plan["rooms"], plan["damage_regions"])
     except Exception as e:
-        log["scope_error"] = repr(e)
+        log["scope_error"] = f"{type(e).__name__}: {e}"
     t0 = time.time()
     try:
         from floorplan.render.plan import render_plan
         render_plan(plan, os.path.join(out, "plan.svg"), os.path.join(out, "plan.png"))
     except Exception as e:
-        log["render_error"] = repr(e)
+        log["render_error"] = f"{type(e).__name__}: {e}"
     log["render_s"] = round(time.time() - t0, 2)
+
     plan["timing"]["total_s"] = round(time.time() - t_all, 2)
-    plan["timing"]["stages"] = {k: v for k, v in log.items() if k.endswith("_s")}
+    plan["timing"]["stages"] = {k[:-2]: v for k, v in log.items() if k.endswith("_s")}
     errs = validate(plan)
     if errs:
         plan["warnings"].extend(f"schema: {e}" for e in errs[:10])
@@ -92,15 +107,21 @@ def run(capture_dir: str, out: str = "results", tier: str = "auto", drift_correc
         json.dump(plan, f, indent=1)
     with open(os.path.join(out, "timing.json"), "w") as f:
         json.dump({"total_s": plan["timing"]["total_s"], **log}, f, indent=1, default=str)
-    typer.echo(f"tier={tier} rooms={len(rooms)} total={plan['timing']['total_s']}s → {out}/plan.json"
-               + (f"  schema errors: {len(errs)}" if errs else ""))
+
+    typer.echo(f"tier={tier}  rooms={len(rooms)}  openings={sum(len(r['openings']) for r in plan['rooms'])}  "
+               f"damage={len(damage_regions)}  {plan['timing']['total_s']}s -> {out}/plan.json"
+               + (f"   SCHEMA ERRORS: {len(errs)}" if errs else ""))
     for r in plan["rooms"]:
-        typer.echo(f"  {r['id']}: {r['walls'][0]['length']['value']:.2f} × {r['walls'][1]['length']['value']:.2f} m, "
-                   f"h {r['ceiling_height']['value']:.2f}, openings {len(r['openings'])}")
+        ci = r["ceiling_height"]
+        typer.echo(f"   {r['id']:<14} area {r['floor_area']['value']:6.2f} m2  "
+                   f"h {ci['value']:.3f} [{ci['ci_low']:.3f},{ci['ci_high']:.3f}] {ci['source']}  "
+                   f"walls {len(r['walls'])}  openings {len(r['openings'])}  coverage {r['quality']['coverage_fraction']:.0%}")
+    for w in plan["warnings"][:5]:
+        typer.echo(f"   ! {w}")
 
 
-@app.command()
-def validate_plan(plan_json: str):
+@app.command("validate")
+def validate_cmd(plan_json: str):
     """Validate a plan.json against the published schema."""
     from floorplan.geometry.assemble import validate
     errs = validate(json.load(open(plan_json)))
@@ -110,10 +131,10 @@ def validate_plan(plan_json: str):
 
 @app.command()
 def bench(out: str = "bench/latest", captures: str = "benchmark/captures", gt: str = "benchmark/ground_truth",
-          fast: bool = False):
-    """Run every benchmark capture, score against ground truth, write gate tables."""
+          manifest: str = "benchmark/bench.yaml", only: str = "", calibrate: bool = False):
+    """Run every benchmark capture, score it against ground truth, write the gate tables."""
     from floorplan.cli.bench import run_bench
-    run_bench(out, captures, gt, fast=fast)
+    run_bench(out, captures, gt, manifest=manifest, only=only, do_calibrate=calibrate)
 
 
 if __name__ == "__main__":

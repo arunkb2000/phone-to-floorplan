@@ -55,7 +55,7 @@ def _frame_planes(room, fr, g, ci):
     return planes, sids, pid
 
 
-def damage_for_rooms(rooms, tier: str, device: str = "auto") -> list[dict]:
+def damage_for_rooms(rooms, tier: str, device: str = "auto", aux: dict | None = None) -> list[dict]:
     det = _detector(device)
     all_regions = []
     for room in rooms:

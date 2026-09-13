@@ -193,9 +193,10 @@ class DamageDetector:
             outputs = self._model(**inputs)
         outputs.logits = outputs.logits.float().cpu()
         outputs.pred_boxes = outputs.pred_boxes.float().cpu()
-        res = self._processor.post_process_object_detection(
-            outputs, threshold=threshold, target_sizes=[(H, W)]
-        )[0]
+        # transformers v5 moved this off Owlv2Processor; the image processor keeps it (v4 and v5)
+        # and rescales normalised boxes by max(H, W) to undo OWLv2's bottom/right square padding.
+        post = getattr(self._processor, "image_processor", self._processor).post_process_object_detection
+        res = post(outputs, threshold=threshold, target_sizes=[(H, W)])[0]
         self.last_inference_s = time.perf_counter() - t0
 
         boxes = res["boxes"].numpy().astype(np.float64)

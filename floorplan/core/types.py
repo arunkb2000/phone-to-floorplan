@@ -20,6 +20,7 @@ class Frame:
     room_key: str = ""                   # e.g. "01_room"; empty if unknown
     role: str = ""                       # "entry" | "corner" | "exit" | "" (from protocol position)
     depth_source: str = ""               # "lidar" | "monocular" | "synthetic"
+    frame_index: int = -1                # index in the source capture, for lazy RGB lookup
 
 
 @dataclass

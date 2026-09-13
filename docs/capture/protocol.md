@@ -18,7 +18,7 @@ For each space, in your fixed order, take **6 photos** (minimum 2, maximum 8), p
 Put each space's photos in its own folder named as in step 1. All folders go inside one capture folder, for example `photo_MR1/01_room/…`.
 
 ## 3. Video tier (any iPhone 15 or newer)
-One continuous clip for the whole property, phone in **landscape**, chest height, about one step per second:
+One continuous clip for the whole property, phone **upright (portrait)** so floor and ceiling stay in frame, chest height, about one step per second:
 1. Start in the first space, standing in its entrance doorway facing in.
 2. Walk the perimeter once, about 1 m from the walls. On each wall, tilt slowly up to where the wall meets the ceiling, then down to where it meets the floor.
 3. To move to the next space: **cover the lens fully with your palm for 2 seconds while you walk through the doorway**, then uncover and continue. This is how the pipeline knows a new space started.

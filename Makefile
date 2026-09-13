@@ -1,29 +1,33 @@
-# Targets are the contract; bodies land as the pipeline lands.
-.PHONY: setup weights test run bench before after fixdiff reproduce
+# One command per capture: make run CAP=path/to/capture OUT=results
+.PHONY: setup weights test run bench before after fixdiff reproduce synthetic
 
-setup:        ## clean-machine install (<15 min target)
-	@echo "TODO: install uv, uv sync --frozen, brew deps (ffmpeg, colmap optional)"
+setup:        ## clean-machine install (target < 15 min)
+	bash scripts/setup_env.sh
 
-weights:      ## fetch pinned model weights with SHA-256 checks
-	@echo "TODO: scripts/fetch_weights.sh"
+weights:      ## fetch pinned model weights with SHA-256 manifest
+	bash scripts/fetch_weights.sh
 
 test:
-	@echo "TODO: uv run pytest -q"
+	uv run --extra dev pytest -q
 
-run:          ## make run CAP=path/to/capture OUT=results
-	@echo "TODO: uv run floorplan run $(CAP) --out $(OUT)"
+run:          ## make run CAP=benchmark/captures/synthetic_MR1 OUT=results/x
+	uv run floorplan run $(CAP) --out $(OUT)
 
-bench:        ## full benchmark → bench/<run_id>/gates.md
-	@echo "TODO: uv run floorplan bench"
+synthetic:    ## regenerate the synthetic benchmark captures (all three tiers)
+	uv run python scripts/make_synthetic.py
+	uv run python scripts/make_synthetic_rgb.py
 
-before:       ## freeze the fix-loop 'before' run at tag fixloop-before
-	@echo "TODO: git tag fixloop-before && floorplan bench --out fixloop/before"
+bench:        ## full benchmark → bench/latest/gates.md
+	uv run floorplan bench --out bench/latest
 
-after:        ## fix-loop 'after' run at tag fixloop-after
-	@echo "TODO: git tag fixloop-after && floorplan bench --out fixloop/after"
+before:       ## freeze the fix-loop 'before' run
+	bash scripts/fixloop.sh before
+
+after:        ## fix-loop 'after' run
+	bash scripts/fixloop.sh after
 
 fixdiff:      ## readable diff of gates + code between the two tags
-	@echo "TODO: scripts/fixloop_diff.py → fixloop/DIFF.md"
+	bash scripts/fixloop.sh diff
 
 reproduce:    ## regenerate every reported number from raw inputs
-	@echo "TODO: scripts/reproduce.sh"
+	bash scripts/reproduce.sh
