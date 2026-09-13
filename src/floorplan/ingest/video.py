@@ -13,7 +13,7 @@ import cv2
 import numpy as np
 
 from floorplan.core.types import Frame
-from floorplan.io.photos import MAX_SIDE, intrinsics_from_f35
+from floorplan.ingest.photos import MAX_SIDE, intrinsics_from_f35
 
 VID_EXT = {".mov", ".mp4", ".m4v"}
 DEFAULT_VIDEO_F35 = 28.0    # iPhone main lens at 1x, allowing for the stabilisation crop

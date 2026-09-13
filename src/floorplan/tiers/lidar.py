@@ -23,8 +23,8 @@ from floorplan.geometry.layout import (
     trim_edges,
     wall_openings,
 )
-from floorplan.io.photos import label_from_key
-from floorplan.io.stray import load_stray_capture
+from floorplan.ingest.photos import label_from_key
+from floorplan.ingest.stray import load_stray_capture
 
 CEILING_PRIOR = (2.70, 0.30)     # metres: used only when the ceiling was never observed
 

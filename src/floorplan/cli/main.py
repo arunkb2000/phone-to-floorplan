@@ -9,7 +9,7 @@ import time
 
 import typer
 
-app = typer.Typer(help="phone-to-floorplan: an iPhone capture -> floor plan, damage, scope, calibrated intervals.",
+app = typer.Typer(help="Phone to Floorplan: an iPhone capture -> floor plan, damage, scope, calibrated intervals.",
                   add_completion=False)
 
 VID_EXT = {".mov", ".mp4", ".m4v"}
@@ -17,7 +17,7 @@ IMG_EXT = {".jpg", ".jpeg", ".png", ".heic", ".heif"}
 
 
 def detect_tier(capture_dir: str) -> str:
-    from floorplan.io.stray import is_stray_capture
+    from floorplan.ingest.stray import is_stray_capture
     if is_stray_capture(capture_dir):
         return "lidar"
     names = os.listdir(capture_dir)

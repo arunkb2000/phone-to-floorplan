@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "floorplan/output.schema.json",
-  "title": "phone-to-floorplan capture output",
+  "title": "Phone to Floorplan capture output",
   "description": "Draft v0.1.0. One document per capture. Every numeric measurement is a `measurement` object with an interval.",
   "type": "object",
   "required": ["schema_version", "capture", "tier", "units", "rooms", "adjacency", "damage_regions", "concealed_damage_flags", "scope_items", "calibration", "timing", "render"],

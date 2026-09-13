@@ -8,7 +8,7 @@ wall distances stops being consistent with the room we have been accumulating, a
 from __future__ import annotations
 
 from floorplan.core.types import Frame
-from floorplan.io.video import load_video_capture, sample_video_frames
+from floorplan.ingest.video import load_video_capture, sample_video_frames
 from floorplan.tiers.mono import chain_stitch, rooms_from_grouped_frames
 
 

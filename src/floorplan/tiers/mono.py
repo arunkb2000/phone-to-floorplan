@@ -18,7 +18,7 @@ from floorplan.core.room import RoomOut
 from floorplan.core.types import Frame, Measurement, Opening
 from floorplan.geometry.depth import predict_depth
 from floorplan.geometry.room import frame_geometry, fuse_room, orient_frames
-from floorplan.io.photos import label_from_key
+from floorplan.ingest.photos import label_from_key
 
 CEILING_PRIOR = (2.70, 0.30)
 

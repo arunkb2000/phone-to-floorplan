@@ -1,7 +1,7 @@
 """Photo tier: one folder of 2-8 stills per room, no depth, no poses."""
 from __future__ import annotations
 
-from floorplan.io.photos import load_photo_capture
+from floorplan.ingest.photos import load_photo_capture
 from floorplan.tiers.mono import chain_stitch, rooms_from_grouped_frames
 
 
