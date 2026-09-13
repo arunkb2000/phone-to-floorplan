@@ -36,7 +36,7 @@ input thins, and it says so rather than guessing.
 ### 1. Install, once
 
 ```bash
-git clone <this repo> && cd phone-to-floorplan
+git clone https://github.com/arunkb2000/phone-to-floorplan.git && cd phone-to-floorplan
 make setup      # Python 3.12 and the locked dependencies, about 3 minutes
 make weights    # the pretrained model, about 2 minutes
 ```
@@ -254,7 +254,7 @@ The assessment allows AI coding tools and expects them. I have used one and said
 src/floorplan/
   cli/            the command line: run, bench, validate
   core/           the shared data types every module speaks
-  io/             readers for depth scans, photos and video
+  ingest/         readers for depth scans, photos and video
   geometry/       point cloud, room finding, wall fitting, position correction
   tiers/          the three input paths: depth, video, photos
   perception/     damage detection and projection onto surfaces
@@ -269,7 +269,7 @@ analysis/bench/   accuracy tables
 analysis/fixloop/ the improvement round: before, after, and what changed
 scripts/          setup, model download, test room, reference measurements, app comparison
 tests/            25 tests
-docs/             capture page, hardware constraints, technical write-up, requirement checklist
+docs/             capture page, hardware constraints, technical write-up
 ```
 
 ## Read next
@@ -278,30 +278,7 @@ docs/             capture page, hardware constraints, technical write-up, requir
 |---|---|
 | [docs/SAMPLE_DATA.md](docs/SAMPLE_DATA.md) | what the sample captures contain and where to put them |
 | [docs/report/technical_report.md](docs/report/technical_report.md) | how the system works, in six pages |
-| [docs/compliance_matrix.md](docs/compliance_matrix.md) | every requirement, where it lives, and its status |
 | [docs/report/benchmark.md](docs/report/benchmark.md) | what the accuracy numbers are measured against |
 | [docs/CONSTRAINTS.md](docs/CONSTRAINTS.md) | the hardware limits and how to close them |
 | [analysis/fixloop/](analysis/fixloop/) | the improvement round in full |
 
----
-
-## A note on the repository name
-
-`phone-to-floorplan` was the working folder name. For a public repository I would use a name that says what the
-problem is, not who it was built for:
-
-**`property-damage-floorplan`** — my first choice. It names the domain (property damage) and the
-output (a floor plan) in two words, and someone scanning a list of repositories knows immediately
-what it does.
-
-Others worth considering:
-
-| Name | Reads as |
-|---|---|
-| `phone-to-floorplan` | the input and the output, nothing else |
-| `scan-to-scope` | the full journey: a walk through a property becomes a costed repair scope |
-| `damage-survey-pipeline` | closest to the industry's own words |
-| `roomscan-metrics` | leads with the measurement accuracy, which is the hard part |
-
-I would avoid names built on the company or the tool, because they describe the author rather than
-the problem.
