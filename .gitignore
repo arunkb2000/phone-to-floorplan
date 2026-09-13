@@ -19,7 +19,10 @@ analysis/**/debug/
 analysis/results/
 analysis/bench/latest/
 
-# the supplied captures: 6 GB, shipped alongside the repo rather than inside it
+# The sample captures are NOT in this repository: 912 MB, and two of the videos are over GitHub's
+# 100 MB per-file limit. They belong to whoever supplied them. docs/SAMPLE_DATA.md describes their
+# structure and where to put them. Everything the pipeline produced from them IS committed, under
+# analysis/.
 data/raw/
 
 # my own working notes: not part of the submission

@@ -60,7 +60,7 @@ tier=lidar  rooms=5  openings=4  damage=7  6.5s -> results/plan.json
 Five rooms in six and a half seconds. The bracketed pair is the confidence range: that ceiling is
 2.366 m, and there is a 90 % chance the true value lies between 2.349 m and 2.383 m.
 
-### 3. What you get
+### 4. What you get
 
 | File | What it is |
 |---|---|
@@ -263,7 +263,7 @@ src/floorplan/
   rendering/      the floor plan drawing
   schema/         the published output format
 
-data/raw/         the three supplied scans, untouched
+data/raw/         where the sample scans go; not in git, see docs/SAMPLE_DATA.md
 data/benchmark/   test scans, the test room, and reference measurements
 analysis/bench/   accuracy tables
 analysis/fixloop/ the improvement round: before, after, and what changed
@@ -276,6 +276,7 @@ docs/             capture page, hardware constraints, technical write-up, requir
 
 | Document | What it covers |
 |---|---|
+| [docs/SAMPLE_DATA.md](docs/SAMPLE_DATA.md) | what the sample captures contain and where to put them |
 | [docs/report/technical_report.md](docs/report/technical_report.md) | how the system works, in six pages |
 | [docs/compliance_matrix.md](docs/compliance_matrix.md) | every requirement, where it lives, and its status |
 | [docs/report/benchmark.md](docs/report/benchmark.md) | what the accuracy numbers are measured against |
