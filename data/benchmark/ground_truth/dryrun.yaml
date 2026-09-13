@@ -1,0 +1,33 @@
+capture: dryrun
+method: 'DRY RUN: not a tape measurement, plumbing check only'
+ceiling_height:
+- value: 2.366
+  n_frames: 1
+  spread_m: 0.0
+  sigma_m: 0.005
+wall_to_wall:
+- value: 4.325
+  n_frames: 1
+  spread_m: 0.0
+  sigma_m: 0.005
+- value: 3.865
+  n_frames: 1
+  spread_m: 0.0
+  sigma_m: 0.005
+- value: 3.55
+  n_frames: 1
+  spread_m: 0.0
+  sigma_m: 0.005
+- value: 3.246
+  n_frames: 1
+  spread_m: 0.0
+  sigma_m: 0.005
+opening_width:
+- value: 1.295
+  n_frames: 1
+  spread_m: 0.0
+  sigma_m: 0.005
+- value: 0.758
+  n_frames: 1
+  spread_m: 0.0
+  sigma_m: 0.005

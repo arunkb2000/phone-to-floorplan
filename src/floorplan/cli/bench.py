@@ -14,8 +14,10 @@ import time
 import numpy as np
 import yaml
 
-MATCH_WINDOW = {"opening_width": 0.12, "ceiling_height": 0.25, "wall_to_wall": 0.40}
+MATCH_WINDOW = {"opening_width": 0.12, "ceiling_height": 0.25, "wall_length": 0.60}
 GATE = {"opening_width": 0.02, "ceiling_height": 0.015}
+# per-tier wall-length gate: (absolute metres, relative fraction); the wall passes on either
+WALL_GATE = {"lidar": (0.01, 0.005), "video": (0.0, 0.03), "photo": (0.0, 0.08)}
 
 
 def load_plan(d):
@@ -71,10 +73,9 @@ def match(ref_clusters, preds, kind):
 def score_capture(plan: dict, gt: dict):
     preds = predictions(plan)
     rows, unmatched = [], {}
-    for kind in ("opening_width", "ceiling_height"):
-        key = {"opening_width": "opening_width", "ceiling_height": "ceiling_height"}[kind]
-        pk = {"opening_width": "opening_width", "ceiling_height": "ceiling_height"}[kind]
-        r, u = match(gt.get(key) or [], preds[pk], kind)
+    for kind, gt_key in (("opening_width", "opening_width"), ("ceiling_height", "ceiling_height"),
+                         ("wall_length", "wall_to_wall")):
+        r, u = match(gt.get(gt_key) or [], preds[kind], kind)
         rows += r
         unmatched[kind] = u
     from shapely.geometry import Polygon
@@ -98,6 +99,7 @@ def score_capture(plan: dict, gt: dict):
         n_scope=len(plan["scope_items"]),
         unmatched_openings=len(unmatched.get("opening_width", [])),
         unmatched_ceilings=len(unmatched.get("ceiling_height", [])),
+        unmatched_walls=len(unmatched.get("wall_length", [])),
         ceiling_sources=sorted({r["ceiling_height"]["source"] for r in plan["rooms"]}),
         mean_coverage=round(float(np.mean([r["quality"]["coverage_fraction"] for r in plan["rooms"]])), 3) if plan["rooms"] else 0.0,
         total_s=plan["timing"]["total_s"],
@@ -112,8 +114,12 @@ def run_bench(out: str, captures_dir: str, gt_dir: str, manifest: str = "data/be
     os.makedirs(out, exist_ok=True)
     results = {}
     for cap in man["captures"]:
-        if only and only not in cap["name"]:
-            continue
+        role = cap.get("role")
+        if only:
+            if only not in cap["name"] and only != role:
+                continue
+        elif role == "dryrun":
+            continue                      # plumbing check only; never in the headline tables
         for variant in cap.get("variants", [{"suffix": "", "drift": "on"}]):
             name = cap["name"] + variant.get("suffix", "")
             odir = os.path.join(out, name)
@@ -258,6 +264,17 @@ def write_report(out: str, results: dict, man: dict):
             L.append(f"| Ceiling height | <= 1.5 cm per room | {ok}/{len(ch)} matched within 1.5 cm "
                      f"({len(chm)} reference heights unmatched); MAE {mae:.1f} cm, bias {bias:+.1f} cm | "
                      f"{'PASS' if ch and ok == len(ch) else 'FAIL'} |")
+        wl = [r for r in rows if r["kind"] == "wall_length" and r["status"] == "matched"]
+        wlm = [r for r in rows if r["kind"] == "wall_length" and r["status"] == "missed"]
+        if wl or wlm:
+            gabs, grel = WALL_GATE[tier]
+            ok = sum(abs(r["err"]) <= max(gabs, grel * r["gt"]) for r in wl)
+            mae = np.mean([abs(r["err"]) for r in wl]) * 100 if wl else float("nan")
+            mpe = np.mean([abs(r["err"]) / r["gt"] for r in wl]) * 100 if wl else float("nan")
+            req = {"lidar": "<= 1 cm or 0.5 %", "video": "+-3 %", "photo": "+-8 %"}[tier]
+            L.append(f"| Wall length | {req} | {ok}/{len(wl)} within gate ({len(wlm)} reference walls "
+                     f"unmatched); MAE {mae:.1f} cm, {mpe:.1f} % | "
+                     f"{'PASS' if wl and ok == len(wl) else 'FAIL'} |")
         scored = [r for r in rows if r["status"] == "matched"]
         if scored:
             cov = 100 * np.mean([r["covered"] for r in scored])

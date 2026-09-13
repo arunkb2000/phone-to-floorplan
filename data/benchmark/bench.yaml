@@ -49,3 +49,17 @@ captures:
     tier: video
     gt: single_scan_with_ceiling.yaml
     role: multiroom
+
+  # DRY RUN of the tape path (docs/capture/plan_b.md). The "truth" here is the LiDAR tier's own
+  # output, so the errors below mean nothing; this row exists to prove the plumbing before anyone
+  # spends thirty minutes with a tape measure. Delete it once a real tape room replaces it.
+  - name: dryrun_photo
+    path: data/benchmark/captures/dryrun_photo
+    tier: photo
+    gt: dryrun.yaml
+    role: dryrun
+  - name: dryrun_video
+    path: data/benchmark/captures/dryrun_video
+    tier: video
+    gt: dryrun.yaml
+    role: dryrun

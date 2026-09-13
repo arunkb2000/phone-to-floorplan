@@ -42,6 +42,10 @@ Silicon uses the Metal backend, NVIDIA uses CUDA, anything else runs on CPU with
 nothing for photos or video; install Stray Scanner (free, App Store) for LiDAR. Hardware support is
 in [docs/capture/device_matrix.md](docs/capture/device_matrix.md).
 
+No Pro device? [docs/capture/plan_b.md](docs/capture/plan_b.md) is a thirty-minute path to real tape
+ground truth for the photo and video tiers, which is the highest-value half hour available before a
+defense.
+
 The tier is detected from the folder you hand over:
 
 | You hand over | Detected as |

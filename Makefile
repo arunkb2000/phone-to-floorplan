@@ -32,6 +32,14 @@ after:          ## fix-loop after-run
 fixdiff:        ## render analysis/fixloop/DIFF.md from the two runs
 	uv run python scripts/fixloop_diff.py
 
+tape:           ## score the tape-measured rooms only (see docs/capture/plan_b.md)
+	uv run floorplan bench --out analysis/bench/tape --only tape
+
+dryrun:         ## prove the tape plumbing works without owning a tape measure
+	uv run floorplan bench --out analysis/bench/dryrun --only dryrun
+	@echo
+	@sed -n '/## Tier/,$$p' analysis/bench/tape/gates.md | head -40
+
 reproduce:      ## regenerate every reported number from the raw captures
 	bash scripts/reproduce.sh
 

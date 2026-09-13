@@ -101,6 +101,8 @@ Then update three rows of `docs/compliance_matrix.md` from **not met** to **done
 
 ## Plan B: no Pro device at all
 
+**Step by step, with commands: [capture/plan_b.md](capture/plan_b.md).**
+
 Two of the three rows stay closed, but one improves and the largest scored component gets safer.
 
 **Do this even if you have no Pro device**, because it is what the walk-in test will actually
