@@ -1,0 +1,22 @@
+# Template for scripts/head_to_head.py. Replace every number with a real one, delete this comment,
+# and commit the app's own export (PDF, PNG or CSV) next to it.
+app: magicplan
+version: "fill in from the App Store page"
+exported: data/benchmark/app_exports/magicplan/plan.pdf
+rooms:
+  - name: living room
+    match: 01_space          # the room id in our plan.json
+    dimensions:
+      - {label: "wall A", truth: 0.000, app: 0.000}
+      - {label: "wall B", truth: 0.000, app: 0.000}
+      - {label: "ceiling", truth: 0.000, app: 0.000}
+      - {label: "door width", truth: 0.000, app: 0.000}
+      - {label: "window width", truth: 0.000, app: 0.000}
+      - {label: "floor area", truth: 0.000, app: 0.000}
+  - name: kitchen
+    match: 02_space
+    dimensions:
+      - {label: "wall A", truth: 0.000, app: 0.000}
+      - {label: "wall B", truth: 0.000, app: 0.000}
+      - {label: "ceiling", truth: 0.000, app: 0.000}
+      - {label: "door width", truth: 0.000, app: 0.000}

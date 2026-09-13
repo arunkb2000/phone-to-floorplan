@@ -1,14 +1,12 @@
-"""Photo and video tiers: RGB only, no depth, no poses.
+"""Shared core for the photo and video tiers: RGB only, no depth, no poses.
 
-Both tiers run the same core. A monocular metric-depth network turns each still into a depth map;
-gravity comes from the floor and ceiling planes in that map, the Manhattan frame from the wall
-normals, and the room's extent from frames that see two opposite walls at once. The tiers differ in
-how the frames are grouped into rooms and in how many frames vote, which is why the video tier's
-intervals are tighter.
+A monocular metric-depth network supplies depth per frame; gravity comes from that frame's floor and
+ceiling planes and the Manhattan frame from its wall normals. The tiers differ only in how frames are
+grouped into rooms and how many vote.
 
-Scale is the honest weak point. The network is metric, but a monocular metric prediction carries a
-few per cent of scale error that no amount of averaging removes, so the per-tier interval floor in
-floorplan/geometry/assemble.py never lets these tiers claim LiDAR-class precision.
+Scale is the honest weak point: the network's per-frame scale wanders even though its average is
+close, so the per-tier interval floor in geometry/assemble.py never lets these tiers claim
+LiDAR-class precision.
 """
 from __future__ import annotations
 

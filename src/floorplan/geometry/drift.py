@@ -1,16 +1,8 @@
-"""Drift accountability for the LiDAR tier.
+"""Drift correction for the LiDAR tier, ablatable with --drift-correction off.
 
-ARKit's VIO drifts: yaw creeps, the floor tips, and the world slides. Over a 200 s, 100 m walk the
-sample captures end 17 to 39 cm from where they started. Three corrections, all ablatable with
-`--drift-correction off`:
-
-1. Floor-anchored levelling and height. Every frame that sees the floor says where z = 0 is; the
-   smoothed residual is removed, which kills the slow tilt that otherwise smears a 2.3 m ceiling
-   over 10 cm.
-2. Manhattan yaw anchoring. Wall normals must agree with the property's dominant axes; the smoothed
-   per-frame yaw residual is removed, which stops a long corridor from bending.
-3. Loop closure. The protocol ends where it starts, so the residual translation between the opening
-   and closing wall observations is distributed along the trajectory.
+ARKit's VIO drifts: yaw creeps, the floor tips, the world slides. Three corrections, in order:
+floor-anchored levelling and height datum, Manhattan yaw anchoring, then loop closure when the walk
+ends where it started. The supplied captures drift 17 to 39 cm end to end before correction.
 """
 from __future__ import annotations
 

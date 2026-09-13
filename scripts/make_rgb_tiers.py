@@ -1,19 +1,15 @@
-"""Derive the photo-tier and video-tier benchmark captures from a Stray Scanner capture's RGB stream.
+"""Derive the photo-tier and video-tier captures from a LiDAR capture's RGB stream.
 
 The assessment supplies three LiDAR captures and no photo or video captures, but the gates require
-the same rooms at all three tiers. The RGB frames inside rgb.mp4 are exactly what an iPhone camera
-would have produced standing in those places, so we cut the photo and video inputs out of that
-stream and hand the tiers nothing else: JPEGs with EXIF for the photo tier, an mp4 for the video
-tier. No depth, no poses, no intrinsics from the LiDAR capture cross the boundary - the photo tier
-reads its focal length from EXIF and the video tier from a per-device table, exactly as they would
-on a capture from a non-Pro iPhone.
+the same rooms at all three tiers. Those RGB frames are what an iPhone camera did record standing in
+those places, so we cut the other two tiers' inputs out of them and hand each tier nothing else:
+JPEGs with EXIF, or an mp4. No depth, no poses, no LiDAR intrinsics cross the boundary.
 
-Which frames to pick is a benchmark-construction decision, and it does use the LiDAR room labels:
-per room we take the frames whose camera stands in that room, then choose the ones that best match
-the capture protocol (one from near the entrance, then the ones closest to each corner looking
-across the room). That is the same thing the protocol asks a person to do.
+Choosing which frames become the six photos per room does use the LiDAR room labels, because the
+protocol asks a person to stand in the doorway and in each corner and something must decide where
+those are. That is benchmark construction, not a shortcut inside the tier.
 
-    uv run python scripts/make_rgb_tiers.py data/raw/single_scan_with_ceiling --out data/benchmark/captures
+    uv run python scripts/make_rgb_tiers.py data/raw/single_scan_with_ceiling --name flatA
 """
 from __future__ import annotations
 

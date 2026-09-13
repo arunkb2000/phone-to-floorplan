@@ -1,32 +1,17 @@
-"""Reference ground truth for the supplied captures, measured from single depth frames.
+"""Reference ground truth for the supplied captures, measured one depth frame at a time.
 
-WHY NOT TAPE. The brief asks for laser or tape ground truth. The captures we were given are of a
-property we have no physical access to, so a tape measurement of them is not available to us at any
-price. Rather than quietly skip the gates, we build a reference that is as independent of the
-pipeline as the data allows, and we say exactly what it is and is not.
+The brief asks for tape. The captures are of a property we cannot enter, so tape is unavailable at
+any price, and rather than skip the gates we build the most independent reference the data allows.
 
-WHAT THIS IS. Every reference number here comes from ONE depth frame:
-
-  * ceiling height  = distance between the floor plane and the ceiling plane fitted in that single
-                      frame's own camera coordinates
-  * wall-to-wall    = sum of the perpendicular distances to two opposite, parallel wall planes seen
-                      in the same single frame
-  * opening width   = the gap in one wall plane, measured across that plane in the same single frame
-
-INDEPENDENCE. These numbers use only the depth image and the intrinsics. They do not use the poses,
-the pose graph, the drift correction, the multi-frame fusion, the room segmentation, the grid, or
-any pipeline module - this file implements its own plane fitting in about sixty lines and imports
-nothing from floorplan except the loader. So it is a fair test of everything the pipeline does on
-top of the sensor. It is NOT independent of the sensor itself: a systematic LiDAR range error would
-move the reference and the pipeline together, and no experiment here can see that. Apple publishes
-no accuracy figure for the sensor; independent measurements put it around 1 cm at these ranges.
-
-UNCERTAINTY. Each reference value is the median over every qualifying frame, and its stated
-uncertainty is the spread across those frames, which folds in sensor noise, incidence angle and the
-plane-fit residual. Measurements supported by fewer than `--min-frames` frames are dropped.
+Each value comes from a SINGLE depth frame: ceiling height from its floor and ceiling planes or from
+one wall's vertical extent, wall-to-wall from two opposite planes, opening width from the gap across
+one plane. Only the depth image, the intrinsics, and the pose's rotation as a gravity direction are
+used. No translation, no pose graph, no drift state, no fusion, no segmentation, no floorplan
+geometry module: this file fits its own planes. It is therefore a fair test of everything the
+pipeline adds on top of the sensor, and not independent of the sensor itself.
 
     uv run python scripts/make_reference_gt.py data/raw/single_scan_with_ceiling \
-        --out data/benchmark/ground_truth/flatA.yaml
+        --out data/benchmark/ground_truth/single_scan_with_ceiling.yaml
 """
 from __future__ import annotations
 

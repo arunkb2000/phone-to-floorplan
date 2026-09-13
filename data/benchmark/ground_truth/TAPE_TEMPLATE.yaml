@@ -1,0 +1,16 @@
+# Tape ground truth for a room you can physically measure. Drop a filled copy in this folder and add
+# a row to data/benchmark/bench.yaml pointing at it; the harness scores it exactly like the
+# sensor-derived reference, but without the caveats in docs/report/benchmark.md.
+#
+# Measure in metres to the nearest 5 mm. Stand in the entrance facing in: wall A is ahead, B right,
+# C behind (the one with the door you came through), D left.
+capture: my_room_photo
+method: tape measure, 5 mm resolution
+ceiling_height:
+  - {value: 0.000, n_frames: 3, spread_m: 0.000, sigma_m: 0.005}   # measured at three spots
+wall_to_wall:
+  - {value: 0.000, n_frames: 1, spread_m: 0.0, sigma_m: 0.005}     # wall A, corner to corner
+  - {value: 0.000, n_frames: 1, spread_m: 0.0, sigma_m: 0.005}     # wall B
+opening_width:
+  - {value: 0.000, n_frames: 1, spread_m: 0.0, sigma_m: 0.005}     # door, jamb to jamb
+  - {value: 0.000, n_frames: 1, spread_m: 0.0, sigma_m: 0.005}     # window

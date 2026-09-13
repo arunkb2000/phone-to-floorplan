@@ -1,15 +1,11 @@
-"""LiDAR-tier loader for Stray Scanner exports (App Store, free) and our synthetic clone.
+"""Loader for Stray Scanner exports (App Store, free): the LiDAR tier's input format.
 
-Folder layout produced by the app:
-    camera_matrix.csv   3x3 intrinsics at the RGB resolution (1920x1440 on iPhone Pro)
-    odometry.csv        timestamp, frame, x, y, z, qx, qy, qz, qw [, fx, fy, cx, cy, ...]
-                        camera-to-world in ARKit's world (y up), OpenGL camera (x right, y up, -z fwd)
-    depth/NNNNNN.png    16-bit, millimetres, 256x192
-    confidence/NNNNNN.png  8-bit, 0 low / 1 medium / 2 high
-    rgb.mp4             H.264, RGB resolution, one frame per depth frame
+camera_matrix.csv holds RGB-resolution intrinsics, odometry.csv the per-frame camera-to-world pose,
+depth/ and confidence/ the 256x192 maps, rgb.mp4 one frame per depth frame. RGB is decoded lazily,
+because the geometry needs only depth and that is the difference between a 6 second and a 4 minute run.
 
-RGB is decoded lazily: the geometry runs on depth alone, and only the frames used for damage
-detection are pulled out of the video. That is the difference between a 15 s and a 4 min run.
+The exported rotation is already in OpenCV camera axes, not ARKit's OpenGL ones; applying the
+textbook flip breaks everything downstream. scripts/check_convention.py is the evidence.
 """
 from __future__ import annotations
 

@@ -1,21 +1,9 @@
 """Benchmark harness: run every capture in the manifest, score it, write the gate tables.
 
-Scoring against a reference that is a SET of values, not a labelled drawing
---------------------------------------------------------------------------
-The reference (scripts/make_reference_gt.py) measures the property one depth frame at a time, so it
-knows that a 0.89 m opening exists but not which wall of which room it is on. Scoring is therefore
-set matching: every reference value is matched to the closest prediction of the same kind that is
-not already taken, and the error is the difference.
-
-Two consequences we do not paper over:
-
-  * A reference value with no prediction within the matching window is a MISS, and counts against
-    the opening-detection gate exactly as the brief requires.
-  * A prediction with no reference value is reported as UNMATCHED, not as a phantom. The reference
-    is not exhaustive - it only sees what a single frame could resolve - so calling every unmatched
-    prediction a false positive would be as dishonest as ignoring it. Both counts are printed, and
-    the gate is computed twice: once treating unmatched predictions as phantoms (the strict reading
-    of the brief) and once not.
+The reference is a set of values, not a labelled drawing, so scoring is set matching. A reference
+value with no prediction is a miss; a prediction with no reference is reported as unmatched, not as
+a phantom, because the reference is not exhaustive. Both counts are printed and the opening gate is
+computed under each reading. See docs/report/benchmark.md.
 """
 from __future__ import annotations
 

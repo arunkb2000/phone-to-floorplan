@@ -1,15 +1,10 @@
-"""Split one Stray Scanner capture into two independent captures over the same rooms.
+"""Split one capture into two independent captures over the same rooms, for the repeatability gate.
 
-The repeatability gate asks for two captures of the same room at the same tier. We were supplied
-three captures and no way to re-visit the property, so we make the pair the only honest way the data
-allows: cut a long walk into two halves that both cover the same spaces, and run the pipeline on
-each independently. The halves share no frames, accumulate drift separately, see the rooms from
-different positions and at different times, and neither knows the other exists.
+Two-second blocks are dealt alternately to each half, so both visit every room, share no frame, and
+accumulate drift separately. What it is not: two separate walks, so it cannot expose an error that
+repeats because the walker always stands in the same place.
 
-What this is not: it is not two separate walks, so it cannot expose an error that repeats because
-the walker always stands in the same place. The report says so.
-
-    uv run python scripts/split_capture.py data/raw/single_scan_with_ceiling --out data/benchmark/captures
+    uv run python scripts/split_capture.py data/raw/single_scan_with_ceiling --name flatA
 """
 from __future__ import annotations
 

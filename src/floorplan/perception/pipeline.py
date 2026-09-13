@@ -1,15 +1,9 @@
-"""Run the damage detector over a capture's RGB and project each mask onto a surface of the plan.
+"""Run the damage detector over a capture's RGB and project each mask onto a plan surface.
 
-Two paths, because the tiers give us different things:
-
-* **LiDAR** — every pixel has a depth and a pose, so a mask becomes a world-space patch directly. We
-  find the room whose footprint contains those points and the surface (a wall edge, the floor, or the
-  ceiling) they lie closest to, and measure the patch in that surface's own UV frame.
-* **photo and video** — no poses, so we work in the frame's own gravity-aligned frame against the
-  room's fused rectangle.
-
-Either way the metric extent is measured on the surface, not in pixels, and its interval carries the
-projection uncertainty.
+LiDAR: every pixel has depth and a pose, so a mask becomes a world patch, assigned to the room whose
+footprint contains it and the surface it lies closest to. Photo and video: the same thing in the
+frame's own gravity-aligned coordinates against the room's fused rectangle. Either way the extent is
+measured on the surface, in metres.
 """
 from __future__ import annotations
 
