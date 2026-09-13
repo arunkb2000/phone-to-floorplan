@@ -25,9 +25,9 @@ against it is not, on its own, evidence of a pipeline error.
 
 | Tier | Opening width, mean abs error | Ceiling height, mean abs error | Interval coverage | Cold run |
 |---|---|---|---|---|
-| LiDAR | 3.9 cm (7 matched) | 12.5 cm (6 matched) | 62 % | 6.5 s, 9745 frames |
-| Video | 10.5 cm (2 matched) | 1.4 cm (1 matched) **PASS** | 100 % | 6.6 s |
-| Photo | 3.7 cm (2 matched) | 3.9 cm (1 matched) | 100 % | 2.2 s, 18 stills |
+| LiDAR | 3.9 cm (7 matched) | 12.5 cm (6 matched) | 62 % | 59.7 s, 9745 frames |
+| Video | 10.5 cm (2 matched) | 1.4 cm (1 matched) **PASS** | 100 % | 6.8 s |
+| Photo | 3.7 cm (2 matched) | 3.9 cm (1 matched) | 100 % | 2.0 s, 35 stills |
 
 Coverage is the fraction of my 90 % intervals that overlap the reference's own 90 % interval. The
 stricter reading, which ignores the reference's uncertainty and asks whether its point value falls

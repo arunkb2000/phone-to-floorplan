@@ -18,11 +18,11 @@ Apple M5, 16 GB, Metal backend. From `analysis/bench/after/gates.md`.
 
 | Capture | Tier | Input size | Wall clock |
 |---|---|---|---|
-| `single_scan_with_ceiling` | LiDAR | 9745 frames, 215 s walk, 530 MB | 6.3 s |
-| `single_scan_floor_only` | LiDAR | 5251 frames, 115 s walk, 289 MB | 3.5 s |
-| `single_room` | LiDAR | 1715 frames, 37 s walk, 93 MB | 1.0 s |
-| `photo_flatA` | photo | 18 stills, 3 rooms | 1.0 s |
-| `video_flatA` | video | 1218 frames at 6 fps | 4.5 s |
+| `single_scan_with_ceiling` | LiDAR | 9745 frames, 215 s walk, 530 MB | 59.7 s |
+| `single_scan_floor_only` | LiDAR | 5251 frames, 115 s walk, 289 MB | 3.7 s |
+| `single_room` | LiDAR | 1715 frames, 37 s walk, 93 MB | 1.1 s |
+| `photo_flatA` | photo | 35 stills, 6 rooms | 2.0 s |
+| `video_flatA` | video | 1218 frames at 6 fps | 6.8 s |
 
 On a CPU-only machine the two monocular tiers are several times slower because of the depth network;
 the LiDAR tier is unaffected because it runs no network at all.

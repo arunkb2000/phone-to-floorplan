@@ -124,7 +124,7 @@ uv run floorplan run data/raw/single_scan_with_ceiling --out results/
 ```
 
 ```
-tier=lidar  rooms=5  openings=4  damage=7  6.5s -> results/plan.json
+tier=lidar  rooms=5  openings=4  damage=0  58.96s -> results/plan.json
 ```
 
 You get `results/plan.png`, `plan.svg`, `plan.json` and `timing.json`.

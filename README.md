@@ -52,13 +52,14 @@ uv run floorplan run data/raw/single_scan_with_ceiling --out results/
 One command. It works out by itself whether you gave it photos, a video, or a depth scan.
 
 ```
-tier=lidar  rooms=5  openings=4  damage=7  6.5s -> results/plan.json
-   01_space   area 28.30 m2  h 2.366 [2.349,2.382] measured  walls 17  openings 2
-   02_space   area  5.40 m2  h 2.266 [2.250,2.283] measured  walls  5  openings 0
+tier=lidar  rooms=5  openings=4  damage=0  58.96s -> results/plan.json
+   01_space       area  28.30 m2  h 2.366 [2.349,2.382] measured  walls 16  openings 2  coverage 93%
+   02_space       area   5.40 m2  h 2.266 [2.250,2.283] measured  walls 5  openings 0  coverage 100%
 ```
 
-Five rooms in six and a half seconds. The bracketed pair is the confidence range: that ceiling is
-2.366 m, and there is a 90 % chance the true value lies between 2.349 m and 2.383 m.
+Five rooms in about a minute, almost all of it spent decoding the video for damage detection; with
+`--no-damage` the plan takes 6.5 seconds. The bracketed pair is the confidence range: that ceiling is
+2.366 m, and there is a 90 % chance the true value lies between 2.349 m and 2.382 m.
 
 ### 4. What you get
 
@@ -106,7 +107,7 @@ regenerate with `make reproduce`.
 
 | Scan | Input | Rooms | Walls | Openings | Damage | Repair lines | Overlap | Seconds |
 |---|---|---|---|---|---|---|---|---|
-| Office, full scan | depth | 5 | 38 | 4 | 0 | 0 | 0.1 % | 6.5 |
+| Office, full scan | depth | 5 | 38 | 4 | 0 | 0 | 0.1 % | 59.7 |
 | Office, second scan | depth | 6 | 47 | 6 | 0 | 0 | 1.2 % | 3.7 |
 | Single-space walk | depth | 3 | 19 | 1 | 0 | 0 | 1.3 % | 1.1 |
 | Office, photos only | 6 stills/room | 6 | 24 | 6 | 0 | 0 | 1.6 % | 2.0 |
@@ -155,8 +156,8 @@ five repair lines, including "investigate the leak above" triggered by a stain o
 
 | | |
 |---|---|
-| Largest scan, 9,745 frames, five rooms | 6.5 seconds |
-| Photos, 18 stills | 2.2 seconds |
+| Largest scan, 9,745 frames, five rooms | 59.7 seconds, or 6.5 without damage detection |
+| Photos, 35 stills | 2.0 seconds |
 | Full rebuild of every number from raw scans | 11 min 44 s |
 | Internet needed after setup | none |
 
