@@ -57,7 +57,7 @@ def detect_stains(rgb: np.ndarray) -> list[dict]:
     mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, np.ones((13, 13), np.uint8)).astype(bool)
     h, w = rgb.shape[:2]
     out = []
-    for m, box, area in _components(mask, int(STAIN_MIN_FRAC * h * w)):
+    for m, box, _a in _components(mask, int(STAIN_MIN_FRAC * h * w)):
         strength = float(np.mean(score_map[m]))
         # a soft edge separates a stain from a poster or a picture frame
         edge = cv2.morphologyEx(m.astype(np.uint8), cv2.MORPH_GRADIENT, np.ones((9, 9), np.uint8)).astype(bool)
