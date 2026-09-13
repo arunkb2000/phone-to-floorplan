@@ -1,0 +1,1530 @@
+{
+ "schema_version": "0.1.0",
+ "capture": {
+  "id": "single_scan_with_ceiling",
+  "source": "stray_scanner",
+  "device": "unknown",
+  "input_sha256": "28c1e7a2f70a9836"
+ },
+ "tier": "lidar",
+ "units": "m",
+ "coordinate_frame": "gravity-aligned, z up, metres; x and y on the property's dominant (Manhattan) axes",
+ "rooms": [
+  {
+   "id": "01_space",
+   "label": "space",
+   "label_confidence": 0.9,
+   "polygon": [
+    [
+     -3.5905,
+     -8.6517
+    ],
+    [
+     -3.5905,
+     -7.6005
+    ],
+    [
+     -4.0405,
+     -6.1949
+    ],
+    [
+     -2.7016,
+     -6.1949
+    ],
+    [
+     -2.7016,
+     -5.0505
+    ],
+    [
+     -0.6184,
+     -5.0505
+    ],
+    [
+     -0.6184,
+     -3.8005
+    ],
+    [
+     -0.5322,
+     -2.2127
+    ],
+    [
+     -3.6823,
+     -2.2127
+    ],
+    [
+     -3.6823,
+     -2.0879
+    ],
+    [
+     1.1031,
+     -2.0879
+    ],
+    [
+     1.1031,
+     0.9046
+    ],
+    [
+     -1.9655,
+     0.9046
+    ],
+    [
+     -1.9655,
+     -1.0188
+    ],
+    [
+     -2.8135,
+     -1.0188
+    ],
+    [
+     -2.8135,
+     0.8737
+    ],
+    [
+     -4.3155,
+     0.8737
+    ],
+    [
+     -5.1977,
+     0.4697
+    ],
+    [
+     -5.1977,
+     -0.2658
+    ],
+    [
+     -7.6655,
+     -0.2658
+    ],
+    [
+     -7.6655,
+     0.943
+    ],
+    [
+     -8.6217,
+     0.943
+    ],
+    [
+     -8.6217,
+     0.9495
+    ],
+    [
+     -9.1514,
+     -2.952
+    ],
+    [
+     -4.8155,
+     -2.952
+    ],
+    [
+     -4.8155,
+     -6.1168
+    ],
+    [
+     -6.0849,
+     -6.1168
+    ],
+    [
+     -6.0849,
+     -8.6517
+    ]
+   ],
+   "walls": [
+    {
+     "id": "01_space:W0",
+     "start": [
+      -3.5905,
+      -8.6517
+     ],
+     "end": [
+      -3.5905,
+      -7.6005
+     ],
+     "length": {
+      "value": 2.4944,
+      "ci_low": 2.3955,
+      "ci_high": 2.5934,
+      "sigma": 0.0601,
+      "source": "measured",
+      "method": "rectilinear contour with edges snapped to the measured wall planes",
+      "n_support": 113659
+     },
+     "surface_id": "01_space:wall:W0"
+    },
+    {
+     "id": "01_space:W1",
+     "start": [
+      -3.5905,
+      -7.6005
+     ],
+     "end": [
+      -4.0405,
+      -6.1949
+     ],
+     "length": {
+      "value": 1.0512,
+      "ci_low": 0.9523,
+      "ci_high": 1.1501,
+      "sigma": 0.0601,
+      "source": "inferred",
+      "method": "rectilinear contour with edges snapped to the measured wall planes",
+      "n_support": 47
+     },
+     "surface_id": "01_space:wall:W1"
+    },
+    {
+     "id": "01_space:W2",
+     "start": [
+      -4.0405,
+      -6.1949
+     ],
+     "end": [
+      -2.7016,
+      -6.1949
+     ],
+     "length": {
+      "value": 1.4056,
+      "ci_low": 1.3067,
+      "ci_high": 1.5045,
+      "sigma": 0.0601,
+      "source": "inferred",
+      "method": "rectilinear contour with edges snapped to the measured wall planes",
+      "n_support": 1
+     },
+     "surface_id": "01_space:wall:W2"
+    },
+    {
+     "id": "01_space:W3",
+     "start": [
+      -2.7016,
+      -6.1949
+     ],
+     "end": [
+      -2.7016,
+      -5.0505
+     ],
+     "length": {
+      "value": 1.3388,
+      "ci_low": 1.2399,
+      "ci_high": 1.4378,
+      "sigma": 0.0601,
+      "source": "measured",
+      "method": "rectilinear contour with edges snapped to the measured wall planes",
+      "n_support": 18691
+     },
+     "surface_id": "01_space:wall:W3"
+    },
+    {
+     "id": "01_space:W4",
+     "start": [
+      -2.7016,
+      -5.0505
+     ],
+     "end": [
+      -0.6184,
+      -5.0505
+     ],
+     "length": {
+      "value": 1.1445,
+      "ci_low": 1.1313,
+      "ci_high": 1.1576,
+      "sigma": 0.008,
+      "source": "measured",
+      "method": "rectilinear contour with edges snapped to the measured wall planes",
+      "n_support": 391
+     },
+     "surface_id": "01_space:wall:W4"
+    },
+    {
+     "id": "01_space:W5",
+     "start": [
+      -0.6184,
+      -5.0505
+     ],
+     "end": [
+      -0.6184,
+      -3.8005
+     ],
+     "length": {
+      "value": 2.0832,
+      "ci_low": 2.07,
+      "ci_high": 2.0964,
+      "sigma": 0.008,
+      "source": "measured",
+      "method": "rectilinear contour with edges snapped to the measured wall planes",
+      "n_support": 89195
+     },
+     "surface_id": "01_space:wall:W5"
+    },
+    {
+     "id": "01_space:W6",
+     "start": [
+      -0.6184,
+      -3.8005
+     ],
+     "end": [
+      -0.5322,
+      -2.2127
+     ],
+     "length": {
+      "value": 1.2499,
+      "ci_low": 1.2368,
+      "ci_high": 1.2631,
+      "sigma": 0.008,
+      "source": "measured",
+      "method": "rectilinear contour with edges snapped to the measured wall planes",
+      "n_support": 24351
+     },
+     "surface_id": "01_space:wall:W6"
+    },
+    {
+     "id": "01_space:W7",
+     "start": [
+      -0.5322,
+      -2.2127
+     ],
+     "end": [
+      -3.6823,
+      -2.2127
+     ],
+     "length": {
+      "value": 1.5879,
+      "ci_low": 1.5747,
+      "ci_high": 1.601,
+      "sigma": 0.008,
+      "source": "measured",
+      "method": "rectilinear contour with edges snapped to the measured wall planes",
+      "n_support": 21277
+     },
+     "surface_id": "01_space:wall:W7"
+    },
+    {
+     "id": "01_space:W8",
+     "start": [
+      -3.6823,
+      -2.2127
+     ],
+     "end": [
+      -3.6823,
+      -2.0879
+     ],
+     "length": {
+      "value": 3.1501,
+      "ci_low": 3.137,
+      "ci_high": 3.1633,
+      "sigma": 0.008,
+      "source": "measured",
+      "method": "rectilinear contour with edges snapped to the measured wall planes",
+      "n_support": 130211
+     },
+     "surface_id": "01_space:wall:W8"
+    },
+    {
+     "id": "01_space:W9",
+     "start": [
+      -3.6823,
+      -2.0879
+     ],
+     "end": [
+      1.1031,
+      -2.0879
+     ],
+     "length": {
+      "value": 0.1247,
+      "ci_low": 0.1116,
+      "ci_high": 0.1379,
+      "sigma": 0.008,
+      "source": "measured",
+      "method": "rectilinear contour with edges snapped to the measured wall planes",
+      "n_support": 8269
+     },
+     "surface_id": "01_space:wall:W9"
+    },
+    {
+     "id": "01_space:W10",
+     "start": [
+      1.1031,
+      -2.0879
+     ],
+     "end": [
+      1.1031,
+      0.9046
+     ],
+     "length": {
+      "value": 4.7854,
+      "ci_low": 4.7722,
+      "ci_high": 4.7986,
+      "sigma": 0.008,
+      "source": "measured",
+      "method": "rectilinear contour with edges snapped to the measured wall planes",
+      "n_support": 10186
+     },
+     "surface_id": "01_space:wall:W10"
+    },
+    {
+     "id": "01_space:W11",
+     "start": [
+      1.1031,
+      0.9046
+     ],
+     "end": [
+      -1.9655,
+      0.9046
+     ],
+     "length": {
+      "value": 2.9925,
+      "ci_low": 2.9794,
+      "ci_high": 3.0057,
+      "sigma": 0.008,
+      "source": "measured",
+      "method": "rectilinear contour with edges snapped to the measured wall planes",
+      "n_support": 45825
+     },
+     "surface_id": "01_space:wall:W11"
+    },
+    {
+     "id": "01_space:W12",
+     "start": [
+      -1.9655,
+      0.9046
+     ],
+     "end": [
+      -1.9655,
+      -1.0188
+     ],
+     "length": {
+      "value": 3.0686,
+      "ci_low": 2.9697,
+      "ci_high": 3.1675,
+      "sigma": 0.0601,
+      "source": "measured",
+      "method": "rectilinear contour with edges snapped to the measured wall planes",
+      "n_support": 109193
+     },
+     "surface_id": "01_space:wall:W12"
+    },
+    {
+     "id": "01_space:W13",
+     "start": [
+      -1.9655,
+      -1.0188
+     ],
+     "end": [
+      -2.8135,
+      -1.0188
+     ],
+     "length": {
+      "value": 1.9234,
+      "ci_low": 1.9102,
+      "ci_high": 1.9365,
+      "sigma": 0.008,
+      "source": "inferred",
+      "method": "rectilinear contour with edges snapped to the measured wall planes",
+      "n_support": 6
+     },
+     "surface_id": "01_space:wall:W13"
+    },
+    {
+     "id": "01_space:W14",
+     "start": [
+      -2.8135,
+      -1.0188
+     ],
+     "end": [
+      -2.8135,
+      0.8737
+     ],
+     "length": {
+      "value": 0.848,
+      "ci_low": 0.7491,
+      "ci_high": 0.9469,
+      "sigma": 0.0601,
+      "source": "measured",
+      "method": "rectilinear contour with edges snapped to the measured wall planes",
+      "n_support": 12108
+     },
+     "surface_id": "01_space:wall:W14"
+    },
+    {
+     "id": "01_space:W15",
+     "start": [
+      -2.8135,
+      0.8737
+     ],
+     "end": [
+      -4.3155,
+      0.8737
+     ],
+     "length": {
+      "value": 1.8924,
+      "ci_low": 1.8793,
+      "ci_high": 1.9056,
+      "sigma": 0.008,
+      "source": "measured",
+      "method": "rectilinear contour with edges snapped to the measured wall planes",
+      "n_support": 70861
+     },
+     "surface_id": "01_space:wall:W15"
+    },
+    {
+     "id": "01_space:W16",
+     "start": [
+      -4.3155,
+      0.8737
+     ],
+     "end": [
+      -5.1977,
+      0.4697
+     ],
+     "length": {
+      "value": 1.502,
+      "ci_low": 1.4888,
+      "ci_high": 1.5151,
+      "sigma": 0.008,
+      "source": "measured",
+      "method": "rectilinear contour with edges snapped to the measured wall planes",
+      "n_support": 16941
+     },
+     "surface_id": "01_space:wall:W16"
+    },
+    {
+     "id": "01_space:W17",
+     "start": [
+      -5.1977,
+      0.4697
+     ],
+     "end": [
+      -5.1977,
+      -0.2658
+     ],
+     "length": {
+      "value": 0.8822,
+      "ci_low": 0.869,
+      "ci_high": 0.8954,
+      "sigma": 0.008,
+      "source": "measured",
+      "method": "rectilinear contour with edges snapped to the measured wall planes",
+      "n_support": 11349
+     },
+     "surface_id": "01_space:wall:W17"
+    },
+    {
+     "id": "01_space:W18",
+     "start": [
+      -5.1977,
+      -0.2658
+     ],
+     "end": [
+      -7.6655,
+      -0.2658
+     ],
+     "length": {
+      "value": 0.7355,
+      "ci_low": 0.7224,
+      "ci_high": 0.7487,
+      "sigma": 0.008,
+      "source": "measured",
+      "method": "rectilinear contour with edges snapped to the measured wall planes",
+      "n_support": 41670
+     },
+     "surface_id": "01_space:wall:W18"
+    },
+    {
+     "id": "01_space:W19",
+     "start": [
+      -7.6655,
+      -0.2658
+     ],
+     "end": [
+      -7.6655,
+      0.943
+     ],
+     "length": {
+      "value": 2.4678,
+      "ci_low": 2.3689,
+      "ci_high": 2.5667,
+      "sigma": 0.0601,
+      "source": "measured",
+      "method": "rectilinear contour with edges snapped to the measured wall planes",
+      "n_support": 4500
+     },
+     "surface_id": "01_space:wall:W19"
+    },
+    {
+     "id": "01_space:W20",
+     "start": [
+      -7.6655,
+      0.943
+     ],
+     "end": [
+      -8.6217,
+      0.943
+     ],
+     "length": {
+      "value": 1.2088,
+      "ci_low": 1.1957,
+      "ci_high": 1.222,
+      "sigma": 0.008,
+      "source": "inferred",
+      "method": "rectilinear contour with edges snapped to the measured wall planes",
+      "n_support": 236
+     },
+     "surface_id": "01_space:wall:W20"
+    },
+    {
+     "id": "01_space:W21",
+     "start": [
+      -8.6217,
+      0.943
+     ],
+     "end": [
+      -8.6217,
+      0.9495
+     ],
+     "length": {
+      "value": 0.9562,
+      "ci_low": 0.8167,
+      "ci_high": 1.0958,
+      "sigma": 0.0849,
+      "source": "measured",
+      "method": "rectilinear contour with edges snapped to the measured wall planes",
+      "n_support": 4825
+     },
+     "surface_id": "01_space:wall:W21"
+    },
+    {
+     "id": "01_space:W22",
+     "start": [
+      -8.6217,
+      0.9495
+     ],
+     "end": [
+      -9.1514,
+      -2.952
+     ],
+     "length": {
+      "value": 0.0064,
+      "ci_low": -0.0067,
+      "ci_high": 0.0196,
+      "sigma": 0.008,
+      "source": "inferred",
+      "method": "rectilinear contour with edges snapped to the measured wall planes",
+      "n_support": 0
+     },
+     "surface_id": "01_space:wall:W22"
+    },
+    {
+     "id": "01_space:W23",
+     "start": [
+      -9.1514,
+      -2.952
+     ],
+     "end": [
+      -4.8155,
+      -2.952
+     ],
+     "length": {
+      "value": 3.9014,
+      "ci_low": 3.8025,
+      "ci_high": 4.0003,
+      "sigma": 0.0601,
+      "source": "measured",
+      "method": "rectilinear contour with edges snapped to the measured wall planes",
+      "n_support": 38638
+     },
+     "surface_id": "01_space:wall:W23"
+    },
+    {
+     "id": "01_space:W24",
+     "start": [
+      -4.8155,
+      -2.952
+     ],
+     "end": [
+      -4.8155,
+      -6.1168
+     ],
+     "length": {
+      "value": 4.3359,
+      "ci_low": 4.3228,
+      "ci_high": 4.3491,
+      "sigma": 0.008,
+      "source": "measured",
+      "method": "rectilinear contour with edges snapped to the measured wall planes",
+      "n_support": 119260
+     },
+     "surface_id": "01_space:wall:W24"
+    },
+    {
+     "id": "01_space:W25",
+     "start": [
+      -4.8155,
+      -6.1168
+     ],
+     "end": [
+      -6.0849,
+      -6.1168
+     ],
+     "length": {
+      "value": 3.1648,
+      "ci_low": 3.1517,
+      "ci_high": 3.178,
+      "sigma": 0.008,
+      "source": "measured",
+      "method": "rectilinear contour with edges snapped to the measured wall planes",
+      "n_support": 120729
+     },
+     "surface_id": "01_space:wall:W25"
+    },
+    {
+     "id": "01_space:W26",
+     "start": [
+      -6.0849,
+      -6.1168
+     ],
+     "end": [
+      -6.0849,
+      -8.6517
+     ],
+     "length": {
+      "value": 1.2695,
+      "ci_low": 1.2563,
+      "ci_high": 1.2826,
+      "sigma": 0.008,
+      "source": "measured",
+      "method": "rectilinear contour with edges snapped to the measured wall planes",
+      "n_support": 2231
+     },
+     "surface_id": "01_space:wall:W26"
+    },
+    {
+     "id": "01_space:W27",
+     "start": [
+      -6.0849,
+      -8.6517
+     ],
+     "end": [
+      -3.5905,
+      -8.6517
+     ],
+     "length": {
+      "value": 2.535,
+      "ci_low": 2.5218,
+      "ci_high": 2.5481,
+      "sigma": 0.008,
+      "source": "measured",
+      "method": "rectilinear contour with edges snapped to the measured wall planes",
+      "n_support": 43723
+     },
+     "surface_id": "01_space:wall:W27"
+    }
+   ],
+   "ceiling_height": {
+    "value": 2.2624,
+    "ci_low": 2.2459,
+    "ci_high": 2.2788,
+    "sigma": 0.01,
+    "source": "measured",
+    "method": "room-local ceiling plane minus floor plane",
+    "n_support": 224833
+   },
+   "ceiling_height_spread_m": 0.0177,
+   "floor_area": {
+    "value": 49.14,
+    "ci_low": 41.2253,
+    "ci_high": 57.0547,
+    "sigma": 4.8114,
+    "source": "measured",
+    "method": "shoelace area of the dimensioned polygon",
+    "n_support": 28
+   },
+   "openings": [
+    {
+     "id": "01_space:W8:window:0",
+     "wall_id": "01_space:W8",
+     "type": "window",
+     "offset_along_wall": {
+      "value": 0.0633,
+      "ci_low": 0.0436,
+      "ci_high": 0.0831,
+      "sigma": 0.012,
+      "source": "measured",
+      "method": "half-maximum edge of the wall-material profile",
+      "n_support": 998
+     },
+     "width": {
+      "value": 0.7805,
+      "ci_low": 0.7608,
+      "ci_high": 0.8003,
+      "sigma": 0.012,
+      "source": "measured",
+      "method": "half-maximum edges of the gap in the wall-material profile",
+      "n_support": 998
+     },
+     "detection_confidence": 0.57,
+     "height": {
+      "value": 1.6159,
+      "ci_low": 1.5666,
+      "ci_high": 1.6653,
+      "sigma": 0.03,
+      "source": "measured",
+      "method": "vertical extent of the gap",
+      "n_support": 998
+     },
+     "sill_height": {
+      "value": 1.1573,
+      "ci_low": 1.1079,
+      "ci_high": 1.2066,
+      "sigma": 0.03,
+      "source": "measured",
+      "method": "top of the material below the gap",
+      "n_support": 998
+     }
+    },
+    {
+     "id": "01_space:W23:window:1",
+     "wall_id": "01_space:W23",
+     "type": "window",
+     "offset_along_wall": {
+      "value": 1.4518,
+      "ci_low": 1.432,
+      "ci_high": 1.4715,
+      "sigma": 0.012,
+      "source": "measured",
+      "method": "half-maximum edge of the wall-material profile",
+      "n_support": 16
+     },
+     "width": {
+      "value": 1.2948,
+      "ci_low": 1.275,
+      "ci_high": 1.3145,
+      "sigma": 0.012,
+      "source": "measured",
+      "method": "half-maximum edges of the gap in the wall-material profile",
+      "n_support": 16
+     },
+     "detection_confidence": 0.55,
+     "height": {
+      "value": 2.0771,
+      "ci_low": 2.0277,
+      "ci_high": 2.1264,
+      "sigma": 0.03,
+      "source": "measured",
+      "method": "vertical extent of the gap",
+      "n_support": 16
+     },
+     "sill_height": {
+      "value": 0.279,
+      "ci_low": 0.2296,
+      "ci_high": 0.3283,
+      "sigma": 0.03,
+      "source": "measured",
+      "method": "top of the material below the gap",
+      "n_support": 16
+     }
+    }
+   ],
+   "surfaces": [
+    {
+     "id": "01_space:wall:W0",
+     "room_id": "01_space",
+     "kind": "wall",
+     "area": {
+      "value": 5.6434,
+      "ci_low": 5.419,
+      "ci_high": 5.8678,
+      "sigma": 0.1364,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 113659
+     }
+    },
+    {
+     "id": "01_space:wall:W1",
+     "room_id": "01_space",
+     "kind": "wall",
+     "area": {
+      "value": 2.3782,
+      "ci_low": 2.1543,
+      "ci_high": 2.6021,
+      "sigma": 0.1361,
+      "source": "inferred",
+      "method": "wall length x ceiling height",
+      "n_support": 47
+     }
+    },
+    {
+     "id": "01_space:wall:W2",
+     "room_id": "01_space",
+     "kind": "wall",
+     "area": {
+      "value": 3.18,
+      "ci_low": 2.956,
+      "ci_high": 3.404,
+      "sigma": 0.1362,
+      "source": "inferred",
+      "method": "wall length x ceiling height",
+      "n_support": 1
+     }
+    },
+    {
+     "id": "01_space:wall:W3",
+     "room_id": "01_space",
+     "kind": "wall",
+     "area": {
+      "value": 3.029,
+      "ci_low": 2.805,
+      "ci_high": 3.2529,
+      "sigma": 0.1361,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 18691
+     }
+    },
+    {
+     "id": "01_space:wall:W4",
+     "room_id": "01_space",
+     "kind": "wall",
+     "area": {
+      "value": 2.5892,
+      "ci_low": 2.5563,
+      "ci_high": 2.6221,
+      "sigma": 0.02,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 391
+     }
+    },
+    {
+     "id": "01_space:wall:W5",
+     "room_id": "01_space",
+     "kind": "wall",
+     "area": {
+      "value": 4.713,
+      "ci_low": 4.6801,
+      "ci_high": 4.7459,
+      "sigma": 0.02,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 89195
+     }
+    },
+    {
+     "id": "01_space:wall:W6",
+     "room_id": "01_space",
+     "kind": "wall",
+     "area": {
+      "value": 2.8278,
+      "ci_low": 2.7949,
+      "ci_high": 2.8607,
+      "sigma": 0.02,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 24351
+     }
+    },
+    {
+     "id": "01_space:wall:W7",
+     "room_id": "01_space",
+     "kind": "wall",
+     "area": {
+      "value": 3.5924,
+      "ci_low": 3.5595,
+      "ci_high": 3.6253,
+      "sigma": 0.02,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 21277
+     }
+    },
+    {
+     "id": "01_space:wall:W8",
+     "room_id": "01_space",
+     "kind": "wall",
+     "area": {
+      "value": 7.1268,
+      "ci_low": 7.0939,
+      "ci_high": 7.1597,
+      "sigma": 0.02,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 130211
+     }
+    },
+    {
+     "id": "01_space:wall:W9",
+     "room_id": "01_space",
+     "kind": "wall",
+     "area": {
+      "value": 0.2822,
+      "ci_low": 0.2493,
+      "ci_high": 0.3151,
+      "sigma": 0.02,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 8269
+     }
+    },
+    {
+     "id": "01_space:wall:W10",
+     "room_id": "01_space",
+     "kind": "wall",
+     "area": {
+      "value": 10.8264,
+      "ci_low": 10.7885,
+      "ci_high": 10.8643,
+      "sigma": 0.023,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 10186
+     }
+    },
+    {
+     "id": "01_space:wall:W11",
+     "room_id": "01_space",
+     "kind": "wall",
+     "area": {
+      "value": 6.7703,
+      "ci_low": 6.7374,
+      "ci_high": 6.8032,
+      "sigma": 0.02,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 45825
+     }
+    },
+    {
+     "id": "01_space:wall:W12",
+     "room_id": "01_space",
+     "kind": "wall",
+     "area": {
+      "value": 6.9423,
+      "ci_low": 6.7176,
+      "ci_high": 7.167,
+      "sigma": 0.1366,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 109193
+     }
+    },
+    {
+     "id": "01_space:wall:W13",
+     "room_id": "01_space",
+     "kind": "wall",
+     "area": {
+      "value": 4.3514,
+      "ci_low": 4.3185,
+      "ci_high": 4.3843,
+      "sigma": 0.02,
+      "source": "inferred",
+      "method": "wall length x ceiling height",
+      "n_support": 6
+     }
+    },
+    {
+     "id": "01_space:wall:W14",
+     "room_id": "01_space",
+     "kind": "wall",
+     "area": {
+      "value": 1.9186,
+      "ci_low": 1.6947,
+      "ci_high": 2.1424,
+      "sigma": 0.1361,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 12108
+     }
+    },
+    {
+     "id": "01_space:wall:W15",
+     "room_id": "01_space",
+     "kind": "wall",
+     "area": {
+      "value": 4.2814,
+      "ci_low": 4.2485,
+      "ci_high": 4.3143,
+      "sigma": 0.02,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 70861
+     }
+    },
+    {
+     "id": "01_space:wall:W16",
+     "room_id": "01_space",
+     "kind": "wall",
+     "area": {
+      "value": 3.3981,
+      "ci_low": 3.3652,
+      "ci_high": 3.431,
+      "sigma": 0.02,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 16941
+     }
+    },
+    {
+     "id": "01_space:wall:W17",
+     "room_id": "01_space",
+     "kind": "wall",
+     "area": {
+      "value": 1.9959,
+      "ci_low": 1.963,
+      "ci_high": 2.0288,
+      "sigma": 0.02,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 11349
+     }
+    },
+    {
+     "id": "01_space:wall:W18",
+     "room_id": "01_space",
+     "kind": "wall",
+     "area": {
+      "value": 1.6641,
+      "ci_low": 1.6312,
+      "ci_high": 1.697,
+      "sigma": 0.02,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 41670
+     }
+    },
+    {
+     "id": "01_space:wall:W19",
+     "room_id": "01_space",
+     "kind": "wall",
+     "area": {
+      "value": 5.5831,
+      "ci_low": 5.3587,
+      "ci_high": 5.8075,
+      "sigma": 0.1364,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 4500
+     }
+    },
+    {
+     "id": "01_space:wall:W20",
+     "room_id": "01_space",
+     "kind": "wall",
+     "area": {
+      "value": 2.7348,
+      "ci_low": 2.7019,
+      "ci_high": 2.7677,
+      "sigma": 0.02,
+      "source": "inferred",
+      "method": "wall length x ceiling height",
+      "n_support": 236
+     }
+    },
+    {
+     "id": "01_space:wall:W21",
+     "room_id": "01_space",
+     "kind": "wall",
+     "area": {
+      "value": 2.1634,
+      "ci_low": 1.8476,
+      "ci_high": 2.4793,
+      "sigma": 0.192,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 4825
+     }
+    },
+    {
+     "id": "01_space:wall:W22",
+     "room_id": "01_space",
+     "kind": "wall",
+     "area": {
+      "value": 0.0146,
+      "ci_low": -0.0183,
+      "ci_high": 0.0475,
+      "sigma": 0.02,
+      "source": "inferred",
+      "method": "wall length x ceiling height",
+      "n_support": 0
+     }
+    },
+    {
+     "id": "01_space:wall:W23",
+     "room_id": "01_space",
+     "kind": "wall",
+     "area": {
+      "value": 8.8265,
+      "ci_low": 8.6013,
+      "ci_high": 9.0518,
+      "sigma": 0.1369,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 38638
+     }
+    },
+    {
+     "id": "01_space:wall:W24",
+     "room_id": "01_space",
+     "kind": "wall",
+     "area": {
+      "value": 9.8096,
+      "ci_low": 9.7741,
+      "ci_high": 9.845,
+      "sigma": 0.0216,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 119260
+     }
+    },
+    {
+     "id": "01_space:wall:W25",
+     "room_id": "01_space",
+     "kind": "wall",
+     "area": {
+      "value": 7.16,
+      "ci_low": 7.1271,
+      "ci_high": 7.1929,
+      "sigma": 0.02,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 120729
+     }
+    },
+    {
+     "id": "01_space:wall:W26",
+     "room_id": "01_space",
+     "kind": "wall",
+     "area": {
+      "value": 2.872,
+      "ci_low": 2.8391,
+      "ci_high": 2.9049,
+      "sigma": 0.02,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 2231
+     }
+    },
+    {
+     "id": "01_space:wall:W27",
+     "room_id": "01_space",
+     "kind": "wall",
+     "area": {
+      "value": 5.7351,
+      "ci_low": 5.7022,
+      "ci_high": 5.768,
+      "sigma": 0.02,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 43723
+     }
+    },
+    {
+     "id": "01_space:floor",
+     "room_id": "01_space",
+     "kind": "floor",
+     "area": {
+      "value": 49.14,
+      "ci_low": 41.2253,
+      "ci_high": 57.0547,
+      "sigma": 4.8114,
+      "source": "measured",
+      "method": "shoelace area of the dimensioned polygon",
+      "n_support": 28
+     }
+    },
+    {
+     "id": "01_space:ceiling",
+     "room_id": "01_space",
+     "kind": "ceiling",
+     "area": {
+      "value": 49.14,
+      "ci_low": 41.2253,
+      "ci_high": 57.0547,
+      "sigma": 4.8114,
+      "source": "measured",
+      "method": "shoelace area of the dimensioned polygon",
+      "n_support": 28
+     }
+    }
+   ],
+   "quality": {
+    "coverage_fraction": 0.897,
+    "n_frames": 718,
+    "exposure_score": 1.0,
+    "mirror_suspected": false
+   },
+   "placement_confidence": 0.9,
+   "warnings": []
+  },
+  {
+   "id": "02_space",
+   "label": "space",
+   "label_confidence": 0.9,
+   "polygon": [
+    [
+     -3.0248,
+     -8.7004
+    ],
+    [
+     -0.0523,
+     -8.7004
+    ],
+    [
+     -0.0523,
+     -5.9548
+    ],
+    [
+     -3.0248,
+     -5.9548
+    ]
+   ],
+   "walls": [
+    {
+     "id": "02_space:A",
+     "start": [
+      -3.0248,
+      -8.7004
+     ],
+     "end": [
+      -0.0523,
+      -8.7004
+     ],
+     "length": {
+      "value": 2.7456,
+      "ci_low": 2.7324,
+      "ci_high": 2.7587,
+      "sigma": 0.008,
+      "source": "measured",
+      "method": "rectilinear contour with edges snapped to the measured wall planes",
+      "n_support": 87294
+     },
+     "surface_id": "02_space:wall:A"
+    },
+    {
+     "id": "02_space:B",
+     "start": [
+      -0.0523,
+      -8.7004
+     ],
+     "end": [
+      -0.0523,
+      -5.9548
+     ],
+     "length": {
+      "value": 2.9725,
+      "ci_low": 2.9593,
+      "ci_high": 2.9856,
+      "sigma": 0.008,
+      "source": "measured",
+      "method": "rectilinear contour with edges snapped to the measured wall planes",
+      "n_support": 23297
+     },
+     "surface_id": "02_space:wall:B"
+    },
+    {
+     "id": "02_space:C",
+     "start": [
+      -0.0523,
+      -5.9548
+     ],
+     "end": [
+      -3.0248,
+      -5.9548
+     ],
+     "length": {
+      "value": 2.7456,
+      "ci_low": 2.7324,
+      "ci_high": 2.7587,
+      "sigma": 0.008,
+      "source": "measured",
+      "method": "rectilinear contour with edges snapped to the measured wall planes",
+      "n_support": 62555
+     },
+     "surface_id": "02_space:wall:C"
+    },
+    {
+     "id": "02_space:D",
+     "start": [
+      -3.0248,
+      -5.9548
+     ],
+     "end": [
+      -3.0248,
+      -8.7004
+     ],
+     "length": {
+      "value": 2.9725,
+      "ci_low": 2.9593,
+      "ci_high": 2.9856,
+      "sigma": 0.008,
+      "source": "measured",
+      "method": "rectilinear contour with edges snapped to the measured wall planes",
+      "n_support": 48228
+     },
+     "surface_id": "02_space:wall:D"
+    }
+   ],
+   "ceiling_height": {
+    "value": 3.0009,
+    "ci_low": 2.9844,
+    "ci_high": 3.0173,
+    "sigma": 0.01,
+    "source": "measured",
+    "method": "room-local ceiling plane minus floor plane",
+    "n_support": 80473
+   },
+   "ceiling_height_spread_m": 0.0116,
+   "floor_area": {
+    "value": 8.1612,
+    "ci_low": 8.108,
+    "ci_high": 8.2144,
+    "sigma": 0.0323,
+    "source": "measured",
+    "method": "shoelace area of the dimensioned polygon",
+    "n_support": 4
+   },
+   "openings": [],
+   "surfaces": [
+    {
+     "id": "02_space:wall:A",
+     "room_id": "02_space",
+     "kind": "wall",
+     "area": {
+      "value": 8.2391,
+      "ci_low": 8.2058,
+      "ci_high": 8.2724,
+      "sigma": 0.0202,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 87294
+     }
+    },
+    {
+     "id": "02_space:wall:B",
+     "room_id": "02_space",
+     "kind": "wall",
+     "area": {
+      "value": 8.92,
+      "ci_low": 8.8859,
+      "ci_high": 8.9541,
+      "sigma": 0.0207,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 23297
+     }
+    },
+    {
+     "id": "02_space:wall:C",
+     "room_id": "02_space",
+     "kind": "wall",
+     "area": {
+      "value": 8.2391,
+      "ci_low": 8.2058,
+      "ci_high": 8.2724,
+      "sigma": 0.0202,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 62555
+     }
+    },
+    {
+     "id": "02_space:wall:D",
+     "room_id": "02_space",
+     "kind": "wall",
+     "area": {
+      "value": 8.92,
+      "ci_low": 8.8859,
+      "ci_high": 8.9541,
+      "sigma": 0.0207,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 48228
+     }
+    },
+    {
+     "id": "02_space:floor",
+     "room_id": "02_space",
+     "kind": "floor",
+     "area": {
+      "value": 8.1612,
+      "ci_low": 8.108,
+      "ci_high": 8.2144,
+      "sigma": 0.0323,
+      "source": "measured",
+      "method": "shoelace area of the dimensioned polygon",
+      "n_support": 4
+     }
+    },
+    {
+     "id": "02_space:ceiling",
+     "room_id": "02_space",
+     "kind": "ceiling",
+     "area": {
+      "value": 8.1612,
+      "ci_low": 8.108,
+      "ci_high": 8.2144,
+      "sigma": 0.0323,
+      "source": "measured",
+      "method": "shoelace area of the dimensioned polygon",
+      "n_support": 4
+     }
+    }
+   ],
+   "quality": {
+    "coverage_fraction": 1.0,
+    "n_frames": 120,
+    "exposure_score": 1.0,
+    "mirror_suspected": false
+   },
+   "placement_confidence": 0.9,
+   "warnings": []
+  }
+ ],
+ "adjacency": [
+  {
+   "room_a": "01_space",
+   "room_b": "02_space",
+   "via_opening_id": "",
+   "evidence": "trajectory",
+   "confidence": 0.55
+  }
+ ],
+ "damage_regions": [],
+ "concealed_damage_flags": [],
+ "scope_items": [],
+ "calibration": {
+  "nominal_coverage": 0.9,
+  "method": "propagated sigma x per-tier split-conformal factor, with a per-tier relative floor",
+  "calibration_set_id": "bench/latest",
+  "tier_floor_fraction": 0.0,
+  "factors": {}
+ },
+ "timing": {
+  "total_s": 5.88,
+  "device": "arm64 Darwin",
+  "stages": {
+   "load": 0.73,
+   "drift": 0.62,
+   "cloud": 2.51,
+   "geometry": 1.24,
+   "render": 0.24
+  }
+ },
+ "render": {
+  "svg": "plan.svg",
+  "png": "plan.png"
+ },
+ "warnings": [],
+ "drift": {
+  "correction": "on",
+  "method": "floor-anchored levelling and height datum + Manhattan yaw anchoring + loop closure",
+  "datum_mode": "legacy",
+  "frames_levelled": 336,
+  "frames_total": 846,
+  "median_abs_yaw_correction_deg": 0.499,
+  "max_abs_yaw_correction_deg": 1.538,
+  "floor_height_drift_range_m": 0.8313,
+  "frames_with_floor": 336,
+  "datum_outliers_rejected": 0,
+  "loop_closure_applied": true,
+  "loop_gap_before_m": 0.3642
+ }
+}

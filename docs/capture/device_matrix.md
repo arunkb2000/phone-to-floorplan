@@ -17,15 +17,41 @@ on CPU, several times slower but with identical output.
 
 ## Accuracy, measured
 
-Filled from `bench/after/gates.md`. Every figure is against the reference described in
-`docs/report/benchmark.md`, which is a single-frame sensor reference, not a tape. Read that section
-before quoting these numbers.
+From `bench/after/gates.md`. **Read [docs/report/benchmark.md](../report/benchmark.md) first.** These
+are not tape measurements: the supplied captures are of a property we cannot enter, so the reference
+is a single-frame sensor measurement, and the ceiling-height reference in particular under-reads
+because it is usually the visible vertical extent of a wall. A ceiling error of a few centimetres
+against it is not, on its own, evidence of a pipeline error.
 
-| Tier | Wall length | Opening width | Ceiling height | Whole-property stitch | 90 % interval coverage |
-|---|---|---|---|---|---|
-| LiDAR | see benchmark | see benchmark | see benchmark | absolute, from poses | see benchmark |
-| Video | see benchmark | see benchmark | see benchmark | chained along the walk | see benchmark |
-| Photo | see benchmark | see benchmark | see benchmark | chained through doorways | see benchmark |
+| Tier | Opening width, mean abs error | Ceiling height, mean abs error | 90 % interval coverage | Typical run |
+|---|---|---|---|---|
+| LiDAR | 3.9 cm (7 matched) | 12.5 cm (6 matched) | 15 % of 13 | 3.6 s |
+| Video | 9.0 cm (1 matched) | 13.3 cm (2 matched) | 67 % of 3 | 4.4 s |
+| Photo | 5.8 cm (2 matched) | no reference matched | 100 % of 2 | 1.0 s |
+
+Wall lengths have **no** reference on the supplied data: a single depth frame almost never sees two
+opposite walls of these rooms, so the ±1 cm, ±3 % and ±8 % wall gates cannot be scored here at all.
+Saying so is more useful than inventing a number.
+
+The interval coverage row is a fail and we are not going to hide it. Two things drive it. The first
+is real: a plane fitted to 10⁵ LiDAR returns has a statistical spread in the tenths of a millimetre,
+which is not an accuracy claim anyone should make, so absolute sigma floors are asserted per
+measurement kind from the sensor's physics (±1 cm class). The second is the reference: with 13
+matched measurements against a reference whose own ceiling spread is 16 cm, there is not enough
+signal to fit conformal factors without simply fitting to our own noise, so
+`floorplan/calib/factors.json` ships empty and the tier floors do the work. That is the honest state
+of the calibration, not a claim that it is calibrated.
+
+### What we can say without any external reference
+
+These need no ground truth and carry the real weight (`bench/after/gates.md`, `fixloop/DIFF.md`):
+
+| Property | Result |
+|---|---|
+| Ceiling agreement between two independent passes, on correctly paired rooms | 0.3 cm, 0.5 cm, 1.7 cm |
+| Floor-datum stability across a 215 s capture | 2 cm (was 83 cm before the fix loop) |
+| Stitched room overlap | 0.0 to 1.3 % of total room area |
+| Same input twice through the pipeline | byte-identical |
 
 ## What each tier can and cannot do
 

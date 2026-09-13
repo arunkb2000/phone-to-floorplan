@@ -1,0 +1,607 @@
+{
+ "flatA_lidar": {
+  "tier": "lidar",
+  "role": "multiroom",
+  "variant": {
+   "suffix": "",
+   "drift": "on"
+  },
+  "repeat_of": null,
+  "gt": "single_scan_with_ceiling.yaml",
+  "path": "Dataset/single_scan_with_ceiling",
+  "summary": {
+   "n_rooms": 5,
+   "footprint_m2": 56.675,
+   "sum_room_area_m2": 56.739,
+   "overlap_pct": 0.11,
+   "n_openings": 4,
+   "n_adjacency": 5,
+   "n_damage": 0,
+   "n_flags": 0,
+   "n_scope": 0,
+   "unmatched_openings": 2,
+   "unmatched_ceilings": 3,
+   "ceiling_sources": [
+    "measured"
+   ],
+   "mean_coverage": 0.951,
+   "total_s": 6.39,
+   "wall_s": 6.4
+  },
+  "rows": [
+   {
+    "kind": "opening_width",
+    "gt": 0.89,
+    "pred": 0.8375,
+    "err": -0.05249999999999999,
+    "sigma": 0.012,
+    "covered": false,
+    "gt_sigma": 0.0201,
+    "gt_n": 8,
+    "status": "matched",
+    "where": "03_space:03_space:A",
+    "capture": "flatA_lidar",
+    "tier": "lidar"
+   },
+   {
+    "kind": "opening_width",
+    "gt": 0.62,
+    "pred": 0.5856,
+    "err": -0.034399999999999986,
+    "sigma": 0.012,
+    "covered": false,
+    "gt_sigma": 0.0107,
+    "gt_n": 5,
+    "status": "matched",
+    "where": "04_space:04_space:G",
+    "capture": "flatA_lidar",
+    "tier": "lidar"
+   },
+   {
+    "kind": "ceiling_height",
+    "gt": 1.9658,
+    "pred": 2.1972,
+    "err": 0.23140000000000005,
+    "sigma": 0.01,
+    "covered": false,
+    "gt_sigma": 0.0106,
+    "gt_n": 8,
+    "status": "matched",
+    "where": "03_space:",
+    "capture": "flatA_lidar",
+    "tier": "lidar"
+   },
+   {
+    "kind": "ceiling_height",
+    "gt": 2.3154,
+    "pred": 2.2663,
+    "err": -0.0490999999999997,
+    "sigma": 0.01,
+    "covered": false,
+    "gt_sigma": 0.0208,
+    "gt_n": 8,
+    "status": "matched",
+    "where": "02_space:",
+    "capture": "flatA_lidar",
+    "tier": "lidar"
+   }
+  ]
+ },
+ "flatA_lidar_driftoff": {
+  "tier": "lidar",
+  "role": "multiroom",
+  "variant": {
+   "suffix": "_driftoff",
+   "drift": "off"
+  },
+  "repeat_of": null,
+  "gt": "single_scan_with_ceiling.yaml",
+  "path": "Dataset/single_scan_with_ceiling",
+  "summary": {
+   "n_rooms": 6,
+   "footprint_m2": 55.292,
+   "sum_room_area_m2": 55.507,
+   "overlap_pct": 0.39,
+   "n_openings": 6,
+   "n_adjacency": 6,
+   "n_damage": 0,
+   "n_flags": 0,
+   "n_scope": 0,
+   "unmatched_openings": 4,
+   "unmatched_ceilings": 5,
+   "ceiling_sources": [
+    "measured"
+   ],
+   "mean_coverage": 0.954,
+   "total_s": 5.97,
+   "wall_s": 6.0
+  },
+  "rows": [
+   {
+    "kind": "opening_width",
+    "gt": 0.89,
+    "pred": 0.8887,
+    "err": -0.0012999999999999678,
+    "sigma": 0.012,
+    "covered": true,
+    "gt_sigma": 0.0201,
+    "gt_n": 8,
+    "status": "matched",
+    "where": "03_space:03_space:A",
+    "capture": "flatA_lidar_driftoff",
+    "tier": "lidar"
+   },
+   {
+    "kind": "opening_width",
+    "gt": 0.62,
+    "pred": 0.7159,
+    "err": 0.09589999999999999,
+    "sigma": 0.012,
+    "covered": false,
+    "gt_sigma": 0.0107,
+    "gt_n": 5,
+    "status": "matched",
+    "where": "06_space:06_space:F",
+    "capture": "flatA_lidar_driftoff",
+    "tier": "lidar"
+   },
+   {
+    "kind": "ceiling_height",
+    "gt": 1.9658,
+    "pred": null,
+    "err": null,
+    "sigma": null,
+    "covered": false,
+    "gt_sigma": 0.0106,
+    "gt_n": 8,
+    "status": "missed",
+    "where": "",
+    "capture": "flatA_lidar_driftoff",
+    "tier": "lidar"
+   },
+   {
+    "kind": "ceiling_height",
+    "gt": 2.3154,
+    "pred": 2.3389,
+    "err": 0.0235000000000003,
+    "sigma": 0.01,
+    "covered": false,
+    "gt_sigma": 0.0208,
+    "gt_n": 8,
+    "status": "matched",
+    "where": "02_space:",
+    "capture": "flatA_lidar_driftoff",
+    "tier": "lidar"
+   }
+  ]
+ },
+ "flatB_lidar": {
+  "tier": "lidar",
+  "role": "multiroom",
+  "variant": {
+   "suffix": "",
+   "drift": "on"
+  },
+  "repeat_of": null,
+  "gt": "single_scan_floor_only.yaml",
+  "path": "Dataset/single_scan_floor_only",
+  "summary": {
+   "n_rooms": 6,
+   "footprint_m2": 43.509,
+   "sum_room_area_m2": 44.018,
+   "overlap_pct": 1.16,
+   "n_openings": 6,
+   "n_adjacency": 6,
+   "n_damage": 0,
+   "n_flags": 0,
+   "n_scope": 0,
+   "unmatched_openings": 5,
+   "unmatched_ceilings": 6,
+   "ceiling_sources": [
+    "prior"
+   ],
+   "mean_coverage": 0.898,
+   "total_s": 3.6,
+   "wall_s": 3.6
+  },
+  "rows": [
+   {
+    "kind": "opening_width",
+    "gt": 0.9,
+    "pred": 0.8584,
+    "err": -0.04159999999999997,
+    "sigma": 0.012,
+    "covered": false,
+    "gt_sigma": 0.009,
+    "gt_n": 7,
+    "status": "matched",
+    "where": "03_space:03_space:P",
+    "capture": "flatB_lidar",
+    "tier": "lidar"
+   }
+  ]
+ },
+ "roomC_lidar": {
+  "tier": "lidar",
+  "role": "single",
+  "variant": {
+   "suffix": "",
+   "drift": "on"
+  },
+  "repeat_of": null,
+  "gt": "single_room.yaml",
+  "path": "Dataset/single_room",
+  "summary": {
+   "n_rooms": 3,
+   "footprint_m2": 17.803,
+   "sum_room_area_m2": 18.03,
+   "overlap_pct": 1.26,
+   "n_openings": 1,
+   "n_adjacency": 2,
+   "n_damage": 0,
+   "n_flags": 0,
+   "n_scope": 0,
+   "unmatched_openings": 1,
+   "unmatched_ceilings": 3,
+   "ceiling_sources": [
+    "prior"
+   ],
+   "mean_coverage": 0.858,
+   "total_s": 0.99,
+   "wall_s": 1.0
+  },
+  "rows": []
+ },
+ "flatA_lidar_repa": {
+  "tier": "lidar",
+  "role": "repeat",
+  "variant": {
+   "suffix": "",
+   "drift": "on"
+  },
+  "repeat_of": null,
+  "gt": "single_scan_with_ceiling.yaml",
+  "path": "benchmark/captures/flatA_repa",
+  "summary": {
+   "n_rooms": 4,
+   "footprint_m2": 53.082,
+   "sum_room_area_m2": 53.279,
+   "overlap_pct": 0.37,
+   "n_openings": 4,
+   "n_adjacency": 4,
+   "n_damage": 0,
+   "n_flags": 0,
+   "n_scope": 0,
+   "unmatched_openings": 2,
+   "unmatched_ceilings": 2,
+   "ceiling_sources": [
+    "measured"
+   ],
+   "mean_coverage": 0.905,
+   "total_s": 3.3,
+   "wall_s": 3.3
+  },
+  "rows": [
+   {
+    "kind": "opening_width",
+    "gt": 0.89,
+    "pred": 0.8291,
+    "err": -0.060900000000000065,
+    "sigma": 0.012,
+    "covered": false,
+    "gt_sigma": 0.0201,
+    "gt_n": 8,
+    "status": "matched",
+    "where": "03_space:03_space:B",
+    "capture": "flatA_lidar_repa",
+    "tier": "lidar"
+   },
+   {
+    "kind": "opening_width",
+    "gt": 0.62,
+    "pred": 0.6558,
+    "err": 0.035800000000000054,
+    "sigma": 0.012,
+    "covered": false,
+    "gt_sigma": 0.0107,
+    "gt_n": 5,
+    "status": "matched",
+    "where": "01_space:01_space:R",
+    "capture": "flatA_lidar_repa",
+    "tier": "lidar"
+   },
+   {
+    "kind": "ceiling_height",
+    "gt": 1.9658,
+    "pred": 2.1887,
+    "err": 0.22289999999999988,
+    "sigma": 0.01,
+    "covered": false,
+    "gt_sigma": 0.0106,
+    "gt_n": 8,
+    "status": "matched",
+    "where": "03_space:",
+    "capture": "flatA_lidar_repa",
+    "tier": "lidar"
+   },
+   {
+    "kind": "ceiling_height",
+    "gt": 2.3154,
+    "pred": 2.3514,
+    "err": 0.03600000000000003,
+    "sigma": 0.01,
+    "covered": false,
+    "gt_sigma": 0.0208,
+    "gt_n": 8,
+    "status": "matched",
+    "where": "01_space:",
+    "capture": "flatA_lidar_repa",
+    "tier": "lidar"
+   }
+  ]
+ },
+ "flatA_lidar_repb": {
+  "tier": "lidar",
+  "role": "repeat",
+  "variant": {
+   "suffix": "",
+   "drift": "on"
+  },
+  "repeat_of": "flatA_lidar_repa",
+  "gt": "single_scan_with_ceiling.yaml",
+  "path": "benchmark/captures/flatA_repb",
+  "summary": {
+   "n_rooms": 6,
+   "footprint_m2": 55.246,
+   "sum_room_area_m2": 55.307,
+   "overlap_pct": 0.11,
+   "n_openings": 5,
+   "n_adjacency": 6,
+   "n_damage": 0,
+   "n_flags": 0,
+   "n_scope": 0,
+   "unmatched_openings": 3,
+   "unmatched_ceilings": 4,
+   "ceiling_sources": [
+    "measured"
+   ],
+   "mean_coverage": 0.861,
+   "total_s": 3.49,
+   "wall_s": 3.5
+  },
+  "rows": [
+   {
+    "kind": "opening_width",
+    "gt": 0.89,
+    "pred": 0.8703,
+    "err": -0.01970000000000005,
+    "sigma": 0.012,
+    "covered": true,
+    "gt_sigma": 0.0201,
+    "gt_n": 8,
+    "status": "matched",
+    "where": "01_space:01_space:E",
+    "capture": "flatA_lidar_repb",
+    "tier": "lidar"
+   },
+   {
+    "kind": "opening_width",
+    "gt": 0.62,
+    "pred": 0.6467,
+    "err": 0.026700000000000057,
+    "sigma": 0.012,
+    "covered": false,
+    "gt_sigma": 0.0107,
+    "gt_n": 5,
+    "status": "matched",
+    "where": "06_space:06_space:G",
+    "capture": "flatA_lidar_repb",
+    "tier": "lidar"
+   },
+   {
+    "kind": "ceiling_height",
+    "gt": 1.9658,
+    "pred": 2.1717,
+    "err": 0.20589999999999997,
+    "sigma": 0.01,
+    "covered": false,
+    "gt_sigma": 0.0106,
+    "gt_n": 8,
+    "status": "matched",
+    "where": "03_space:",
+    "capture": "flatA_lidar_repb",
+    "tier": "lidar"
+   },
+   {
+    "kind": "ceiling_height",
+    "gt": 2.3154,
+    "pred": 2.3197,
+    "err": 0.0043000000000001926,
+    "sigma": 0.01,
+    "covered": true,
+    "gt_sigma": 0.0208,
+    "gt_n": 8,
+    "status": "matched",
+    "where": "01_space:",
+    "capture": "flatA_lidar_repb",
+    "tier": "lidar"
+   }
+  ]
+ },
+ "flatA_photo": {
+  "tier": "photo",
+  "role": "multiroom",
+  "variant": {
+   "suffix": "",
+   "drift": "on"
+  },
+  "repeat_of": null,
+  "gt": "single_scan_with_ceiling.yaml",
+  "path": "benchmark/captures/photo_flatA",
+  "summary": {
+   "n_rooms": 3,
+   "footprint_m2": 21.338,
+   "sum_room_area_m2": 21.338,
+   "overlap_pct": 0.0,
+   "n_openings": 2,
+   "n_adjacency": 2,
+   "n_damage": 0,
+   "n_flags": 0,
+   "n_scope": 0,
+   "unmatched_openings": 0,
+   "unmatched_ceilings": 3,
+   "ceiling_sources": [
+    "measured"
+   ],
+   "mean_coverage": 0.917,
+   "total_s": 1.0,
+   "wall_s": 1.0
+  },
+  "rows": [
+   {
+    "kind": "opening_width",
+    "gt": 0.89,
+    "pred": 0.7859,
+    "err": -0.10409999999999997,
+    "sigma": 0.0738,
+    "covered": true,
+    "gt_sigma": 0.0201,
+    "gt_n": 8,
+    "status": "matched",
+    "where": "03_space:03_space:B",
+    "capture": "flatA_photo",
+    "tier": "photo"
+   },
+   {
+    "kind": "opening_width",
+    "gt": 0.62,
+    "pred": 0.6327,
+    "err": 0.012700000000000045,
+    "sigma": 0.0806,
+    "covered": true,
+    "gt_sigma": 0.0107,
+    "gt_n": 5,
+    "status": "matched",
+    "where": "02_space:02_space:B",
+    "capture": "flatA_photo",
+    "tier": "photo"
+   },
+   {
+    "kind": "ceiling_height",
+    "gt": 1.9658,
+    "pred": null,
+    "err": null,
+    "sigma": null,
+    "covered": false,
+    "gt_sigma": 0.0106,
+    "gt_n": 8,
+    "status": "missed",
+    "where": "",
+    "capture": "flatA_photo",
+    "tier": "photo"
+   },
+   {
+    "kind": "ceiling_height",
+    "gt": 2.3154,
+    "pred": null,
+    "err": null,
+    "sigma": null,
+    "covered": false,
+    "gt_sigma": 0.0208,
+    "gt_n": 8,
+    "status": "missed",
+    "where": "",
+    "capture": "flatA_photo",
+    "tier": "photo"
+   }
+  ]
+ },
+ "flatA_video": {
+  "tier": "video",
+  "role": "multiroom",
+  "variant": {
+   "suffix": "",
+   "drift": "on"
+  },
+  "repeat_of": null,
+  "gt": "single_scan_with_ceiling.yaml",
+  "path": "benchmark/captures/video_flatA",
+  "summary": {
+   "n_rooms": 2,
+   "footprint_m2": 7.035,
+   "sum_room_area_m2": 7.035,
+   "overlap_pct": 0.0,
+   "n_openings": 4,
+   "n_adjacency": 1,
+   "n_damage": 0,
+   "n_flags": 0,
+   "n_scope": 0,
+   "unmatched_openings": 3,
+   "unmatched_ceilings": 0,
+   "ceiling_sources": [
+    "measured"
+   ],
+   "mean_coverage": 0.625,
+   "total_s": 4.42,
+   "wall_s": 4.4
+  },
+  "rows": [
+   {
+    "kind": "opening_width",
+    "gt": 0.89,
+    "pred": 0.8,
+    "err": -0.08999999999999997,
+    "sigma": 0.0609,
+    "covered": true,
+    "gt_sigma": 0.0201,
+    "gt_n": 8,
+    "status": "matched",
+    "where": "02_space:02_space:D",
+    "capture": "flatA_video",
+    "tier": "video"
+   },
+   {
+    "kind": "opening_width",
+    "gt": 0.62,
+    "pred": null,
+    "err": null,
+    "sigma": null,
+    "covered": false,
+    "gt_sigma": 0.0107,
+    "gt_n": 5,
+    "status": "missed",
+    "where": "",
+    "capture": "flatA_video",
+    "tier": "video"
+   },
+   {
+    "kind": "ceiling_height",
+    "gt": 1.9658,
+    "pred": 1.7534,
+    "err": -0.21239999999999992,
+    "sigma": 0.0548,
+    "covered": false,
+    "gt_sigma": 0.0106,
+    "gt_n": 8,
+    "status": "matched",
+    "where": "01_space:",
+    "capture": "flatA_video",
+    "tier": "video"
+   },
+   {
+    "kind": "ceiling_height",
+    "gt": 2.3154,
+    "pred": 2.261,
+    "err": -0.05439999999999978,
+    "sigma": 0.0449,
+    "covered": true,
+    "gt_sigma": 0.0208,
+    "gt_n": 8,
+    "status": "matched",
+    "where": "02_space:",
+    "capture": "flatA_video",
+    "tier": "video"
+   }
+  ]
+ }
+}

@@ -1,0 +1,669 @@
+{
+ "schema_version": "0.1.0",
+ "capture": {
+  "id": "video_flatA",
+  "source": "ios_camera_video",
+  "device": "unknown",
+  "input_sha256": "5aa4b32dfa82f4ce"
+ },
+ "tier": "video",
+ "units": "m",
+ "coordinate_frame": "gravity-aligned, z up, metres; x and y on the property's dominant (Manhattan) axes",
+ "rooms": [
+  {
+   "id": "01_space",
+   "label": "space",
+   "label_confidence": 0.9,
+   "polygon": [
+    [
+     0.0,
+     0.0
+    ],
+    [
+     1.5757,
+     0.0
+    ],
+    [
+     1.5757,
+     1.4884
+    ],
+    [
+     0.0,
+     1.4884
+    ]
+   ],
+   "walls": [
+    {
+     "id": "01_space:C",
+     "start": [
+      0.0,
+      0.0
+     ],
+     "end": [
+      1.5757,
+      0.0
+     ],
+     "length": {
+      "value": 1.5757,
+      "ci_low": 1.2432,
+      "ci_high": 1.9082,
+      "sigma": 0.2021,
+      "source": "measured",
+      "method": "wall-pair distances fused over frames",
+      "n_support": 5
+     },
+     "surface_id": "01_space:wall:C"
+    },
+    {
+     "id": "01_space:B",
+     "start": [
+      1.5757,
+      0.0
+     ],
+     "end": [
+      1.5757,
+      1.4884
+     ],
+     "length": {
+      "value": 1.4884,
+      "ci_low": 1.2078,
+      "ci_high": 1.7689,
+      "sigma": 0.1705,
+      "source": "measured",
+      "method": "wall-pair distances fused over frames",
+      "n_support": 5
+     },
+     "surface_id": "01_space:wall:B"
+    },
+    {
+     "id": "01_space:A",
+     "start": [
+      1.5757,
+      1.4884
+     ],
+     "end": [
+      0.0,
+      1.4884
+     ],
+     "length": {
+      "value": 1.5757,
+      "ci_low": 1.2432,
+      "ci_high": 1.9082,
+      "sigma": 0.2021,
+      "source": "measured",
+      "method": "wall-pair distances fused over frames",
+      "n_support": 5
+     },
+     "surface_id": "01_space:wall:A"
+    },
+    {
+     "id": "01_space:D",
+     "start": [
+      0.0,
+      1.4884
+     ],
+     "end": [
+      0.0,
+      0.0
+     ],
+     "length": {
+      "value": 1.4884,
+      "ci_low": 1.2078,
+      "ci_high": 1.7689,
+      "sigma": 0.1705,
+      "source": "measured",
+      "method": "wall-pair distances fused over frames",
+      "n_support": 5
+     },
+     "surface_id": "01_space:wall:D"
+    }
+   ],
+   "ceiling_height": {
+    "value": 1.7534,
+    "ci_low": 1.6632,
+    "ci_high": 1.8435,
+    "sigma": 0.0548,
+    "source": "measured",
+    "method": "floor\u2013ceiling plane distance",
+    "n_support": 3
+   },
+   "ceiling_height_spread_m": 0.6098,
+   "floor_area": {
+    "value": 2.3452,
+    "ci_low": 1.9028,
+    "ci_high": 2.7875,
+    "sigma": 0.2689,
+    "source": "measured",
+    "method": "length x width of the fused rectangle",
+    "n_support": 5
+   },
+   "openings": [
+    {
+     "id": "01_space:A:window:0",
+     "wall_id": "01_space:A",
+     "type": "window",
+     "offset_along_wall": {
+      "value": 0.0,
+      "ci_low": -0.5533,
+      "ci_high": 0.5533,
+      "sigma": 0.3363,
+      "source": "measured",
+      "method": "ray crossings through the wall plane",
+      "n_support": 1
+     },
+     "width": {
+      "value": 0.4988,
+      "ci_low": 0.3498,
+      "ci_high": 0.6478,
+      "sigma": 0.0906,
+      "source": "measured",
+      "method": "hole width in wall point density",
+      "n_support": 1
+     },
+     "detection_confidence": 0.697,
+     "height": {
+      "value": 0.6,
+      "ci_low": 0.4684,
+      "ci_high": 0.7316,
+      "sigma": 0.08,
+      "source": "measured",
+      "method": "hole vertical extent",
+      "n_support": 1
+     },
+     "sill_height": {
+      "value": 0.8,
+      "ci_low": 0.6684,
+      "ci_high": 0.9316,
+      "sigma": 0.08,
+      "source": "measured",
+      "method": "hole bottom",
+      "n_support": 1
+     }
+    },
+    {
+     "id": "01_space:D:window:1",
+     "wall_id": "01_space:D",
+     "type": "window",
+     "offset_along_wall": {
+      "value": 0.0,
+      "ci_low": -0.5197,
+      "ci_high": 0.5197,
+      "sigma": 0.3159,
+      "source": "measured",
+      "method": "ray crossings through the wall plane",
+      "n_support": 1
+     },
+     "width": {
+      "value": 0.75,
+      "ci_low": 0.657,
+      "ci_high": 0.843,
+      "sigma": 0.0565,
+      "source": "measured",
+      "method": "hole width in wall point density",
+      "n_support": 1
+     },
+     "detection_confidence": 0.625,
+     "height": {
+      "value": 1.8,
+      "ci_low": 1.6684,
+      "ci_high": 1.9316,
+      "sigma": 0.08,
+      "source": "measured",
+      "method": "hole vertical extent",
+      "n_support": 1
+     },
+     "sill_height": {
+      "value": 0.5,
+      "ci_low": 0.3684,
+      "ci_high": 0.6316,
+      "sigma": 0.08,
+      "source": "measured",
+      "method": "hole bottom",
+      "n_support": 1
+     }
+    }
+   ],
+   "surfaces": [
+    {
+     "id": "01_space:wall:C",
+     "room_id": "01_space",
+     "kind": "wall",
+     "area": {
+      "value": 2.7627,
+      "ci_low": 2.1626,
+      "ci_high": 3.3628,
+      "sigma": 0.3648,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 5
+     }
+    },
+    {
+     "id": "01_space:wall:B",
+     "room_id": "01_space",
+     "kind": "wall",
+     "area": {
+      "value": 2.6096,
+      "ci_low": 2.0998,
+      "ci_high": 3.1195,
+      "sigma": 0.3099,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 5
+     }
+    },
+    {
+     "id": "01_space:wall:A",
+     "room_id": "01_space",
+     "kind": "wall",
+     "area": {
+      "value": 2.7627,
+      "ci_low": 2.1626,
+      "ci_high": 3.3628,
+      "sigma": 0.3648,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 5
+     }
+    },
+    {
+     "id": "01_space:wall:D",
+     "room_id": "01_space",
+     "kind": "wall",
+     "area": {
+      "value": 2.6096,
+      "ci_low": 2.0998,
+      "ci_high": 3.1195,
+      "sigma": 0.3099,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 5
+     }
+    },
+    {
+     "id": "01_space:floor",
+     "room_id": "01_space",
+     "kind": "floor",
+     "area": {
+      "value": 2.3452,
+      "ci_low": 1.9028,
+      "ci_high": 2.7875,
+      "sigma": 0.2689,
+      "source": "measured",
+      "method": "length x width of the fused rectangle",
+      "n_support": 5
+     }
+    },
+    {
+     "id": "01_space:ceiling",
+     "room_id": "01_space",
+     "kind": "ceiling",
+     "area": {
+      "value": 2.3452,
+      "ci_low": 1.9028,
+      "ci_high": 2.7875,
+      "sigma": 0.2689,
+      "source": "measured",
+      "method": "length x width of the fused rectangle",
+      "n_support": 5
+     }
+    }
+   ],
+   "quality": {
+    "coverage_fraction": 0.75,
+    "n_frames": 24,
+    "exposure_score": 0.531,
+    "mirror_suspected": false
+   },
+   "placement_confidence": 1.0,
+   "warnings": [
+    "rectangular room model: this tier has no poses, so alcoves and bays are not resolved",
+    "low light or motion blur: every interval in this room is widened 1.5x"
+   ]
+  },
+  {
+   "id": "02_space",
+   "label": "space",
+   "label_confidence": 0.9,
+   "polygon": [
+    [
+     -0.1488,
+     1.4884
+    ],
+    [
+     1.7245,
+     1.4884
+    ],
+    [
+     1.7245,
+     3.9919
+    ],
+    [
+     -0.1488,
+     3.9919
+    ]
+   ],
+   "walls": [
+    {
+     "id": "02_space:C",
+     "start": [
+      -0.1488,
+      1.4884
+     ],
+     "end": [
+      1.7245,
+      1.4884
+     ],
+     "length": {
+      "value": 1.8733,
+      "ci_low": 1.6729,
+      "ci_high": 2.0737,
+      "sigma": 0.1218,
+      "source": "measured",
+      "method": "wall-pair distances fused over frames",
+      "n_support": 15
+     },
+     "surface_id": "02_space:wall:C"
+    },
+    {
+     "id": "02_space:B",
+     "start": [
+      1.7245,
+      1.4884
+     ],
+     "end": [
+      1.7245,
+      3.9919
+     ],
+     "length": {
+      "value": 2.5035,
+      "ci_low": 2.2211,
+      "ci_high": 2.7859,
+      "sigma": 0.1717,
+      "source": "measured",
+      "method": "wall-pair distances fused over frames",
+      "n_support": 9
+     },
+     "surface_id": "02_space:wall:B"
+    },
+    {
+     "id": "02_space:A",
+     "start": [
+      1.7245,
+      3.9919
+     ],
+     "end": [
+      -0.1488,
+      3.9919
+     ],
+     "length": {
+      "value": 1.8733,
+      "ci_low": 1.6729,
+      "ci_high": 2.0737,
+      "sigma": 0.1218,
+      "source": "measured",
+      "method": "wall-pair distances fused over frames",
+      "n_support": 15
+     },
+     "surface_id": "02_space:wall:A"
+    },
+    {
+     "id": "02_space:D",
+     "start": [
+      -0.1488,
+      3.9919
+     ],
+     "end": [
+      -0.1488,
+      1.4884
+     ],
+     "length": {
+      "value": 2.5035,
+      "ci_low": 2.2211,
+      "ci_high": 2.7859,
+      "sigma": 0.1717,
+      "source": "measured",
+      "method": "wall-pair distances fused over frames",
+      "n_support": 9
+     },
+     "surface_id": "02_space:wall:D"
+    }
+   ],
+   "ceiling_height": {
+    "value": 2.261,
+    "ci_low": 2.187,
+    "ci_high": 2.3349,
+    "sigma": 0.0449,
+    "source": "measured",
+    "method": "floor\u2013ceiling plane distance",
+    "n_support": 7
+   },
+   "ceiling_height_spread_m": 0.5053,
+   "floor_area": {
+    "value": 4.6899,
+    "ci_low": 4.2038,
+    "ci_high": 5.1759,
+    "sigma": 0.2955,
+    "source": "measured",
+    "method": "length x width of the fused rectangle",
+    "n_support": 9
+   },
+   "openings": [
+    {
+     "id": "02_space:A:window:0",
+     "wall_id": "02_space:A",
+     "type": "window",
+     "offset_along_wall": {
+      "value": 0.4828,
+      "ci_low": 0.3817,
+      "ci_high": 0.584,
+      "sigma": 0.0615,
+      "source": "measured",
+      "method": "ray crossings through the wall plane",
+      "n_support": 2
+     },
+     "width": {
+      "value": 1.141,
+      "ci_low": 1.0792,
+      "ci_high": 1.2028,
+      "sigma": 0.0376,
+      "source": "measured",
+      "method": "hole width in wall point density",
+      "n_support": 2
+     },
+     "detection_confidence": 0.95,
+     "height": {
+      "value": 0.65,
+      "ci_low": 0.5184,
+      "ci_high": 0.7816,
+      "sigma": 0.08,
+      "source": "measured",
+      "method": "hole vertical extent",
+      "n_support": 2
+     },
+     "sill_height": {
+      "value": 0.35,
+      "ci_low": 0.2184,
+      "ci_high": 0.4816,
+      "sigma": 0.08,
+      "source": "measured",
+      "method": "hole bottom",
+      "n_support": 2
+     }
+    },
+    {
+     "id": "02_space:D:window:1",
+     "wall_id": "02_space:D",
+     "type": "window",
+     "offset_along_wall": {
+      "value": 0.4556,
+      "ci_low": -0.0684,
+      "ci_high": 0.9797,
+      "sigma": 0.3186,
+      "source": "measured",
+      "method": "ray crossings through the wall plane",
+      "n_support": 1
+     },
+     "width": {
+      "value": 0.8,
+      "ci_low": 0.6997,
+      "ci_high": 0.9003,
+      "sigma": 0.0609,
+      "source": "measured",
+      "method": "hole width in wall point density",
+      "n_support": 1
+     },
+     "detection_confidence": 0.95,
+     "height": {
+      "value": 1.2,
+      "ci_low": 1.0684,
+      "ci_high": 1.3316,
+      "sigma": 0.08,
+      "source": "measured",
+      "method": "hole vertical extent",
+      "n_support": 1
+     },
+     "sill_height": {
+      "value": 1.1,
+      "ci_low": 0.9684,
+      "ci_high": 1.2316,
+      "sigma": 0.08,
+      "source": "measured",
+      "method": "hole bottom",
+      "n_support": 1
+     }
+    }
+   ],
+   "surfaces": [
+    {
+     "id": "02_space:wall:C",
+     "room_id": "02_space",
+     "kind": "wall",
+     "area": {
+      "value": 4.2355,
+      "ci_low": 3.7617,
+      "ci_high": 4.7094,
+      "sigma": 0.288,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 15
+     }
+    },
+    {
+     "id": "02_space:wall:B",
+     "room_id": "02_space",
+     "kind": "wall",
+     "area": {
+      "value": 5.6604,
+      "ci_low": 4.9956,
+      "ci_high": 6.3252,
+      "sigma": 0.4041,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 9
+     }
+    },
+    {
+     "id": "02_space:wall:A",
+     "room_id": "02_space",
+     "kind": "wall",
+     "area": {
+      "value": 4.2355,
+      "ci_low": 3.7617,
+      "ci_high": 4.7094,
+      "sigma": 0.288,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 15
+     }
+    },
+    {
+     "id": "02_space:wall:D",
+     "room_id": "02_space",
+     "kind": "wall",
+     "area": {
+      "value": 5.6604,
+      "ci_low": 4.9956,
+      "ci_high": 6.3252,
+      "sigma": 0.4041,
+      "source": "measured",
+      "method": "wall length x ceiling height",
+      "n_support": 9
+     }
+    },
+    {
+     "id": "02_space:floor",
+     "room_id": "02_space",
+     "kind": "floor",
+     "area": {
+      "value": 4.6899,
+      "ci_low": 4.2038,
+      "ci_high": 5.1759,
+      "sigma": 0.2955,
+      "source": "measured",
+      "method": "length x width of the fused rectangle",
+      "n_support": 9
+     }
+    },
+    {
+     "id": "02_space:ceiling",
+     "room_id": "02_space",
+     "kind": "ceiling",
+     "area": {
+      "value": 4.6899,
+      "ci_low": 4.2038,
+      "ci_high": 5.1759,
+      "sigma": 0.2955,
+      "source": "measured",
+      "method": "length x width of the fused rectangle",
+      "n_support": 9
+     }
+    }
+   ],
+   "quality": {
+    "coverage_fraction": 0.5,
+    "n_frames": 36,
+    "exposure_score": 0.529,
+    "mirror_suspected": false
+   },
+   "placement_confidence": 0.45,
+   "warnings": [
+    "rectangular room model: this tier has no poses, so alcoves and bays are not resolved",
+    "low light or motion blur: every interval in this room is widened 1.5x"
+   ]
+  }
+ ],
+ "adjacency": [
+  {
+   "room_a": "01_space",
+   "room_b": "02_space",
+   "via_opening_id": "",
+   "evidence": "protocol_order",
+   "confidence": 0.45
+  }
+ ],
+ "damage_regions": [],
+ "concealed_damage_flags": [],
+ "scope_items": [],
+ "calibration": {
+  "nominal_coverage": 0.9,
+  "method": "propagated sigma x per-tier split-conformal factor, with a per-tier relative floor",
+  "calibration_set_id": "bench/latest",
+  "tier_floor_fraction": 0.018,
+  "factors": {}
+ },
+ "timing": {
+  "total_s": 4.45,
+  "device": "arm64 Darwin",
+  "stages": {
+   "depth": 0.17,
+   "geometry": 3.39,
+   "render": 0.06
+  }
+ },
+ "render": {
+  "svg": "plan.svg",
+  "png": "plan.png"
+ },
+ "warnings": []
+}

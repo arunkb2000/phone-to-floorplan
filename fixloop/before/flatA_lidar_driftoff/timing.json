@@ -1,0 +1,15 @@
+{
+ "total_s": 5.08,
+ "n_frames": 846,
+ "load_s": 0.52,
+ "drift_s": 0.0,
+ "room_seeds": "cascade",
+ "cloud_s": 2.45,
+ "n_points": 8521663,
+ "yaw_deg": 62.38,
+ "floor_z": -1.4826,
+ "ceil_z": 0.8606,
+ "geometry_s": 1.64,
+ "n_rooms": 3,
+ "render_s": 0.13
+}
