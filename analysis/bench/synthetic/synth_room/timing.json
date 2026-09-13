@@ -1,0 +1,16 @@
+{
+ "total_s": 2.06,
+ "n_frames": 44,
+ "load_s": 0.08,
+ "drift_s": 0.03,
+ "room_seeds": "hmaxima",
+ "cloud_s": 0.11,
+ "n_points": 394105,
+ "yaw_deg": 0.38,
+ "floor_z": 0.0014,
+ "ceil_z": 2.6405,
+ "geometry_s": 0.02,
+ "n_rooms": 1,
+ "damage_s": 1.39,
+ "render_s": 0.21
+}

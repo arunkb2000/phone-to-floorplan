@@ -1,7 +1,7 @@
 # Walk-in readiness
 
-At the defense you capture a space we have never seen, choose the tier on the day, and we run cold.
-This page is what we checked.
+At the defense you capture a space I have never seen, choose the tier on the day, and I run cold.
+This page is what I checked.
 
 ## All three tiers run from one command
 
@@ -35,14 +35,14 @@ After `make setup` and `make weights`, nothing reaches the network. Model weight
 ## Determinism, and the cache
 
 Model outputs are cached under `cache/<hash of the input pixels>/` and replay exactly. The live path
-is the default for anything not already cached, which is what a capture we have never seen will be,
+is the default for anything not already cached, which is what a capture I have never seen will be,
 so the walk-in run is a live run whether or not the cache exists. `LIVE=1 make reproduce` clears the
 cache and forces the live path for every number in the submission.
 
 Seeded RANSAC, sorted file iteration and fixed histogram binning mean the same input gives the same
 output byte for byte.
 
-## What will happen on a capture we have never seen
+## What will happen on a capture I have never seen
 
 Honest expectations, not a sales pitch:
 
@@ -57,7 +57,7 @@ Honest expectations, not a sales pitch:
 - **Everything.** No capture makes the pipeline refuse or crash. Missing evidence becomes a wider
   interval, a `source: inferred` or `prior`, and a warning in the room, not a confident number.
 
-## What we would still be nervous about
+## What I would still be nervous about
 
 A property with strong non-Manhattan geometry, a large mirror on a wall the pipeline has not yet
 established, or a capture where the walker never looks at a ceiling in any room. All three are in

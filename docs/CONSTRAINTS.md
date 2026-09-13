@@ -4,13 +4,13 @@ Three rows of the compliance matrix are marked **not met**. They share one cause
 time, skill or budget. It is that two pieces of hardware were not available:
 
 1. **Physical access to the captured property.** The assessment supplied three Stray Scanner
-   captures of an office. We have no idea where that office is and cannot walk into it.
+   captures of an office. I have no idea where that office is and cannot walk into it.
 2. **A LiDAR-class iPhone.** The device available is an **iPhone 15** (non-Pro). It has no LiDAR
    sensor, so it cannot produce a depth-and-pose capture at all, and no consumer scanning app can
    produce a LiDAR-tier scan on it either.
 
-Everything the pipeline needed from a sensor, we took from the captures we were given. Everything
-that needed a tape or a second scanner in a room, we could not do, and we said so rather than
+Everything the pipeline needed from a sensor, I took from the captures I was given. Everything
+that needed a tape or a second scanner in a room, I could not do, and I said so rather than
 substituting something easier under the same heading.
 
 ---
@@ -26,16 +26,16 @@ substituting something easier under the same heading.
 Two things follow that are worth saying out loud, because they are engineering decisions rather than
 apologies:
 
-**We moved the benchmark's weight onto the gates that need no external truth.** Repeatability, room
+**I moved the benchmark's weight onto the gates that need no external truth.** Repeatability, room
 overlap, the drift ablation and determinism all test the system without a tape, and they are the ones
 the brief calls the operational meaning of the thing working: same room in, same plan out.
 
-**We built the most independent reference the data allowed** rather than skipping the gates that do
+**I built the most independent reference the data allowed** rather than skipping the gates that do
 need truth. `scripts/make_reference_gt.py` measures the property one depth frame at a time using only
 the depth image, the intrinsics and the pose's rotation as a gravity direction: no translation, no
 pose graph, no drift state, no fusion, no segmentation, no pipeline module. It is a fair test of
 everything the pipeline adds on top of the sensor, and it is honestly not independent of the sensor
-itself. Its limits are stated in `docs/report/benchmark.md` and we do not quote it as if it were a
+itself. Its limits are stated in `docs/report/benchmark.md` and I do not quote it as if it were a
 tape.
 
 ---
@@ -77,7 +77,7 @@ Follow `docs/capture/protocol.md` literally, once per tier:
 - **Photos:** stock Camera, six stills per room, one folder per room.
 
 Then capture room one a **second** time at the LiDAR tier, as a genuine repeatability pair rather
-than the interleaved-frame split we had to use.
+than the interleaved-frame split I had to use.
 
 ### Step 4, scan the same rooms with magicplan, 15 minutes
 Start a project, scan both rooms with its LiDAR mode, export the plan, and note the app version from

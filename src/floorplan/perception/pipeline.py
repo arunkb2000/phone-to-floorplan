@@ -14,6 +14,12 @@ from floorplan.geometry.frame import backproject
 
 _DET = None
 MIN_MASK_PTS = 60
+# Damage lies ON a surface. A desk, a cable tray or a picture frame stands proud of the wall behind
+# it, and that is the cheapest way to tell the two apart: require most of a region's points to sit
+# within a few centimetres of the plane it was assigned to. Without this the classical detector
+# reports every dark edge in a furnished office as a crack.
+PLANE_TOLERANCE_M = 0.08
+PLANE_INLIER_FRAC = 0.6
 MAX_FRAMES = 16
 # An open-vocabulary detector asked for "a crack in the wall" will find something in every image of a
 # wall. On real interiors the useful operating point is well above the detector's default: below
@@ -22,6 +28,14 @@ MAX_FRAMES = 16
 # because they are one decision.
 SCORE_MIN = 0.30
 MIN_AREA_M2 = 0.02
+
+
+def _classical(rgb, min_score: float = 0.45):
+    from floorplan.perception.surface_anomaly import detect
+    out = []
+    for d in detect(rgb, min_score):
+        out.append(dict(cls=d["cls"], score=d["score"], box=d["box"], mask=d["mask"], why=d["why"]))
+    return out
 
 
 def _detector(device):
@@ -73,6 +87,23 @@ def _measurement(area: float, n: int) -> Measurement:
     rel = 0.15 + 40.0 / max(n, 1)
     return Measurement(float(area), float(area * rel + 0.01), "measured",
                        "open-vocabulary detection, mask refined, projected onto the surface plane", int(n))
+
+
+def _on_plane(points: np.ndarray, room, kind: str, k) -> bool:
+    """Do these points actually lie on the surface they were assigned to?"""
+    if kind == "floor":
+        return True
+    ring = np.asarray(room.polygon, float)
+    if kind == "ceiling":
+        return True
+    a, b = ring[k], ring[(k + 1) % len(ring)]
+    d = b - a
+    L = float(np.hypot(*d))
+    if L < 1e-6:
+        return False
+    nrm = np.array([-d[1], d[0]]) / L
+    off = np.abs((points[:, :2] - a) @ nrm)
+    return float(np.mean(off <= PLANE_TOLERANCE_M)) >= PLANE_INLIER_FRAC
 
 
 def _surface_for(points: np.ndarray, room, floor_z: float, ceil_z: float):
@@ -141,12 +172,11 @@ def _region(uv: np.ndarray, surface_id: str, cls: str, conf: float, frame_path: 
                                    "n_support": m.n_support},
                        "bbox_uv_m": [round(float(u0), 3), round(float(v0), 3), round(float(u1), 3), round(float(v1), 3)]},
             "polygon_uv_m": [[round(float(a), 3), round(float(b), 3)] for a, b in poly][:64],
-            "evidence_frames": [frame_path]}
+            "evidence_frames": [frame_path], "detector": "surface-anomaly (classical)"}
 
 
 def _lidar_damage(rooms, aux, device):
     from shapely.geometry import Point, Polygon
-    det = _detector(device)
     cloud = aux["cloud"]
     frames = aux.get("frames") or []
     frames = [f for f in frames if f.rgb is not None and f.rgb.size > 16]
@@ -156,7 +186,7 @@ def _lidar_damage(rooms, aux, device):
     polys = [(r, Polygon(np.asarray(r.polygon, float))) for r in rooms if len(r.polygon) >= 3]
     out, counter = [], {}
     for f in frames[::step]:
-        dets = det.detect(f.rgb)
+        dets = _classical(f.rgb)
         if not dets:
             continue
         P = backproject(f.depth, f.K)
@@ -183,7 +213,7 @@ def _lidar_damage(rooms, aux, device):
             if room is None:
                 continue
             sid, (kind, k) = _surface_for(pts, room, cloud.floor_z, cloud.ceil_z)
-            if sid is None:
+            if sid is None or not _on_plane(pts, room, kind, k):
                 continue
             uv = _uv(pts, room, kind, k, cloud.floor_z)
             j = counter.get(room.key, 0)
@@ -193,7 +223,6 @@ def _lidar_damage(rooms, aux, device):
 
 
 def _mono_damage(rooms, device):
-    det = _detector(device)
     out = []
     for room in rooms:
         frames, geoms = getattr(room, "frames", []), getattr(room, "geoms", [])
@@ -202,7 +231,7 @@ def _mono_damage(rooms, device):
         for f, g in zip(frames, geoms, strict=False):
             if g is None or g.P is None:
                 continue
-            dets = det.detect(f.rgb)
+            dets = _classical(f.rgb)
             if not dets:
                 continue
             hd, wd = g.P.shape[:2]

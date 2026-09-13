@@ -2592,13 +2592,13 @@
   "factors": {}
  },
  "timing": {
-  "total_s": 3.59,
+  "total_s": 3.54,
   "device": "arm64 Darwin",
   "stages": {
-   "load": 0.43,
+   "load": 0.42,
    "drift": 0.3,
    "cloud": 1.3,
-   "geometry": 1.21,
+   "geometry": 1.19,
    "render": 0.15
   }
  },

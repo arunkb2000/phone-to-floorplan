@@ -2,19 +2,19 @@
 
 Read this before any number in `analysis/bench/after/gates.md`.
 
-## The data we were given, and the hole in it
+## The data I was given, and the hole in it
 
 The assessment supplied three Stray Scanner captures of one property and no photo or video captures,
-and we have no physical access to that property. Two things follow, and neither is negotiable:
+and I have no physical access to that property. Two things follow, and neither is negotiable:
 
 **There is no tape ground truth, and there cannot be.** The brief asks for laser or tape measurement
 of everything. For a property on the other side of a dataset, that measurement does not exist at any
-price. We did not quietly drop the gates that need it. We built the most independent reference the
+price. I did not quietly drop the gates that need it. I built the most independent reference the
 data allows, stated its limits, and leaned the benchmark's weight onto the gates that need no
 external truth at all.
 
 **There are no photo or video captures.** But the gates require the same rooms at all three tiers,
-so we cut the photo and video inputs out of the RGB video inside the LiDAR captures
+so I cut the photo and video inputs out of the RGB video inside the LiDAR captures
 (`scripts/make_rgb_tiers.py`). Those frames are what an iPhone camera did record standing in those
 places. Nothing else crosses the boundary: the photo tier receives JPEGs and reads its focal length
 from EXIF, the video tier receives an mp4 and reads its focal length from a per-device table. No
@@ -50,7 +50,7 @@ the supplied captures that variant fired zero times in 427 frames. So most ceili
 from the vertical extent of a wall, which **under-reads** whenever furniture, a soffit or the frame
 edge cuts the wall short, and it carries a 16 cm spread across frames. A ceiling-height error of a
 few centimetres against this reference is therefore not, on its own, proof of a pipeline error. We
-report it, we do not explain it away, and we do not use it as the fix-loop target.
+report it, I do not explain it away, and I do not use it as the fix-loop target.
 
 ## The gates that need no external truth
 
@@ -71,10 +71,10 @@ on which frames arrived, which is what was broken.
 
 ## Composition against what the brief asked for
 
-| The brief asks for | What we have | Honest status |
+| The brief asks for | What I have | Honest status |
 |---|---|---|
 | One multi-room capture, 3+ rooms plus a connector | `single_scan_with_ceiling`, 215 s, 100 m walk, 3 resolved spaces plus connecting circulation; `single_scan_floor_only`, 4 spaces | met |
-| One furnished room with staged damage, two classes | The supplied captures are of a furnished working office; we could not stage damage in a property we cannot enter | **not met.** The damage path runs and is demonstrated on the captures' own RGB, but no staged two-class ground truth exists |
+| One furnished room with staged damage, two classes | The supplied captures are of a furnished working office; I could not stage damage in a property I cannot enter | **not met.** The damage path runs and is demonstrated on the captures' own RGB, but no staged two-class ground truth exists |
 | Same rooms at all three tiers, multi-room included | LiDAR as supplied; photo and video derived from the same RGB stream | met, with the derivation disclosed above |
 | At least one room captured twice at the same tier | Interleaved-frame pair over the same rooms | met in the sense that matters operationally, not by a second physical walk |
 | Laser or tape ground truth on everything | Single-frame sensor reference | **not met.** See above |

@@ -37,7 +37,7 @@ What actually happened is worth stating precisely, because it is not that the se
 unstable. Instrumenting the stages: with the fix in place both passes produce **7 candidate regions**
 before any post-processing. The seeding is stable. The disagreement now lives entirely in what
 happens to regions too small to be rooms: pass A has three such slivers and pass B has one, so after
-absorption one ends at 4 rooms and the other at 6. We then rewrote the absorption rule to use the
+absorption one ends at 4 rooms and the other at 6. I then rewrote the absorption rule to use the
 stable signal — a sliver joins the neighbour it shares the widest *unwalled* border with, rather than
 the longest border of any kind — and the counts did not converge. The instability moved; it did not
 disappear.
@@ -47,7 +47,7 @@ disappear.
 **Worst wall difference regressed**, from 62.1 cm to 119.6 cm. This is a direct consequence of the
 room-count row: with more rooms resolved there are more short walls, and pairing walls across two
 differently-cut rooms produces larger worst-case differences. It is a real regression on a real
-metric and we are not going to characterise it as an artefact.
+metric and I am not going to characterise it as an artefact.
 
 ## The second defect, found by shipping the first
 
@@ -74,7 +74,7 @@ datum are rejected rather than smoothed in.
 This was the larger of the two defects by effect size. It was invisible until the first fix landed,
 which is the ordinary reason to ship a fix rather than only analyse one.
 
-## What we would do next, in order
+## What I would do next, in order
 
 1. **Make the room polygon's topology stable, not just its grouping.** Today each pass builds its own
    contour and each contour decides independently whether a 0.4 m jog is a wall. Deriving the polygon

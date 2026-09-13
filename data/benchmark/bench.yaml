@@ -50,6 +50,16 @@ captures:
     gt: single_scan_with_ceiling.yaml
     role: multiroom
 
+  # Synthetic room: dimensions and damage are DEFINED, not measured, so this row scores the geometry
+  # and the damage path against exact truth. It says nothing about real sensor noise or real
+  # surfaces; the supplied captures carry that half. See scripts/make_synthetic_room.py.
+  - name: synth_room
+    path: data/benchmark/captures/synth_room
+    tier: lidar
+    gt: synth_room.yaml
+    role: synthetic
+    damage: true
+
   # DRY RUN of the tape path (docs/capture/plan_b.md). The "truth" here is the LiDAR tier's own
   # output, so the errors below mean nothing; this row exists to prove the plumbing before anyone
   # spends thirty minutes with a tape measure. Delete it once a real tape room replaces it.

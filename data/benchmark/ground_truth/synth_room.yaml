@@ -1,0 +1,15 @@
+# Ground truth for the synthetic room. These numbers are DEFINED, not measured: the renderer
+# was given them and the pipeline was not. See scripts/make_synthetic_room.py.
+capture: synth_room
+method: exact, by construction (synthetic render)
+ceiling_height:
+  - {value: 2.640, n_frames: 1, spread_m: 0.0, sigma_m: 0.0}
+wall_to_wall:
+  - {value: 4.260, n_frames: 1, spread_m: 0.0, sigma_m: 0.0}   # walls A and C
+  - {value: 3.180, n_frames: 1, spread_m: 0.0, sigma_m: 0.0}   # walls B and D
+opening_width:
+  - {value: 0.915, n_frames: 1, spread_m: 0.0, sigma_m: 0.0}   # door on wall C
+  - {value: 1.240, n_frames: 1, spread_m: 0.0, sigma_m: 0.0}   # window on wall A
+damage:
+  - {class: water_stain, surface: 'ceiling', u: 1.600, v: 1.150, width_m: 0.520, height_m: 0.380, area_m2: 0.1976}
+  - {class: crack, surface: 'wall:B', u: 1.050, v: 1.350, width_m: 0.040, height_m: 0.870, area_m2: 0.0348}

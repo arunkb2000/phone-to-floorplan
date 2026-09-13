@@ -2,7 +2,7 @@
 
 An iPhone capture in, a dimensioned whole-property floor plan out, with damage regions, concealed
 damage flags, scope line items and a calibrated confidence interval on every number. One command per
-capture, three input tiers, nothing calls our infrastructure.
+capture, three input tiers, nothing calls my infrastructure.
 
 ---
 
@@ -125,8 +125,8 @@ undercut.
 ## 5. Calibration
 
 Every measurement leaves the geometry with a propagated sigma that is honest about the error sources
-we modelled and silent about the ones we did not. We correct that with split conformal prediction: on
-a calibration split we compute `r = |error| / (1.645 · sigma)` for each measurement kind and take the
+I modelled and silent about the ones I did not. I correct that with split conformal prediction: on
+a calibration split I compute `r = |error| / (1.645 · sigma)` for each measurement kind and take the
 quantile of `r` that puts 90 % of calibration residuals inside. That scalar, per tier and per kind,
 multiplies the sigma at output time (`floorplan/calibration/factors.json`). Coverage before and after is in
 the gate tables. A tier floor sits underneath, so a thin-input tier can never claim LiDAR precision
@@ -160,7 +160,7 @@ which in a furnished office is a desk at 0.75 m. The floor is now the lowest wel
 horizontal surface a plausible carry height below the camera. Datum range across a capture: 0.83 m to
 0.02 m.
 
-**What we got wrong.** We predicted the passes would agree on room count; they went from 3 versus 2
+**What I got wrong.** I predicted the passes would agree on room count; they went from 3 versus 2
 to 4 versus 6. Both now produce seven candidate regions, so the seeding is stable and the
 disagreement moved into the handling of regions too small to be rooms. The worst-case wall row also
 regressed, 62 cm to 120 cm, because more resolved rooms means more short walls to disagree about.

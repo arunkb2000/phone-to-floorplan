@@ -1,0 +1,110 @@
+{
+ "synth_room": {
+  "tier": "lidar",
+  "role": "synthetic",
+  "variant": {
+   "suffix": "",
+   "drift": "on"
+  },
+  "repeat_of": null,
+  "gt": "synth_room.yaml",
+  "path": "data/benchmark/captures/synth_room",
+  "summary": {
+   "n_rooms": 1,
+   "footprint_m2": 13.405,
+   "sum_room_area_m2": 13.405,
+   "overlap_pct": 0.0,
+   "n_openings": 1,
+   "n_adjacency": 0,
+   "n_damage": 3,
+   "n_flags": 0,
+   "n_scope": 5,
+   "unmatched_openings": 0,
+   "unmatched_ceilings": 0,
+   "unmatched_walls": 2,
+   "ceiling_sources": [
+    "measured"
+   ],
+   "mean_coverage": 1.0,
+   "total_s": 2.06,
+   "wall_s": 2.1
+  },
+  "rows": [
+   {
+    "kind": "opening_width",
+    "gt": 0.915,
+    "pred": null,
+    "err": null,
+    "sigma": null,
+    "covered": false,
+    "covered_overlap": false,
+    "gt_sigma": 0.0,
+    "gt_n": 1,
+    "status": "missed",
+    "where": "",
+    "capture": "synth_room",
+    "tier": "lidar"
+   },
+   {
+    "kind": "opening_width",
+    "gt": 1.24,
+    "pred": 1.2999,
+    "err": 0.059900000000000064,
+    "sigma": 0.012,
+    "covered": false,
+    "covered_overlap": false,
+    "gt_sigma": 0.0,
+    "gt_n": 1,
+    "status": "matched",
+    "where": "01_space:01_space:C",
+    "capture": "synth_room",
+    "tier": "lidar"
+   },
+   {
+    "kind": "ceiling_height",
+    "gt": 2.64,
+    "pred": 2.639,
+    "err": -0.001000000000000334,
+    "sigma": 0.01,
+    "covered": true,
+    "covered_overlap": true,
+    "gt_sigma": 0.0,
+    "gt_n": 1,
+    "status": "matched",
+    "where": "01_space:",
+    "capture": "synth_room",
+    "tier": "lidar"
+   },
+   {
+    "kind": "wall_length",
+    "gt": 4.26,
+    "pred": 4.2593,
+    "err": -0.000700000000000145,
+    "sigma": 0.008,
+    "covered": true,
+    "covered_overlap": true,
+    "gt_sigma": 0.0,
+    "gt_n": 1,
+    "status": "matched",
+    "where": "01_space:01_space:A",
+    "capture": "synth_room",
+    "tier": "lidar"
+   },
+   {
+    "kind": "wall_length",
+    "gt": 3.18,
+    "pred": 3.1472,
+    "err": -0.03279999999999994,
+    "sigma": 0.008,
+    "covered": false,
+    "covered_overlap": false,
+    "gt_sigma": 0.0,
+    "gt_n": 1,
+    "status": "matched",
+    "where": "01_space:01_space:B",
+    "capture": "synth_room",
+    "tier": "lidar"
+   }
+  ]
+ }
+}

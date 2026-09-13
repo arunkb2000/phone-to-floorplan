@@ -21,3 +21,6 @@ analysis/bench/latest/
 
 # the supplied captures: 6 GB, shipped alongside the repo rather than inside it
 data/raw/
+
+# my own working notes: not part of the submission
+private/

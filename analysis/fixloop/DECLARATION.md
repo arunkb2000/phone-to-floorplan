@@ -55,7 +55,7 @@ from wherever the walker happened to point the sensor. The wall planes themselve
 millimetres — that is why the one well-paired room agrees to 0.3 cm on its ceiling. The instability
 is entirely in which cells get grouped into which room.
 
-## 3. The fix we intend to ship, and the number we predict
+## 3. The fix I intend to ship, and the number I predict
 
 Make the seeds depend on the property's structure rather than on an absolute clearance threshold:
 
@@ -80,9 +80,9 @@ Make the seeds depend on the property's structure rather than on an absolute cle
 | Worst wall difference between passes | 281 cm | **≤ 15 cm** | ≤ 1 cm, still FAIL |
 | Median wall difference between passes | — | **≤ 3 cm** | — |
 
-**We predict the ceiling-spread gate moves from fail to pass and the per-wall gate does not.** The
+**I predict the ceiling-spread gate moves from fail to pass and the per-wall gate does not.** The
 honest reason: once the rooms agree, a wall's *length* is still set by where its two perpendicular
 neighbours were found, and a short return wall that one pass resolves and the other absorbs into its
 neighbour changes a length by tens of centimetres without either answer being wrong about the
 physical plane. Getting per-wall agreement to 1 cm needs the polygon topology itself to be stable, not
-just the room grouping, and we are calling that out of scope for this loop rather than pretending.
+just the room grouping, and I am calling that out of scope for this loop rather than pretending.

@@ -8,7 +8,7 @@ Which tier runs on which hardware, and what each tier honestly delivers.
 |---|---|---|---|---|
 | iPhone 15, 15 Plus, 16, 16e, 16 Plus, 17, Air | yes | yes | **no** | No LiDAR sensor. Stray Scanner will not record depth. |
 | iPhone 15 Pro / Pro Max, 16 Pro / Pro Max, 17 Pro / Pro Max | yes | yes | yes | LiDAR, ARKit poses and per-frame intrinsics, all exported by Stray Scanner. |
-| iPad Pro with LiDAR (2020 onward) | yes | yes | yes | Same export path. Not benchmarked by us. |
+| iPad Pro with LiDAR (2020 onward) | yes | yes | yes | Same export path. Not benchmarked by me. |
 | Anything older, or Android | photos only, at reduced confidence | no | no | The photo tier only needs JPEGs. Without EXIF focal length it falls back to a 26 mm-equivalent prior and widens every interval. |
 
 The pipeline itself runs on the laptop, not the phone. On an Apple Silicon Mac the monocular depth
@@ -18,7 +18,7 @@ on CPU, several times slower but with identical output.
 ## Accuracy, measured
 
 From `analysis/bench/after/gates.md`. **Read [docs/report/benchmark.md](../report/benchmark.md) first.** These
-are not tape measurements: the supplied captures are of a property we cannot enter, so the reference
+are not tape measurements: the supplied captures are of a property I cannot enter, so the reference
 is a single-frame sensor measurement, and the ceiling-height reference in particular under-reads
 because it is usually the visible vertical extent of a wall. A ceiling error of a few centimetres
 against it is not, on its own, evidence of a pipeline error.
@@ -29,9 +29,9 @@ against it is not, on its own, evidence of a pipeline error.
 | Video | 10.5 cm (2 matched) | 1.4 cm (1 matched) **PASS** | 100 % | 6.6 s |
 | Photo | 3.7 cm (2 matched) | 3.9 cm (1 matched) | 100 % | 2.2 s, 18 stills |
 
-Coverage is the fraction of our 90 % intervals that overlap the reference's own 90 % interval. The
+Coverage is the fraction of my 90 % intervals that overlap the reference's own 90 % interval. The
 stricter reading, which ignores the reference's uncertainty and asks whether its point value falls
-inside ours, gives 15 % at the LiDAR tier. Both are printed in the gate tables; the overlap figure is
+inside mine, gives 15 % at the LiDAR tier. Both are printed in the gate tables; the overlap figure is
 the fair one when the reference is itself a measurement with a 2 cm spread, and 62 % is still a fail.
 
 The video tier is the only row that passes a headline gate outright: its ceiling height lands within
@@ -41,16 +41,16 @@ Wall lengths have **no** reference on the supplied data: a single depth frame al
 opposite walls of these rooms, so the ±1 cm, ±3 % and ±8 % wall gates cannot be scored here at all.
 Saying so is more useful than inventing a number.
 
-The interval coverage row is a fail and we are not going to hide it. Two things drive it. The first
+The interval coverage row is a fail and I am not going to hide it. Two things drive it. The first
 is real: a plane fitted to 10⁵ LiDAR returns has a statistical spread in the tenths of a millimetre,
 which is not an accuracy claim anyone should make, so absolute sigma floors are asserted per
 measurement kind from the sensor's physics (±1 cm class). The second is the reference: with 13
 matched measurements against a reference whose own ceiling spread is 16 cm, there is not enough
-signal to fit conformal factors without simply fitting to our own noise, so
+signal to fit conformal factors without simply fitting to my own noise, so
 `floorplan/calibration/factors.json` ships empty and the tier floors do the work. That is the honest state
 of the calibration, not a claim that it is calibrated.
 
-### What we can say without any external reference
+### What I can say without any external reference
 
 These need no ground truth and carry the real weight (`analysis/bench/after/gates.md`, `analysis/fixloop/DIFF.md`):
 
