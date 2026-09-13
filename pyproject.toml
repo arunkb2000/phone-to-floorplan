@@ -1,10 +1,9 @@
 [project]
-name = "floorplan"
+name = "phone-to-floorplan"
 version = "0.0.1"
-description = "iPhone capture (photos / video / LiDAR) to dimensioned floor plans, damage regions and scope, with calibrated intervals."
+description = "An iPhone walk-through of a damaged property becomes a measured floor plan, located damage, and a costed repair scope."
 requires-python = ">=3.12,<3.13"
 readme = "README.md"
-# Dependency list is provisional; versions get pinned by uv.lock in week 1.
 dependencies = [
   "numpy",
   "scipy",

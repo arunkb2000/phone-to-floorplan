@@ -20,7 +20,6 @@ import os
 
 import numpy as np
 import yaml
-
 from floorplan.io.stray import load_stray_capture
 
 

@@ -18,10 +18,10 @@ import os
 
 import cv2
 import numpy as np
+from floorplan.io.stray import RGBSource, load_stray_capture
 from PIL import Image
 
 from floorplan.geometry.cloud import build_cloud, build_grid, segment_rooms
-from floorplan.io.stray import RGBSource, load_stray_capture
 
 F35 = 26
 
