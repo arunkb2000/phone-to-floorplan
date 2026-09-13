@@ -1,0 +1,9 @@
+{
+ "total_s": 811.64,
+ "n_frames": 18,
+ "depth_s": 0.04,
+ "n_depth_inferences": 18,
+ "geometry_s": 811.31,
+ "n_rooms": 3,
+ "render_s": 0.08
+}

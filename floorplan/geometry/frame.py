@@ -49,9 +49,16 @@ def fit_plane(pts: np.ndarray):
     return n, d, rms
 
 
+MAX_RANSAC_PTS = 30000
+
+
 def ransac_plane(pts: np.ndarray, normals: np.ndarray | None, axis: np.ndarray, max_angle_deg: float,
                  thresh: float, iters: int, rng: np.random.Generator, min_inliers: int = 200):
-    """RANSAC for a plane whose normal is within max_angle_deg of `axis`. pts: N x 3 (finite)."""
+    """RANSAC for a plane whose normal is within max_angle_deg of `axis`. pts: N x 3 (finite).
+
+    The candidate set is capped: past about thirty thousand points the inlier fraction is already
+    estimated to well under a millimetre and every extra point is pure cost.
+    """
     if len(pts) < min_inliers:
         return None
     if normals is not None:
@@ -61,6 +68,8 @@ def ransac_plane(pts: np.ndarray, normals: np.ndarray | None, axis: np.ndarray, 
         cand = pts
     if len(cand) < min_inliers:
         return None
+    if len(cand) > MAX_RANSAC_PTS:
+        cand = cand[rng.choice(len(cand), MAX_RANSAC_PTS, replace=False)]
     best = None
     for _ in range(iters):
         i = rng.integers(0, len(cand), 3)

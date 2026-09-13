@@ -1,0 +1,14 @@
+{
+ "total_s": 1.01,
+ "n_frames": 147,
+ "load_s": 0.13,
+ "drift_s": 0.12,
+ "cloud_s": 0.47,
+ "n_points": 1497710,
+ "yaw_deg": 66.88,
+ "floor_z": 0.0056,
+ "ceil_z": null,
+ "geometry_s": 0.15,
+ "n_rooms": 2,
+ "render_s": 0.08
+}

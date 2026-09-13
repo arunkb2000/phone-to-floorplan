@@ -21,8 +21,10 @@ CORNER_POS = [(0, 0), (0, 1), (1, 1), (1, 0)]              # (x side, y side) 0 
 LETTER = {"+x": "B", "-x": "D", "+y": "A", "-y": "C"}
 
 
-def frame_geometry(fr: Frame, tier: str, seed: int = 0) -> FrameGeom | None:
-    P = backproject(fr.depth, fr.K, stride=2 if fr.depth.shape[0] > 400 else 1)
+def frame_geometry(fr: Frame, tier: str, seed: int = 0, target_px: int = 60000) -> FrameGeom | None:
+    h, w = fr.depth.shape[:2]
+    stride = max(1, int(np.sqrt(h * w / target_px)))
+    P = backproject(fr.depth, fr.K, stride=stride)
     if fr.pose is not None:
         # LiDAR: gravity from the pose; express points in a z-up frame centred on the camera
         R = fr.pose[:3, :3]
