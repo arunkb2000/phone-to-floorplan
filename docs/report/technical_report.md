@@ -40,7 +40,7 @@ capture folder ─► io/           tier detection; loaders normalise everything
 One command: `floorplan run <capture> --out <dir>`. The tier is detected from the folder contents; a
 Stray Scanner export gives LiDAR, a video file gives video, sub-folders of stills give photo.
 
-### The bug that mattered most
+### The detail that decided everything downstream
 
 Stray Scanner's `odometry.csv` documents an ARKit camera-to-world transform, and ARKit's camera axes
 are OpenGL-style, so the textbook conversion to OpenCV is `diag(1, -1, -1)`. On the supplied captures
