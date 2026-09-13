@@ -66,6 +66,10 @@ The tier is detected from the folder you hand over:
 
 0. [docs/KT.md](docs/KT.md) — the whole build in one pass: what was asked, what we made, the two bugs
    that decided it, the fix loop, and what we did not meet.
+0b. [docs/CONSTRAINTS.md](docs/CONSTRAINTS.md) — the two pieces of hardware we did not have, what
+   they blocked, and the step-by-step plan to close each gap.
+0c. [docs/SELF_ASSESSMENT.md](docs/SELF_ASSESSMENT.md) — an honest row-by-row estimate against the
+   scoring table, so nothing in the defense is a surprise.
 1. [docs/report/benchmark.md](docs/report/benchmark.md) — what the ground truth is, and which gates
    the supplied data can and cannot settle. Read this before any number.
 2. [analysis/fixloop/DECLARATION.md](analysis/fixloop/DECLARATION.md) and [analysis/fixloop/DIFF.md](analysis/fixloop/DIFF.md) — the

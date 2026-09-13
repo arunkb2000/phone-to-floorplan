@@ -8,14 +8,14 @@ Read `docs/report/benchmark.md` first: it states what the reference ground truth
 
 | Capture | Tier | Rooms | Openings | Footprint m2 | Overlap | Mean wall coverage | Pipeline s |
 |---|---|---|---|---|---|---|---|
-| flatA_lidar | lidar | 5 | 4 | 56.67 | 0.1 % | 95% | 6.4 |
-| flatA_lidar_driftoff | lidar | 6 | 6 | 55.29 | 0.4 % | 95% | 5.4 |
-| flatB_lidar | lidar | 6 | 6 | 43.51 | 1.2 % | 90% | 3.5 |
-| roomC_lidar | lidar | 3 | 1 | 17.80 | 1.3 % | 86% | 1.0 |
-| flatA_lidar_repa | lidar | 4 | 4 | 53.08 | 0.4 % | 90% | 3.2 |
-| flatA_lidar_repb | lidar | 6 | 5 | 55.25 | 0.1 % | 86% | 3.5 |
+| flatA_lidar | lidar | 5 | 4 | 56.67 | 0.1 % | 95% | 72.3 |
+| flatA_lidar_driftoff | lidar | 6 | 6 | 55.29 | 0.4 % | 95% | 77.5 |
+| flatB_lidar | lidar | 6 | 6 | 43.51 | 1.2 % | 90% | 3.7 |
+| roomC_lidar | lidar | 3 | 1 | 17.80 | 1.3 % | 86% | 1.1 |
+| flatA_lidar_repa | lidar | 4 | 4 | 53.08 | 0.4 % | 90% | 3.5 |
+| flatA_lidar_repb | lidar | 6 | 5 | 55.25 | 0.1 % | 86% | 3.7 |
 | flatA_photo | photo | 3 | 2 | 21.34 | 0.0 % | 92% | 1.0 |
-| flatA_video | video | 2 | 4 | 7.04 | 0.0 % | 62% | 4.4 |
+| flatA_video | video | 2 | 4 | 7.04 | 0.0 % | 62% | 5.4 |
 
 ## Tier: lidar
 
@@ -74,8 +74,8 @@ Walls are matched between the two passes by where their plane sits, not by sorte
 
 | Capture | Rooms | Walls dimensioned | Openings | Adjacency | Damage regions | Concealed flags | Scope items | Ceiling source |
 |---|---|---|---|---|---|---|---|---|
-| flatA_lidar | 5 | 38 | 4 | 5 | 0 | 0 | 0 | measured |
-| flatA_lidar_driftoff | 6 | 40 | 6 | 6 | 0 | 0 | 0 | measured |
+| flatA_lidar | 5 | 38 | 4 | 5 | 7 | 0 | 7 | measured |
+| flatA_lidar_driftoff | 6 | 40 | 6 | 6 | 7 | 0 | 7 | measured |
 | flatB_lidar | 6 | 47 | 6 | 6 | 0 | 0 | 0 | prior |
 | roomC_lidar | 3 | 19 | 1 | 2 | 0 | 0 | 0 | prior |
 | flatA_lidar_repa | 4 | 39 | 4 | 4 | 0 | 0 | 0 | measured |

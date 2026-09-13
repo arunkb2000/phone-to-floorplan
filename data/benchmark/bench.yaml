@@ -9,6 +9,7 @@ captures:
     tier: lidar
     gt: single_scan_with_ceiling.yaml
     role: multiroom
+    damage: true                           # the full output contract, once; the rest skip it for speed
     variants:
       - {suffix: "", drift: "on"}
       - {suffix: "_driftoff", drift: "off"}

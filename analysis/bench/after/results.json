@@ -16,17 +16,17 @@
    "overlap_pct": 0.11,
    "n_openings": 4,
    "n_adjacency": 5,
-   "n_damage": 0,
+   "n_damage": 7,
    "n_flags": 0,
-   "n_scope": 0,
+   "n_scope": 7,
    "unmatched_openings": 2,
    "unmatched_ceilings": 3,
    "ceiling_sources": [
     "measured"
    ],
    "mean_coverage": 0.951,
-   "total_s": 6.38,
-   "wall_s": 6.4
+   "total_s": 72.32,
+   "wall_s": 72.5
   },
   "rows": [
    {
@@ -108,17 +108,17 @@
    "overlap_pct": 0.39,
    "n_openings": 6,
    "n_adjacency": 6,
-   "n_damage": 0,
+   "n_damage": 7,
    "n_flags": 0,
-   "n_scope": 0,
+   "n_scope": 7,
    "unmatched_openings": 4,
    "unmatched_ceilings": 5,
    "ceiling_sources": [
     "measured"
    ],
    "mean_coverage": 0.954,
-   "total_s": 5.44,
-   "wall_s": 5.4
+   "total_s": 77.47,
+   "wall_s": 77.6
   },
   "rows": [
    {
@@ -209,8 +209,8 @@
     "prior"
    ],
    "mean_coverage": 0.898,
-   "total_s": 3.48,
-   "wall_s": 3.5
+   "total_s": 3.74,
+   "wall_s": 3.8
   },
   "rows": [
    {
@@ -256,8 +256,8 @@
     "prior"
    ],
    "mean_coverage": 0.858,
-   "total_s": 0.97,
-   "wall_s": 1.0
+   "total_s": 1.09,
+   "wall_s": 1.1
   },
   "rows": []
  },
@@ -287,8 +287,8 @@
     "measured"
    ],
    "mean_coverage": 0.905,
-   "total_s": 3.22,
-   "wall_s": 3.2
+   "total_s": 3.5,
+   "wall_s": 3.5
   },
   "rows": [
    {
@@ -379,8 +379,8 @@
     "measured"
    ],
    "mean_coverage": 0.861,
-   "total_s": 3.45,
-   "wall_s": 3.5
+   "total_s": 3.71,
+   "wall_s": 3.7
   },
   "rows": [
    {
@@ -471,7 +471,7 @@
     "measured"
    ],
    "mean_coverage": 0.917,
-   "total_s": 1.0,
+   "total_s": 1.03,
    "wall_s": 1.0
   },
   "rows": [
@@ -563,8 +563,8 @@
     "measured"
    ],
    "mean_coverage": 0.625,
-   "total_s": 4.39,
-   "wall_s": 4.4
+   "total_s": 5.37,
+   "wall_s": 5.4
   },
   "rows": [
    {

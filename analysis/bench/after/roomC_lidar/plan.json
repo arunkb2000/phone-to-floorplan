@@ -1023,13 +1023,13 @@
   "factors": {}
  },
  "timing": {
-  "total_s": 0.97,
+  "total_s": 1.09,
   "device": "arm64 Darwin",
   "stages": {
-   "load": 0.08,
+   "load": 0.15,
    "drift": 0.11,
-   "cloud": 0.46,
-   "geometry": 0.18,
+   "cloud": 0.49,
+   "geometry": 0.19,
    "render": 0.09
   }
  },

@@ -1,10 +1,10 @@
 {
- "total_s": 4.39,
+ "total_s": 5.37,
  "room_cuts": "palm-cover cuts (1 found)",
  "n_frames": 80,
- "depth_s": 0.16,
+ "depth_s": 0.3,
  "n_depth_inferences": 80,
- "geometry_s": 3.34,
+ "geometry_s": 3.75,
  "n_rooms": 2,
- "render_s": 0.06
+ "render_s": 0.07
 }
