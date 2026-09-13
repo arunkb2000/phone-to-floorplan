@@ -270,7 +270,7 @@ analysis/bench/   accuracy tables
 analysis/fixloop/ the improvement round: before, after, and what changed
 scripts/          setup, model download, test room, reference measurements, app comparison
 tests/            25 tests
-docs/             capture page, hardware constraints, technical write-up
+docs/             capture page, hardware constraints, technical write-up, requirement checklist
 ```
 
 ## Read next
@@ -279,6 +279,7 @@ docs/             capture page, hardware constraints, technical write-up
 |---|---|
 | [docs/SAMPLE_DATA.md](docs/SAMPLE_DATA.md) | what the sample captures contain and where to put them |
 | [docs/report/technical_report.md](docs/report/technical_report.md) | how the system works, in six pages |
+| [docs/compliance_matrix.md](docs/compliance_matrix.md) | every requirement, where it lives, and its status |
 | [docs/report/benchmark.md](docs/report/benchmark.md) | what the accuracy numbers are measured against |
 | [docs/CONSTRAINTS.md](docs/CONSTRAINTS.md) | the hardware limits and how to close them |
 | [analysis/fixloop/](analysis/fixloop/) | the improvement round in full |
