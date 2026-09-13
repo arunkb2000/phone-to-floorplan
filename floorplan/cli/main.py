@@ -47,11 +47,14 @@ def input_hash(capture_dir: str) -> str:
 @app.command()
 def run(capture_dir: str, out: str = "results", tier: str = "auto", drift_correction: str = "on",
         device: str = "auto", depth_model: str = "small", no_cache: bool = False, damage: bool = True,
-        fps: float = 4.0, max_frames: int = 1200, rooms_txt: str = ""):
+        fps: float = 4.0, max_frames: int = 1200, room_seeds: str = "hmaxima",
+        drift_datum: str = "robust", legacy: bool = False):
     """Produce plan.json, plan.svg, plan.png and timing.json from ONE capture folder."""
     from floorplan.geometry.assemble import build_plan, validate
     from floorplan.geometry.stitch import adjacency_from_placement
     t_all = time.time()
+    if legacy:                      # reproduce the fix-loop before-run from shipped code
+        room_seeds, drift_datum = "cascade", "legacy"
     tier = detect_tier(capture_dir) if tier == "auto" else tier
     os.makedirs(out, exist_ok=True)
     log: dict = {}
@@ -60,7 +63,8 @@ def run(capture_dir: str, out: str = "results", tier: str = "auto", drift_correc
     if tier == "lidar":
         from floorplan.tiers.lidar import run_lidar
         rooms, drift, aux = run_lidar(capture_dir, drift_correction=(drift_correction == "on"), log=log,
-                                      target_fps=fps, max_frames=max_frames, with_rgb=damage)
+                                      target_fps=fps, max_frames=max_frames, with_rgb=damage,
+                                      room_seeds=room_seeds, drift_datum=drift_datum)
         edges = adjacency_from_placement(rooms)
     elif tier == "video":
         from floorplan.tiers.video import run_video
@@ -131,10 +135,15 @@ def validate_cmd(plan_json: str):
 
 @app.command()
 def bench(out: str = "bench/latest", captures: str = "benchmark/captures", gt: str = "benchmark/ground_truth",
-          manifest: str = "benchmark/bench.yaml", only: str = "", calibrate: bool = False):
-    """Run every benchmark capture, score it against ground truth, write the gate tables."""
+          manifest: str = "benchmark/bench.yaml", only: str = "", calibrate: bool = False,
+          legacy: bool = False):
+    """Run every benchmark capture, score it against ground truth, write the gate tables.
+
+    `--legacy` runs the pre-fix room seeding and height datum, which is how the fix-loop before-run
+    regenerates from the shipped code rather than from a git checkout.
+    """
     from floorplan.cli.bench import run_bench
-    run_bench(out, captures, gt, manifest=manifest, only=only, do_calibrate=calibrate)
+    run_bench(out, captures, gt, manifest=manifest, only=only, do_calibrate=calibrate, legacy=legacy)
 
 
 if __name__ == "__main__":

@@ -22,7 +22,8 @@ CEILING_PRIOR = (2.70, 0.30)     # metres: used only when the ceiling was never 
 
 
 def run_lidar(capture_dir: str, *, drift_correction: bool, log: dict, target_fps: float = 4.0,
-              max_frames: int = 1200, with_rgb: bool = False):
+              max_frames: int = 1200, with_rgb: bool = False, room_seeds: str = "hmaxima",
+              drift_datum: str = "robust"):
     t0 = time.time()
     frames = load_stray_capture(capture_dir, target_fps=target_fps, max_frames=max_frames, with_rgb=with_rgb)
     if not frames:
@@ -33,7 +34,7 @@ def run_lidar(capture_dir: str, *, drift_correction: bool, log: dict, target_fps
     t0 = time.time()
     drift = {"correction": "on" if drift_correction else "off"}
     if drift_correction:
-        drift.update(correct_drift(frames))
+        drift.update(correct_drift(frames, datum=drift_datum))
     else:
         drift["method"] = "poses used as-is (ablation only; not the shipped default)"
     log["drift_s"] = round(time.time() - t0, 2)
@@ -41,7 +42,8 @@ def run_lidar(capture_dir: str, *, drift_correction: bool, log: dict, target_fps
     t0 = time.time()
     cloud = build_cloud(frames)
     g = build_grid(cloud)
-    lab = segment_rooms(g)
+    lab = segment_rooms(g, seeds=room_seeds)
+    log["room_seeds"] = room_seeds
     free = g.free & ~wall_mask(g)
     log["cloud_s"] = round(time.time() - t0, 2)
     log["n_points"] = int(len(cloud.P))
@@ -121,4 +123,4 @@ def run_lidar(capture_dir: str, *, drift_correction: bool, log: dict, target_fps
         rooms.append(room)
     log["geometry_s"] = round(time.time() - t0, 2)
     log["n_rooms"] = len(rooms)
-    return rooms, drift, dict(cloud=cloud, grid=g, labels=lab)
+    return rooms, drift, dict(cloud=cloud, grid=g, labels=lab, frames=frames)

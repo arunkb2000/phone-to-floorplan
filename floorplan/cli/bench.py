@@ -112,7 +112,7 @@ def score_capture(plan: dict, gt: dict):
 
 
 def run_bench(out: str, captures_dir: str, gt_dir: str, manifest: str = "benchmark/bench.yaml",
-              only: str = "", do_calibrate: bool = False):
+              only: str = "", do_calibrate: bool = False, legacy: bool = False):
     from floorplan.cli.main import run as run_cmd
     man = yaml.safe_load(open(manifest))
     os.makedirs(out, exist_ok=True)
@@ -125,7 +125,7 @@ def run_bench(out: str, captures_dir: str, gt_dir: str, manifest: str = "benchma
             odir = os.path.join(out, name)
             t0 = time.time()
             run_cmd(cap["path"], out=odir, tier=cap["tier"], drift_correction=variant.get("drift", "on"),
-                    damage=cap.get("damage", False))
+                    damage=cap.get("damage", False), legacy=legacy)
             wall = time.time() - t0
             plan = load_plan(odir)
             gt = yaml.safe_load(open(os.path.join(gt_dir, cap["gt"]))) if cap.get("gt") else {}
@@ -171,10 +171,7 @@ def _repeatability(results):
                 continue
             ra = next(r for r in A["rooms"] if r["id"] == ida)
             rb = next(r for r in B["rooms"] if r["id"] == bid)
-            la = sorted(w["length"]["value"] for w in ra["walls"])
-            lb = sorted(w["length"]["value"] for w in rb["walls"])
-            n = min(len(la), len(lb))
-            dif = [abs(la[i] - lb[i]) for i in range(n)]
+            dif = _wall_diffs(ra, rb)
             out.append(dict(room_a=ida, room_b=bid, iou=round(best, 3),
                             area_a=round(ra["floor_area"]["value"], 3), area_b=round(rb["floor_area"]["value"], 3),
                             area_diff_pct=round(100 * abs(ra["floor_area"]["value"] - rb["floor_area"]["value"])
@@ -183,8 +180,43 @@ def _repeatability(results):
                             ceil_diff_m=round(abs(ra["ceiling_height"]["value"] - rb["ceiling_height"]["value"]), 4),
                             wall_max_diff_m=round(max(dif), 4) if dif else None,
                             wall_median_diff_m=round(float(np.median(dif)), 4) if dif else None,
-                            n_walls_a=len(la), n_walls_b=len(lb)))
+                            n_walls_matched=len(dif),
+                            n_walls_a=len(ra["walls"]), n_walls_b=len(rb["walls"])))
     return out
+
+
+def _wall_diffs(ra, rb, tol: float = 0.35):
+    """Per-wall agreement between two passes, matching walls by where their plane sits.
+
+    Sorting both rooms' wall lengths and pairing by index is meaningless when one pass resolves a
+    short return wall the other absorbs. We instead match each wall in A to the wall in B whose
+    midpoint is closest and whose direction agrees, within `tol` metres, and compare only those.
+    Unmatched walls are reported separately as a topology difference, which is what they are.
+    """
+    def feats(r):
+        out = []
+        for w in r["walls"]:
+            s, e = np.array(w["start"], float), np.array(w["end"], float)
+            d = e - s
+            L = float(np.hypot(*d))
+            if L < 1e-6:
+                continue
+            out.append(((s + e) / 2, d / L, L))
+        return out
+    A, B = feats(ra), feats(rb)
+    used, dif = set(), []
+    for m, u, L in A:
+        best, bi = None, -1
+        for i, (m2, u2, L2) in enumerate(B):
+            if i in used or abs(float(u @ u2)) < 0.9:
+                continue
+            dist = float(np.hypot(*(m - m2)))
+            if dist <= tol and (best is None or dist < best):
+                best, bi = dist, i
+        if bi >= 0:
+            used.add(bi)
+            dif.append(abs(L - B[bi][2]))
+    return dif
 
 
 def write_report(out: str, results: dict, man: dict):
@@ -248,17 +280,21 @@ def write_report(out: str, results: dict, man: dict):
         L += ["## Repeatability", "",
               "Two passes over the same rooms with disjoint frames (`scripts/split_capture.py`). Rooms are "
               "paired by footprint overlap.", "",
-              "| Room A | Room B | IoU | Area A | Area B | Area diff | Ceiling A | Ceiling B | Ceiling diff | Worst wall diff | Verdict |",
-              "|---|---|---|---|---|---|---|---|---|---|---|"]
+              "Walls are matched between the two passes by where their plane sits, not by sorted length; "
+              "unmatched walls are a topology difference and are counted, not silently paired.", "",
+              "| Room A | Room B | IoU | Area A | Area B | Area diff | Ceiling A | Ceiling B | Ceiling diff | Walls A/B/matched | Median wall diff | Worst wall diff | Verdict |",
+              "|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
         for r in rep:
             if r.get("room_b") is None:
-                L.append(f"| {r['room_a']} | none | {r['iou']} | | | | | | | | UNPAIRED |")
+                L.append(f"| {r['room_a']} | none | {r['iou']} | | | | | | | | | | UNPAIRED |")
                 continue
             ok = (r["wall_max_diff_m"] is not None and r["wall_max_diff_m"] <= 0.01) and r["ceil_diff_m"] <= 0.01
+            wmax = "-" if r["wall_max_diff_m"] is None else f"{r['wall_max_diff_m']*100:.1f} cm"
+            wmed = "-" if r["wall_median_diff_m"] is None else f"{r['wall_median_diff_m']*100:.1f} cm"
             L.append(f"| {r['room_a']} | {r['room_b']} | {r['iou']} | {r['area_a']:.2f} | {r['area_b']:.2f} | "
                      f"{r['area_diff_pct']:.1f} % | {r['ceil_a']:.3f} | {r['ceil_b']:.3f} | "
-                     f"{r['ceil_diff_m']*100:.1f} cm | {r['wall_max_diff_m']*100:.1f} cm | "
-                     f"{'PASS' if ok else 'FAIL'} |")
+                     f"{r['ceil_diff_m']*100:.1f} cm | {r['n_walls_a']}/{r['n_walls_b']}/{r['n_walls_matched']} | "
+                     f"{wmed} | {wmax} | {'PASS' if ok else 'FAIL'} |")
         L.append("")
 
     abl = {k: v for k, v in results.items() if v["variant"].get("drift") == "off"}

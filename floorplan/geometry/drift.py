@@ -18,6 +18,9 @@ import numpy as np
 
 from floorplan.geometry.frame import backproject, fit_plane, normals_from_grid, rotation_from_up, rotz
 
+CARRY_MIN, CARRY_MAX = 0.9, 2.0      # plausible range for the phone above the floor, in metres
+MAX_DATUM_RESIDUAL = 0.12            # a frame further than this from the running datum is an outlier
+
 
 def _running_median(v: np.ndarray, w: int) -> np.ndarray:
     n = len(v)
@@ -35,7 +38,7 @@ def _running_median(v: np.ndarray, w: int) -> np.ndarray:
     return out
 
 
-def _observe(frames, stride: int = 1):
+def _observe(frames, stride: int = 1, datum: str = "robust"):
     """Per frame: observed floor normal, floor height, and wall-normal azimuths."""
     n = len(frames)
     normals = [None] * n
@@ -57,27 +60,42 @@ def _observe(frames, stride: int = 1):
         up = N[:, 2] > 0.85
         if up.sum() > 250:
             z = P[up, 2]
-            h, e = np.histogram(z, bins=200, range=(float(z.min()) - 0.01, float(z.max()) + 0.01))
-            m = e[np.argmax(h)]
-            sel = np.abs(z - m) < 0.05
-            if sel.sum() > 250:
-                pts = P[up][sel]
-                nn, d, _ = fit_plane(pts.astype(np.float64))
-                if nn[2] < 0:
-                    nn = -nn
-                if nn[2] > 0.95:
-                    normals[i] = nn
-                    heights[i] = float(np.median(pts[:, 2]))
+            # The floor is the LOWEST well-supported horizontal surface a plausible carry height
+            # below the camera, not the most populous one. In a furnished office the modal up-facing
+            # surface is a desk at 0.75 m, and using it as the height datum swings the whole pose
+            # by three quarters of a metre. See fixloop/DIFF.md, the second defect.
+            cam_z = float(t[2])
+            h, e = np.histogram(z, bins=300, range=(float(z.min()) - 0.01, float(z.max()) + 0.01))
+            if datum == "legacy":
+                pick = float(e[np.argmax(h)])      # pre-fix: the modal horizontal surface, desk included
+            else:
+                strong = np.where(h >= max(250, 0.25 * h.max()))[0]
+                pick = None
+                for b in strong:                   # ascending height: first plausible one wins
+                    zc = float(e[b])
+                    if CARRY_MIN <= cam_z - zc <= CARRY_MAX:
+                        pick = zc
+                        break
+            if pick is not None:
+                sel = np.abs(z - pick) < 0.05
+                if sel.sum() > 250:
+                    pts = P[up][sel]
+                    nn, d, _ = fit_plane(pts.astype(np.float64))
+                    if nn[2] < 0:
+                        nn = -nn
+                    if nn[2] > 0.95:
+                        normals[i] = nn
+                        heights[i] = float(np.median(pts[:, 2]))
         w = np.abs(N[:, 2]) < 0.3
         if w.sum() > 300:
             az[i] = np.arctan2(N[w, 1], N[w, 0])
     return normals, heights, az
 
 
-def correct_drift(frames, window: int = 12) -> dict:
+def correct_drift(frames, window: int = 12, datum: str = "robust") -> dict:
     """Corrects poses in place. Returns the report that lands in plan.json under `drift`."""
     n = len(frames)
-    normals, heights, az = _observe(frames)
+    normals, heights, az = _observe(frames, datum=datum)
     # ---- global Manhattan yaw from every frame's wall normals
     allaz = np.concatenate([a for a in az if a is not None]) if any(a is not None for a in az) else np.array([])
     if len(allaz) > 1000:
@@ -92,8 +110,14 @@ def correct_drift(frames, window: int = 12) -> dict:
             continue
         res = np.mod(a - yaw0 + np.pi / 4, np.pi / 2) - np.pi / 4
         dyaw[i] = float(np.median(res))
-    dz = np.array([heights[i] - np.nanmedian(heights) if np.isfinite(heights[i]) else np.nan for i in range(n)])
     med_h = float(np.nanmedian(heights)) if np.isfinite(heights).any() else 0.0
+    dz = heights - med_h
+    # a frame whose floor estimate is far from the running datum measured something that is not the
+    # floor; drop it rather than let the smoother drag the whole trajectory toward it
+    rough = _running_median(dz, window)
+    if datum != "legacy":
+        dz = np.where(np.abs(dz - rough) > MAX_DATUM_RESIDUAL, np.nan, dz)
+    n_datum_outliers = int(np.sum(np.isfinite(heights) & ~np.isfinite(dz)))
     dyaw_s = _running_median(dyaw, window)
     dz_s = _running_median(dz, window)
     tilt_applied = 0
@@ -117,11 +141,14 @@ def correct_drift(frames, window: int = 12) -> dict:
         closed = True
     return {
         "method": "floor-anchored levelling and height datum + Manhattan yaw anchoring + loop closure",
+        "datum_mode": datum,
         "frames_levelled": int(tilt_applied),
         "frames_total": int(n),
         "median_abs_yaw_correction_deg": round(float(np.degrees(np.nanmedian(np.abs(dyaw)))) if np.isfinite(dyaw).any() else 0.0, 3),
         "max_abs_yaw_correction_deg": round(float(np.degrees(np.nanmax(np.abs(dyaw_s)))), 3),
         "floor_height_drift_range_m": round(float(np.nanmax(dz_s) - np.nanmin(dz_s)), 4),
+        "frames_with_floor": int(np.isfinite(heights).sum()),
+        "datum_outliers_rejected": n_datum_outliers,
         "loop_closure_applied": bool(closed),
         "loop_gap_before_m": round(d0, 4),
     }

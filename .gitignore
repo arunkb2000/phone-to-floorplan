@@ -14,3 +14,7 @@ benchmark/captures/**/*.mov
 benchmark/captures/**/depth/
 benchmark/captures/**/confidence/
 benchmark/captures/**/rgb/
+bench/
+fixloop/before/
+fixloop/after/
+/tmp/

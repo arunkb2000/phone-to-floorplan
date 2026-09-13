@@ -1,33 +1,36 @@
-# One command per capture: make run CAP=path/to/capture OUT=results
-.PHONY: setup weights test run bench before after fixdiff reproduce synthetic
+# One command per capture:  make run CAP=<capture folder> OUT=<output folder>
+.PHONY: setup weights test run bench before after fixdiff calibrate reproduce clean
 
-setup:        ## clean-machine install (target < 15 min)
+setup:          ## clean-machine install; target under 15 minutes
 	bash scripts/setup_env.sh
 
-weights:      ## fetch pinned model weights with SHA-256 manifest
+weights:        ## fetch pinned model weights and write weights/SHA256SUMS
 	bash scripts/fetch_weights.sh
 
 test:
 	uv run --extra dev pytest -q
 
-run:          ## make run CAP=benchmark/captures/synthetic_MR1 OUT=results/x
+run:            ## make run CAP=Dataset/single_scan_with_ceiling OUT=results/x
 	uv run floorplan run $(CAP) --out $(OUT)
 
-synthetic:    ## regenerate the synthetic benchmark captures (all three tiers)
-	uv run python scripts/make_synthetic.py
-	uv run python scripts/make_synthetic_rgb.py
-
-bench:        ## full benchmark → bench/latest/gates.md
+bench:          ## full benchmark -> bench/latest/gates.md
 	uv run floorplan bench --out bench/latest
 
-before:       ## freeze the fix-loop 'before' run
-	bash scripts/fixloop.sh before
+calibrate:      ## fit the conformal interval factors, holding out the capture they are applied to
+	uv run python -c "from floorplan.calib.fit import fit_factors; fit_factors('bench/latest/results.json', holdout='flatA')"
 
-after:        ## fix-loop 'after' run
-	bash scripts/fixloop.sh after
+before:         ## fix-loop before-run: shipped code, pre-fix behaviour (--legacy)
+	uv run floorplan bench --out fixloop/before --legacy
 
-fixdiff:      ## readable diff of gates + code between the two tags
-	bash scripts/fixloop.sh diff
+after:          ## regenerate the fix-loop after-run at tag fixloop-after
+	uv run floorplan bench --out fixloop/after
+	git tag -f fixloop-after
 
-reproduce:    ## regenerate every reported number from raw inputs
+fixdiff:        ## render fixloop/DIFF.md from the two runs
+	uv run python scripts/fixloop_diff.py
+
+reproduce:      ## regenerate every reported number from the raw captures
 	bash scripts/reproduce.sh
+
+clean:
+	rm -rf results bench/latest
