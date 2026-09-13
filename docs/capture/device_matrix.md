@@ -23,11 +23,16 @@ is a single-frame sensor measurement, and the ceiling-height reference in partic
 because it is usually the visible vertical extent of a wall. A ceiling error of a few centimetres
 against it is not, on its own, evidence of a pipeline error.
 
-| Tier | Opening width, mean abs error | Ceiling height, mean abs error | 90 % interval coverage | Typical run |
+| Tier | Opening width, mean abs error | Ceiling height, mean abs error | Interval coverage | Typical run |
 |---|---|---|---|---|
-| LiDAR | 3.9 cm (7 matched) | 12.5 cm (6 matched) | 15 % of 13 | 3.6 s |
-| Video | 9.0 cm (1 matched) | 13.3 cm (2 matched) | 67 % of 3 | 4.4 s |
-| Photo | 5.8 cm (2 matched) | no reference matched | 100 % of 2 | 1.0 s |
+| LiDAR | 3.9 cm (7 matched) | 12.5 cm (6 matched) | 62 % | 3.6 s |
+| Video | 9.0 cm (1 matched) | 13.3 cm (2 matched) | 67 % | 4.4 s |
+| Photo | 5.8 cm (2 matched) | no reference matched | 100 % | 1.0 s |
+
+Coverage is the fraction of our 90 % intervals that overlap the reference's own 90 % interval. The
+stricter reading, which ignores the reference's uncertainty and asks whether its point value falls
+inside ours, gives 15 % at the LiDAR tier. Both are printed in the gate tables; the overlap figure is
+the fair one when the reference is itself a measurement with a 2 cm spread, and 62 % is still a fail.
 
 Wall lengths have **no** reference on the supplied data: a single depth frame almost never sees two
 opposite walls of these rooms, so the ±1 cm, ±3 % and ±8 % wall gates cannot be scored here at all.

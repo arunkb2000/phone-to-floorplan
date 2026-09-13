@@ -2025,13 +2025,13 @@
   "factors": {}
  },
  "timing": {
-  "total_s": 6.23,
+  "total_s": 6.2,
   "device": "arm64 Darwin",
   "stages": {
    "load": 0.51,
-   "drift": 0.61,
-   "cloud": 2.55,
-   "geometry": 1.8,
+   "drift": 0.6,
+   "cloud": 2.5,
+   "geometry": 1.82,
    "render": 0.25
   }
  },

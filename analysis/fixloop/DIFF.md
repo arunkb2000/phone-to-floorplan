@@ -1,6 +1,6 @@
 # Fix loop: before and after
 
-`before` = tag `fixloop-before` (9dca162d6), `after` = tag `fixloop-after` (d58ab5d7b). Both runs regenerate with `make before` and `make after`.
+`before` = tag `fixloop-before` (9dca162d6), `after` = tag `fixloop-after` (7904b9fa0). Both runs regenerate with `make before` and `make after`.
 
 The declaration, written before the fix existed, is in [DECLARATION.md](DECLARATION.md). What these numbers mean, including the prediction that was wrong and the row that regressed, is in [POSTMORTEM.md](POSTMORTEM.md).
 
@@ -21,12 +21,12 @@ Repeatability, LiDAR tier: two passes over the same rooms sharing no frames.
 | Capture | Rooms before | Rooms after | Footprint before | Footprint after | Openings before | Openings after | Overlap before | Overlap after | Seconds before | Seconds after |
 |---|---|---|---|---|---|---|---|---|---|---|
 | flatA_lidar | 2 | 5 | 57.22 | 56.67 | 2 | 4 | 0.1 % | 0.1 % | 5.7 | 6.2 |
-| flatA_lidar_driftoff | 3 | 6 | 55.83 | 55.29 | 4 | 6 | 0.2 % | 0.4 % | 5.1 | 5.5 |
+| flatA_lidar_driftoff | 3 | 6 | 55.83 | 55.29 | 4 | 6 | 0.2 % | 0.4 % | 5.1 | 5.4 |
 | flatA_lidar_repa | 3 | 4 | 55.53 | 53.08 | 3 | 4 | 0.0 % | 0.4 % | 3.1 | 3.3 |
-| flatA_lidar_repb | 2 | 6 | 31.38 | 55.25 | 0 | 5 | 0.0 % | 0.1 % | 2.6 | 3.4 |
+| flatA_lidar_repb | 2 | 6 | 31.38 | 55.25 | 0 | 5 | 0.0 % | 0.1 % | 2.7 | 3.5 |
 | flatA_photo | 3 | 3 | 21.34 | 21.34 | 2 | 2 | 0.0 % | 0.0 % | 1.0 | 1.0 |
-| flatA_video | 2 | 2 | 7.04 | 7.04 | 4 | 4 | 0.0 % | 0.0 % | 4.5 | 4.4 |
-| flatB_lidar | 4 | 6 | 43.18 | 43.51 | 4 | 6 | 0.0 % | 1.2 % | 3.3 | 3.5 |
+| flatA_video | 2 | 2 | 7.04 | 7.04 | 4 | 4 | 0.0 % | 0.0 % | 4.4 | 4.4 |
+| flatB_lidar | 4 | 6 | 43.18 | 43.51 | 4 | 6 | 0.0 % | 1.2 % | 3.1 | 3.4 |
 | roomC_lidar | 2 | 3 | 20.57 | 17.80 | 1 | 1 | 0.7 % | 1.3 % | 0.9 | 1.0 |
 
 ## Code diff

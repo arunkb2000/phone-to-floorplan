@@ -757,7 +757,7 @@
    "load": 0.08,
    "drift": 0.12,
    "cloud": 0.44,
-   "geometry": 0.13,
+   "geometry": 0.14,
    "render": 0.08
   }
  },

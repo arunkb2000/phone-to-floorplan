@@ -1,10 +1,10 @@
 {
- "total_s": 3.39,
+ "total_s": 3.48,
  "n_frames": 452,
- "load_s": 0.26,
+ "load_s": 0.39,
  "drift_s": 0.33,
  "room_seeds": "hmaxima",
- "cloud_s": 1.38,
+ "cloud_s": 1.35,
  "n_points": 4518690,
  "yaw_deg": 2.62,
  "floor_z": -0.0518,

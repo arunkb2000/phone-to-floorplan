@@ -4,7 +4,7 @@
  "load_s": 0.08,
  "drift_s": 0.11,
  "room_seeds": "hmaxima",
- "cloud_s": 0.47,
+ "cloud_s": 0.46,
  "n_points": 1497710,
  "yaw_deg": 66.88,
  "floor_z": 0.0095,

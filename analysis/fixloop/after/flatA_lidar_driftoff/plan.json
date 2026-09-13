@@ -2245,13 +2245,13 @@
   "factors": {}
  },
  "timing": {
-  "total_s": 5.47,
+  "total_s": 5.42,
   "device": "arm64 Darwin",
   "stages": {
    "load": 0.5,
    "drift": 0.0,
-   "cloud": 2.44,
-   "geometry": 2.05,
+   "cloud": 2.42,
+   "geometry": 2.03,
    "render": 0.13
   }
  },

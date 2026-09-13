@@ -8,12 +8,12 @@ Read `docs/report/benchmark.md` first: it states what the reference ground truth
 
 | Capture | Tier | Rooms | Openings | Footprint m2 | Overlap | Mean wall coverage | Pipeline s |
 |---|---|---|---|---|---|---|---|
-| flatA_lidar | lidar | 5 | 4 | 56.67 | 0.1 % | 95% | 6.2 |
-| flatA_lidar_driftoff | lidar | 6 | 6 | 55.29 | 0.4 % | 95% | 5.5 |
-| flatB_lidar | lidar | 6 | 6 | 43.51 | 1.2 % | 90% | 3.4 |
+| flatA_lidar | lidar | 5 | 4 | 56.67 | 0.1 % | 95% | 6.4 |
+| flatA_lidar_driftoff | lidar | 6 | 6 | 55.29 | 0.4 % | 95% | 5.4 |
+| flatB_lidar | lidar | 6 | 6 | 43.51 | 1.2 % | 90% | 3.5 |
 | roomC_lidar | lidar | 3 | 1 | 17.80 | 1.3 % | 86% | 1.0 |
 | flatA_lidar_repa | lidar | 4 | 4 | 53.08 | 0.4 % | 90% | 3.2 |
-| flatA_lidar_repb | lidar | 6 | 5 | 55.25 | 0.1 % | 86% | 3.4 |
+| flatA_lidar_repb | lidar | 6 | 5 | 55.25 | 0.1 % | 86% | 3.5 |
 | flatA_photo | photo | 3 | 2 | 21.34 | 0.0 % | 92% | 1.0 |
 | flatA_video | video | 2 | 4 | 7.04 | 0.0 % | 62% | 4.4 |
 
@@ -23,7 +23,7 @@ Read `docs/report/benchmark.md` first: it states what the reference ground truth
 |---|---|---|---|
 | Opening width | <= 2 cm on >= 85 % | 1/7 matched within 2 cm, 0 reference openings missed, 13 predictions unmatched. Lenient 14%, strict 5%. MAE 3.9 cm | FAIL |
 | Ceiling height | <= 1.5 cm per room | 1/6 matched within 1.5 cm (0 reference heights unmatched); MAE 12.5 cm, bias +10.9 cm | FAIL |
-| Interval calibration | 90 % nominal coverage | 15 % of 13 matched measurements contain the reference value | FAIL |
+| Interval calibration | 90 % nominal coverage | 15 % of 13 matched measurements contain the reference point value; 62 % overlap the reference's own 90 % interval | FAIL |
 | Room overlap (flatA_lidar) | stitched rooms must not overlap | 0.1 % of the total room area | PASS |
 | Room overlap (flatB_lidar) | stitched rooms must not overlap | 1.2 % of the total room area | FAIL |
 | Room overlap (roomC_lidar) | stitched rooms must not overlap | 1.3 % of the total room area | FAIL |
@@ -36,7 +36,7 @@ Read `docs/report/benchmark.md` first: it states what the reference ground truth
 |---|---|---|---|
 | Opening width | <= 2 cm on >= 85 % | 0/1 matched within 2 cm, 1 reference openings missed, 3 predictions unmatched. Lenient 0%, strict 0%. MAE 9.0 cm | FAIL |
 | Ceiling height | <= 1.5 cm per room | 0/2 matched within 1.5 cm (0 reference heights unmatched); MAE 13.3 cm, bias -13.3 cm | FAIL |
-| Interval calibration | 90 % nominal coverage | 67 % of 3 matched measurements contain the reference value | FAIL |
+| Interval calibration | 90 % nominal coverage | 67 % of 3 matched measurements contain the reference point value; 67 % overlap the reference's own 90 % interval | FAIL |
 | Room overlap (flatA_video) | stitched rooms must not overlap | 0.0 % of the total room area | PASS |
 
 ## Tier: photo
@@ -45,7 +45,7 @@ Read `docs/report/benchmark.md` first: it states what the reference ground truth
 |---|---|---|---|
 | Opening width | <= 2 cm on >= 85 % | 1/2 matched within 2 cm, 0 reference openings missed, 0 predictions unmatched. Lenient 50%, strict 50%. MAE 5.8 cm | FAIL |
 | Ceiling height | <= 1.5 cm per room | 0/0 matched within 1.5 cm (2 reference heights unmatched); MAE nan cm, bias +nan cm | FAIL |
-| Interval calibration | 90 % nominal coverage | 100 % of 2 matched measurements contain the reference value | FAIL |
+| Interval calibration | 90 % nominal coverage | 100 % of 2 matched measurements contain the reference point value; 100 % overlap the reference's own 90 % interval | FAIL |
 | Room overlap (flatA_photo) | stitched rooms must not overlap | 0.0 % of the total room area | PASS |
 
 ## Repeatability

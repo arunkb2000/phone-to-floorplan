@@ -9,7 +9,7 @@
  "yaw_deg": 66.88,
  "floor_z": 0.0074,
  "ceil_z": null,
- "geometry_s": 0.13,
+ "geometry_s": 0.14,
  "n_rooms": 2,
  "render_s": 0.08
 }

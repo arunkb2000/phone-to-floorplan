@@ -49,13 +49,19 @@ def match(ref_clusters, preds, kind):
                 best, bi = e, i
         if bi < 0:
             rows.append(dict(kind=kind, gt=gt, pred=None, err=None, sigma=None, covered=False,
-                             gt_sigma=c.get("sigma_m"), gt_n=c.get("n_frames"), status="missed", where=""))
+                             covered_overlap=False, gt_sigma=c.get("sigma_m"), gt_n=c.get("n_frames"),
+                             status="missed", where=""))
             continue
         used.add(bi)
         p = preds[bi]
         v = float(p["m"]["value"])
+        # the reference is itself a measurement with a spread across frames, so the fair test is
+        # whether the two 90 % intervals overlap. We report both: `covered` ignores the reference's
+        # own uncertainty, `covered_overlap` does not.
+        g_half = 1.645 * float(c.get("sigma_m") or 0.0)
         rows.append(dict(kind=kind, gt=gt, pred=v, err=v - gt, sigma=float(p["m"]["sigma"]),
                          covered=bool(p["m"]["ci_low"] <= gt <= p["m"]["ci_high"]),
+                         covered_overlap=bool(p["m"]["ci_low"] <= gt + g_half and gt - g_half <= p["m"]["ci_high"]),
                          gt_sigma=c.get("sigma_m"), gt_n=c.get("n_frames"), status="matched",
                          where=f"{p.get('room','')}:{p.get('wall','')}"))
     unmatched = [p for i, p in enumerate(preds) if i not in used]
@@ -255,8 +261,10 @@ def write_report(out: str, results: dict, man: dict):
         scored = [r for r in rows if r["status"] == "matched"]
         if scored:
             cov = 100 * np.mean([r["covered"] for r in scored])
+            ovl = 100 * np.mean([r.get("covered_overlap", r["covered"]) for r in scored])
             L.append(f"| Interval calibration | 90 % nominal coverage | {cov:.0f} % of {len(scored)} matched "
-                     f"measurements contain the reference value | {'PASS' if 75 <= cov <= 99 else 'FAIL'} |")
+                     f"measurements contain the reference point value; {ovl:.0f} % overlap the "
+                     f"reference's own 90 % interval | {'PASS' if 75 <= ovl <= 99 else 'FAIL'} |")
         for k, v in caps.items():
             s = v["summary"]
             L.append(f"| Room overlap ({k}) | stitched rooms must not overlap | {s['overlap_pct']:.1f} % of the "

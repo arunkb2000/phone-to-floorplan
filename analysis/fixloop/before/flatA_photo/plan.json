@@ -799,8 +799,8 @@
   "total_s": 1.01,
   "device": "arm64 Darwin",
   "stages": {
-   "depth": 0.04,
-   "geometry": 0.7,
+   "depth": 0.03,
+   "geometry": 0.71,
    "render": 0.07
   }
  },

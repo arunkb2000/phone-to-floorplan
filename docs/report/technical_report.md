@@ -136,8 +136,36 @@ no matter what the statistics say.
 
 ## 6. The fix loop
 
-Declaration, evidence, shipped fix, before and after: `analysis/fixloop/DECLARATION.md` and `analysis/fixloop/DIFF.md`.
-Both runs regenerate with `make before` and `make after`.
+**Declared gate.** Repeatability at the LiDAR tier. Two passes over the same rooms sharing no frames
+found 3 rooms and 2 rooms, paired footprints overlapped at IoU 0.41, and the worst wall disagreed by
+281 cm against a 1 cm gate.
+
+**Root cause, with evidence.** The watershed seeded rooms from a ladder of absolute clearance
+thresholds, stopping at the first rung that yielded two cores. The two passes had near-identical free
+space, 49.5 and 50.1 m², and still fell off different rungs, one at 0.65 m and one at 0.80 m. A
+centimetre of carved free space decided how many rooms existed. Where the two passes did agree on a
+room, its ceiling agreed to 0.3 cm, which is what said the fault was in the grouping and not in the
+plane fitting.
+
+**Shipped.** h-maxima seeding of the distance transform, which is scale-free and has no ladder to
+fall off; a merge of regions that no wall separates, because walls are stable and free-space shape is
+not; and hole filling so an unobserved patch cannot pinch the transform in two. The pre-fix behaviour
+stays reachable as `--legacy`, which is how the before-run regenerates from shipped code.
+
+**Result, and the second bug.** Ceiling agreement between passes went from up to 120.6 cm to 0.3, 0.5
+and 1.7 cm on the correctly paired rooms; median IoU from 0.41 to 0.73. Shipping it made the ceiling
+numbers legible for the first time and they were still wrong by a constant 30 cm, which exposed a
+second defect in the same family: the per-frame height datum took the *modal* up-facing surface,
+which in a furnished office is a desk at 0.75 m. The floor is now the lowest well-supported
+horizontal surface a plausible carry height below the camera. Datum range across a capture: 0.83 m to
+0.02 m.
+
+**What we got wrong.** We predicted the passes would agree on room count; they went from 3 versus 2
+to 4 versus 6. Both now produce seven candidate regions, so the seeding is stable and the
+disagreement moved into the handling of regions too small to be rooms. The worst-case wall row also
+regressed, 62 cm to 120 cm, because more resolved rooms means more short walls to disagree about.
+Full accounting in `analysis/fixloop/POSTMORTEM.md`; runs regenerate with `make before` and
+`make after`.
 
 ---
 

@@ -25,8 +25,8 @@
     "measured"
    ],
    "mean_coverage": 0.951,
-   "total_s": 6.23,
-   "wall_s": 6.3
+   "total_s": 6.38,
+   "wall_s": 6.4
   },
   "rows": [
    {
@@ -36,6 +36,7 @@
     "err": -0.05249999999999999,
     "sigma": 0.012,
     "covered": false,
+    "covered_overlap": true,
     "gt_sigma": 0.0201,
     "gt_n": 8,
     "status": "matched",
@@ -50,6 +51,7 @@
     "err": -0.034399999999999986,
     "sigma": 0.012,
     "covered": false,
+    "covered_overlap": true,
     "gt_sigma": 0.0107,
     "gt_n": 5,
     "status": "matched",
@@ -64,6 +66,7 @@
     "err": 0.23140000000000005,
     "sigma": 0.01,
     "covered": false,
+    "covered_overlap": false,
     "gt_sigma": 0.0106,
     "gt_n": 8,
     "status": "matched",
@@ -78,6 +81,7 @@
     "err": -0.0490999999999997,
     "sigma": 0.01,
     "covered": false,
+    "covered_overlap": true,
     "gt_sigma": 0.0208,
     "gt_n": 8,
     "status": "matched",
@@ -113,8 +117,8 @@
     "measured"
    ],
    "mean_coverage": 0.954,
-   "total_s": 5.46,
-   "wall_s": 5.5
+   "total_s": 5.44,
+   "wall_s": 5.4
   },
   "rows": [
    {
@@ -124,6 +128,7 @@
     "err": -0.0012999999999999678,
     "sigma": 0.012,
     "covered": true,
+    "covered_overlap": true,
     "gt_sigma": 0.0201,
     "gt_n": 8,
     "status": "matched",
@@ -138,6 +143,7 @@
     "err": 0.09589999999999999,
     "sigma": 0.012,
     "covered": false,
+    "covered_overlap": false,
     "gt_sigma": 0.0107,
     "gt_n": 5,
     "status": "matched",
@@ -152,6 +158,7 @@
     "err": null,
     "sigma": null,
     "covered": false,
+    "covered_overlap": false,
     "gt_sigma": 0.0106,
     "gt_n": 8,
     "status": "missed",
@@ -166,6 +173,7 @@
     "err": 0.0235000000000003,
     "sigma": 0.01,
     "covered": false,
+    "covered_overlap": true,
     "gt_sigma": 0.0208,
     "gt_n": 8,
     "status": "matched",
@@ -201,8 +209,8 @@
     "prior"
    ],
    "mean_coverage": 0.898,
-   "total_s": 3.39,
-   "wall_s": 3.4
+   "total_s": 3.48,
+   "wall_s": 3.5
   },
   "rows": [
    {
@@ -212,6 +220,7 @@
     "err": -0.04159999999999997,
     "sigma": 0.012,
     "covered": false,
+    "covered_overlap": false,
     "gt_sigma": 0.009,
     "gt_n": 7,
     "status": "matched",
@@ -247,7 +256,7 @@
     "prior"
    ],
    "mean_coverage": 0.858,
-   "total_s": 0.98,
+   "total_s": 0.97,
    "wall_s": 1.0
   },
   "rows": []
@@ -278,7 +287,7 @@
     "measured"
    ],
    "mean_coverage": 0.905,
-   "total_s": 3.16,
+   "total_s": 3.22,
    "wall_s": 3.2
   },
   "rows": [
@@ -289,6 +298,7 @@
     "err": -0.060900000000000065,
     "sigma": 0.012,
     "covered": false,
+    "covered_overlap": false,
     "gt_sigma": 0.0201,
     "gt_n": 8,
     "status": "matched",
@@ -303,6 +313,7 @@
     "err": 0.035800000000000054,
     "sigma": 0.012,
     "covered": false,
+    "covered_overlap": true,
     "gt_sigma": 0.0107,
     "gt_n": 5,
     "status": "matched",
@@ -317,6 +328,7 @@
     "err": 0.22289999999999988,
     "sigma": 0.01,
     "covered": false,
+    "covered_overlap": false,
     "gt_sigma": 0.0106,
     "gt_n": 8,
     "status": "matched",
@@ -331,6 +343,7 @@
     "err": 0.03600000000000003,
     "sigma": 0.01,
     "covered": false,
+    "covered_overlap": true,
     "gt_sigma": 0.0208,
     "gt_n": 8,
     "status": "matched",
@@ -366,8 +379,8 @@
     "measured"
    ],
    "mean_coverage": 0.861,
-   "total_s": 3.39,
-   "wall_s": 3.4
+   "total_s": 3.45,
+   "wall_s": 3.5
   },
   "rows": [
    {
@@ -377,6 +390,7 @@
     "err": -0.01970000000000005,
     "sigma": 0.012,
     "covered": true,
+    "covered_overlap": true,
     "gt_sigma": 0.0201,
     "gt_n": 8,
     "status": "matched",
@@ -391,6 +405,7 @@
     "err": 0.026700000000000057,
     "sigma": 0.012,
     "covered": false,
+    "covered_overlap": true,
     "gt_sigma": 0.0107,
     "gt_n": 5,
     "status": "matched",
@@ -405,6 +420,7 @@
     "err": 0.20589999999999997,
     "sigma": 0.01,
     "covered": false,
+    "covered_overlap": false,
     "gt_sigma": 0.0106,
     "gt_n": 8,
     "status": "matched",
@@ -419,6 +435,7 @@
     "err": 0.0043000000000001926,
     "sigma": 0.01,
     "covered": true,
+    "covered_overlap": true,
     "gt_sigma": 0.0208,
     "gt_n": 8,
     "status": "matched",
@@ -454,7 +471,7 @@
     "measured"
    ],
    "mean_coverage": 0.917,
-   "total_s": 0.98,
+   "total_s": 1.0,
    "wall_s": 1.0
   },
   "rows": [
@@ -465,6 +482,7 @@
     "err": -0.10409999999999997,
     "sigma": 0.0738,
     "covered": true,
+    "covered_overlap": true,
     "gt_sigma": 0.0201,
     "gt_n": 8,
     "status": "matched",
@@ -479,6 +497,7 @@
     "err": 0.012700000000000045,
     "sigma": 0.0806,
     "covered": true,
+    "covered_overlap": true,
     "gt_sigma": 0.0107,
     "gt_n": 5,
     "status": "matched",
@@ -493,6 +512,7 @@
     "err": null,
     "sigma": null,
     "covered": false,
+    "covered_overlap": false,
     "gt_sigma": 0.0106,
     "gt_n": 8,
     "status": "missed",
@@ -507,6 +527,7 @@
     "err": null,
     "sigma": null,
     "covered": false,
+    "covered_overlap": false,
     "gt_sigma": 0.0208,
     "gt_n": 8,
     "status": "missed",
@@ -542,7 +563,7 @@
     "measured"
    ],
    "mean_coverage": 0.625,
-   "total_s": 4.37,
+   "total_s": 4.39,
    "wall_s": 4.4
   },
   "rows": [
@@ -553,6 +574,7 @@
     "err": -0.08999999999999997,
     "sigma": 0.0609,
     "covered": true,
+    "covered_overlap": true,
     "gt_sigma": 0.0201,
     "gt_n": 8,
     "status": "matched",
@@ -567,6 +589,7 @@
     "err": null,
     "sigma": null,
     "covered": false,
+    "covered_overlap": false,
     "gt_sigma": 0.0107,
     "gt_n": 5,
     "status": "missed",
@@ -581,6 +604,7 @@
     "err": -0.21239999999999992,
     "sigma": 0.0548,
     "covered": false,
+    "covered_overlap": false,
     "gt_sigma": 0.0106,
     "gt_n": 8,
     "status": "matched",
@@ -595,6 +619,7 @@
     "err": -0.05439999999999978,
     "sigma": 0.0449,
     "covered": true,
+    "covered_overlap": true,
     "gt_sigma": 0.0208,
     "gt_n": 8,
     "status": "matched",

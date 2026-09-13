@@ -1,7 +1,7 @@
 {
- "total_s": 0.98,
+ "total_s": 1.0,
  "n_frames": 18,
- "depth_s": 0.03,
+ "depth_s": 0.04,
  "n_depth_inferences": 18,
  "geometry_s": 0.7,
  "n_rooms": 3,

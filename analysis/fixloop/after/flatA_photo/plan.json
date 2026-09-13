@@ -796,11 +796,11 @@
   "factors": {}
  },
  "timing": {
-  "total_s": 1.0,
+  "total_s": 0.99,
   "device": "arm64 Darwin",
   "stages": {
    "depth": 0.03,
-   "geometry": 0.72,
+   "geometry": 0.7,
    "render": 0.07
   }
  },

@@ -1,10 +1,10 @@
 {
- "total_s": 2.65,
+ "total_s": 2.66,
  "n_frames": 426,
  "load_s": 0.36,
  "drift_s": 0.31,
  "room_seeds": "cascade",
- "cloud_s": 1.19,
+ "cloud_s": 1.2,
  "n_points": 4311185,
  "yaw_deg": 62.38,
  "floor_z": 0.748,
